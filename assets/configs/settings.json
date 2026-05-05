@@ -1,0 +1,12 @@
+{
+    "window_title": "PyKaizersEngine",
+    "engine_version": "0.0.1.0",
+    "game_version": "0.0.0.0-0.0.1pyk",
+    "window_size": [640, 360],
+    "base_window_size": [640, 360],
+    
+    "resize": false,
+
+    "fullscreen": false
+}
+

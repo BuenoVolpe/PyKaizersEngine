@@ -1,0 +1,10 @@
+{
+    "configs": "assets/configs/",
+    "settings": "assets/configs/settings.json",
+    "paths": "assets/configs/paths.json",
+    
+    "fonts": "assets/engine/fonts/",
+    "AtariSmall": "assets/engine/fonts/AtariSmall.ttf",
+    "dogicapixel": "assets/engine/fonts/dogicapixel.ttf",
+    "PixelOperator": "assets/engine/fonts/PixelOperator.ttf"
+}
