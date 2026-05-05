@@ -1,0 +1,20 @@
+{
+    "up": "w",
+    "down": "s",
+    "left": "a",
+    "right": "d",
+
+    "menu": "ESCAPE",
+    
+    "LMB": "LMB",
+    "RMB": "RMB",
+    "MMB": "MMB",
+    "tab": "tab",
+
+    "fast_quit": "Lalt",
+    "restart": "F5",
+    "console_hotkey": "F2",
+    "confirm_key": "LMB",
+    "alt_key": "RMB"
+}
+

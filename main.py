@@ -5,8 +5,15 @@ import os
 import time
 #--------------------------------#
 from engine.utils.json import json_reader
+from engine.utils.scaler import scaler
+#--------------------------------#
 from engine.configs.settings import settings
 from engine.configs.paths import paths
+from engine.configs.inputs import inputs
+#--------------------------------#
+from engine.utils.enums.inputs import InputsEnum as Inp
+#--------------------------------#
+from engine.fonts import AtariSmall, dogicapixel, PixelOperator
 #================================#
 pg.init()
 #================================#
@@ -15,9 +22,9 @@ class Game:
     def __init__(self):
         #--------------------------------#
         self.load_screen()
-        #--------------------------------#
-        self.screen = pg.display.set_mode()
         self.clock = pg.time.Clock()
+        #--------------------------------#
+        self.prev_time = 0
     #================================#
     def load_screen(self):
         #--------------------------------#
@@ -35,12 +42,14 @@ class Game:
             #------------------------------#            
             settings.window_width, settings.window_height = settings.window_size = RES
             settings.window_center = RES[0]//2, RES[1]//2
+            #------------------------------#            
+            scaler.update()
         #--------------------------------#
         MIN_RES:tuple = settings.base_window_size if settings.resize else RES
         #--------------------------------#
-        self.main_surface = pg.Surface(MIN_RES, pg.SCALED | pg.DOUBLEBUF)
+        self.main_surface = pg.Surface(MIN_RES)
         #--------------------------------#
-        self.screen = pg.display.set_mode(RES, pg.SCALED | pg.DOUBLEBUF)
+        self.screen = pg.display.set_mode(RES)
         pg.display.set_caption(settings.window_title)
         #--------------------------------#
         pg.scrap.init()
@@ -54,6 +63,10 @@ class Game:
         self.screen.fill(settings.get("bg_color", (30,30,30)))
         self.main_surface.fill(settings.get("bg_color", (30,30,30)))
         #--------------------------------#
+        scaled_main_surface = self.main_surface
+        #================================#
+        AtariSmall.render(self.main_surface, (10, 10), f"FPS: {self.clock.get_fps():.0f}", size=20)
+        #================================#
         if settings.resize:
             scaled_main_surface = pg.transform.scale(self.main_surface, settings.window_size)
         #------------------------------#
@@ -65,13 +78,13 @@ class Game:
         while True:
             #----------delta time----------#  
             now = time.time()
-            dt = now - prev_time
-            prev_time = now
+            dt = now - self.prev_time
+            self.prev_time = now
             #--------------------------------#
             for event in pg.event.get():
                 #--------------------------------#
                 if event.type == pg.QUIT or (
-                    event.type == pg.KEYDOWN and event.key == pg.K_LALT
+                    inputs.input_by_event(event, Inp.fast_quit, form="down")
                 ):
                     #--------------------------------#
                     pg.quit()
@@ -82,7 +95,8 @@ class Game:
             self.update(dt)
             #--------------------------------#
             pg.display.update()
-            self.clock.tick(60)
+            self.clock.tick()
+            # self.clock.tick(60)
 #================================#
 if __name__ == "__main__":
     #--------------------------------#
