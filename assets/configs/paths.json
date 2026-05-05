@@ -4,6 +4,12 @@
     "paths": "assets/configs/paths.json",
     "inputs": "assets/configs/inputs.json",
 
+    "audio": "assets/engine/audio/",
+    "music": "assets/engine/audio/music/",
+    "sfx": "assets/engine/audio/sfx/",
+    "ui": "assets/engine/audio/ui/",
+    "error_sound": "assets/engine/audio/error.wav",
+
     "fonts": "assets/engine/fonts/",
     "AtariSmall": "assets/engine/fonts/AtariSmall.ttf",
     "dogicapixel": "assets/engine/fonts/dogicapixel.ttf",

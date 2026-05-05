@@ -1,4 +1,5 @@
 from engine.configs.inputs import inputs
+import pygame as pg
 #================================#
 class InputsEnum:
     #--------------------------------#
@@ -18,7 +19,10 @@ class InputsEnum:
     fast_quit = inputs.get("fast_quit")
     restart = inputs.get("restart")
     #--------------------------------#
+    #--------------------------------#
     confirm_key = inputs.get("confirm_key")
     alt_key = inputs.get("alt_key")
+    #--------------------------------#
+    interact = inputs.get("interact", pg.K_e)
 #================================#
 InputsEnum = InputsEnum()

@@ -13,6 +13,8 @@ from engine.configs.inputs import inputs
 #--------------------------------#
 from engine.utils.enums.inputs import InputsEnum as Inp
 #--------------------------------#
+from engine.handlers.sounds import SoundHandler
+#--------------------------------#
 from engine.fonts import AtariSmall, dogicapixel, PixelOperator
 #================================#
 pg.init()
@@ -23,6 +25,8 @@ class Game:
         #--------------------------------#
         self.load_screen()
         self.clock = pg.time.Clock()
+        #--------------------------------#
+        self.SoundHandler = SoundHandler()
         #--------------------------------#
         self.prev_time = 0
     #================================#
@@ -87,8 +91,17 @@ class Game:
                     inputs.input_by_event(event, Inp.fast_quit, form="down")
                 ):
                     #--------------------------------#
-                    pg.quit()
                     exit()
+                    pg.quit()
+                #--------------------------------#
+                # if inputs.input_by_event(event, Inp.toggle_fullscreen, form="down"):
+                #     settings.fullscreen = not settings.fullscreen
+                #     self.load_screen()
+                #--------------------------------#
+                if inputs.input_by_event(event, Inp.interact, default_key_value=pg.K_e, form="down"):
+                    self.SoundHandler.play("ui.click")
+                elif inputs.input_by_event(event, "q", default_key_value=pg.K_q, form="down"):
+                    self.SoundHandler.play_group("cats")
             #--------------------------------#
             #game code
             self.draw()
