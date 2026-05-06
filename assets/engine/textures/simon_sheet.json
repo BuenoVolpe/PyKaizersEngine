@@ -1,0 +1,70 @@
+{
+    "type": "sheet",
+    "use_colorkey":true,
+    "convert_alpha": false,
+    "sprites": {
+        "idle": {
+            "start": [0, 0],
+            "size": [16, 16],
+            "resize": [32, 32],
+            "use_scale_constant": true,
+            "colors": ["blue", "green"]
+        },
+        "idle2": {
+            "start": [16, 0],
+            "size": [16, 16],
+            "resize": [32, 32],
+            "use_scale_constant": true,
+            "colors": ["blue", "green"]
+        },
+        "idle_back": {
+            "start": [32, 0],
+            "size": [16, 16],
+            "resize": [32, 32],
+            "use_scale_constant": true,
+            "colors": ["blue", "green"]
+        },
+        "idle_back2": {
+            "start": [48, 0],
+            "size": [16, 16],
+            "resize": [32, 32],
+            "use_scale_constant": true,
+            "colors": ["blue", "green"]
+        },
+        "jump": {
+            "start": [0, 16],
+            "size": [16, 16],
+            "resize": [32, 32],
+            "use_scale_constant": true,
+            "colors": ["blue", "green"]
+        },
+        "walk_down": {
+            "start": [16, 32],
+            "size": [16, 16],
+            "resize": [32, 32],
+            "use_scale_constant": true,
+            "colors": ["blue", "green"]
+        },
+        "walk_down2": {
+            "start": [32, 32],
+            "size": [16, 16],
+            "resize": [32, 32],
+            "use_scale_constant": true,
+            "colors": ["blue", "green"]
+        },
+        "walk_up": {
+            "start": [16, 48],
+            "size": [16, 16],
+            "resize": [32, 32],
+            "use_scale_constant": true,
+            "colors": ["blue", "green"]
+        },
+        "walk_up2": {
+            "start": [32, 48],
+            "size": [16, 16],
+            "resize": [32, 32],
+            "use_scale_constant": true,
+            "colors": ["blue", "green"]
+        }
+    }
+}

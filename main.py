@@ -14,6 +14,7 @@ from engine.configs.inputs import inputs
 from engine.utils.enums.inputs import InputsEnum as Inp
 #--------------------------------#
 from engine.handlers.sounds import SoundHandler
+from engine.handlers.textures import TextureHandler
 #--------------------------------#
 from engine.fonts import AtariSmall, dogicapixel, PixelOperator
 #================================#
@@ -27,6 +28,7 @@ class Game:
         self.clock = pg.time.Clock()
         #--------------------------------#
         self.SoundHandler = SoundHandler()
+        self.TextureHandler = TextureHandler()
         #--------------------------------#
         self.prev_time = 0
     #================================#
@@ -69,11 +71,13 @@ class Game:
         #--------------------------------#
         scaled_main_surface = self.main_surface
         #================================#
-        AtariSmall.render(self.main_surface, (10, 10), f"FPS: {self.clock.get_fps():.0f}", size=20)
+        self.TextureHandler.blit_random(self.main_surface, (50, 50))
+        #================================#
         #================================#
         if settings.resize:
             scaled_main_surface = pg.transform.scale(self.main_surface, settings.window_size)
         #------------------------------#
+        AtariSmall.render(scaled_main_surface, (10, 10), f"FPS: {self.clock.get_fps():.0f}", size=30)
         self.screen.blit(scaled_main_surface, (0, 0))
         #------------------------------#
     #================================#

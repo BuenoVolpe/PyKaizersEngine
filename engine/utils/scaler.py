@@ -16,8 +16,8 @@ class Scaler:
     def update(self):
         #------------------------------#
         # Ratio between current window size and base window size
-        self.W_RATIO = settings.window_width / settings.base_window_width
-        self.H_RATIO = settings.window_height / settings.base_window_height
+        self.W_RATIO = settings.window_width / settings.window_width
+        self.H_RATIO = settings.window_height / settings.window_height
     #------------------------------#
     def constant(self, value: float) -> int:
         return int(value * settings.scale_constant * min(self.W_RATIO, self.H_RATIO))
@@ -25,7 +25,7 @@ class Scaler:
     def scale(self, value: float) -> int:
         return int(value * min(self.W_RATIO, self.H_RATIO))
     #------------------------------#
-    def surface(self, image: pg.Surface, resolution="auto") -> pg.Surface:
+    def surface(self, image: pg.Surface, resolution="auto", use_scale_constant=False) -> pg.Surface:
         #------------------------------#
         if resolution is None:
             return image
@@ -33,14 +33,22 @@ class Scaler:
         # Auto scaling based on original surface size
         if resolution == "auto":
             #------------------------------#
-            w = self.constant(image.get_width())
-            h = self.constant(image.get_height())
+            if use_scale_constant:
+                w = self.constant(image.get_width())
+                h = self.constant(image.get_height())
+            else:
+                w = self.scale(image.get_width())
+                h = self.scale(image.get_height())
             #------------------------------#
             return pg.transform.scale(image, (w, h))
         #------------------------------#
         # Manual scaling based on custom resolution
-        w = self.constant(resolution[0])
-        h = self.constant(resolution[1])
+        if use_scale_constant:
+            w = self.constant(resolution[0])
+            h = self.constant(resolution[1])
+        else:
+            w = self.scale(resolution[0])
+            h = self.scale(resolution[1])
         #------------------------------#
         return pg.transform.scale(image, (w, h))
     #------------------------------#

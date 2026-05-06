@@ -2,13 +2,14 @@
     "window_title": "PyKaizersEngine",
     "game_name": "PyK_instance",
     
-    "engine_version": "0.0.3.1",
-    "game_version": "0.0.0.0-0.0.3pyk",
+    "engine_version": "0.0.4.0",
+    "game_version": "0.0.0.0-0.0.4pyk",
 
     "window_size": [640, 360],
-    "base_window_size": [640, 360],
+    "base_window_size": [320, 180],
     
-    "resize": false,
+    "resize": true,
+    "scale_constant": 1,
 
     "fullscreen": false
 }

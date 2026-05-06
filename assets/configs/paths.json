@@ -12,6 +12,13 @@
     "ui": "assets/engine/audio/ui/",
     "error_sound": "assets/engine/audio/error.wav",
 
+    "engine_textures": "assets/engine/textures/",
+    "game_textures": "assets/game/textures/",
+    "error_image": "assets/engine/textures/error.png",
+    
+    "color_map": "assets/engine/others/color_map.png",
+    "color_map_json": "assets/engine/others/color_map.json",
+
     "fonts": "assets/engine/fonts/",
     "AtariSmall": "assets/engine/fonts/AtariSmall.ttf",
     "dogicapixel": "assets/engine/fonts/dogicapixel.ttf",

@@ -1,0 +1,10 @@
+{
+    "type": "sprite",
+    "resize": [32,32],
+    "use_scale_constant": true,
+    "use_colorkey": false,
+    "colors":[
+        "green", "gray", "yellow", "skin", "pink", "blue"
+    ]
+
+}
