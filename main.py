@@ -11,12 +11,12 @@ from engine.configs.settings import settings
 from engine.configs.paths import paths
 from engine.configs.inputs import inputs
 #--------------------------------#
-from engine.utils.enums.inputs import InputsEnum as Inp
+from game.enums.inputs import InputsEnum as Inp
 #--------------------------------#
 from engine.handlers.sounds import SoundHandler
 from engine.handlers.textures import TextureHandler
 #--------------------------------#
-from engine.fonts import AtariSmall, dogicapixel, PixelOperator
+from game.fonts import AtariSmall, dogicapixel, PixelOperator
 #================================#
 pg.init()
 #================================#
@@ -29,6 +29,8 @@ class Game:
         #--------------------------------#
         self.SoundHandler = SoundHandler()
         self.TextureHandler = TextureHandler()
+        #--------------------------------#
+        pg.display.set_icon(self.TextureHandler.get(settings.get("icon", "pyk::kaizerthrone")))
         #--------------------------------#
         self.prev_time = 0
     #================================#
