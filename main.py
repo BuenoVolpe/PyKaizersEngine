@@ -3,6 +3,7 @@ from sys import exit
 #--------------------------------#
 import os
 import time
+import random
 #--------------------------------#
 from engine.utils.json import json_reader
 from engine.utils.scaler import scaler
@@ -11,12 +12,19 @@ from engine.configs.settings import settings
 from engine.configs.paths import paths
 from engine.configs.inputs import inputs
 #--------------------------------#
-from game.enums.inputs import InputsEnum as Inp
+from engine.utils.has_server import has_server
+from engine.utils.start_server import start_server
 #--------------------------------#
-from engine.handlers.sounds import SoundHandler
+from engine.handlers.sounds import sounds
 from engine.handlers.textures import TextureHandler
 #--------------------------------#
+from engine.server.network import Network
+#================================#
+from game.enums.inputs import InputsEnum as Inp
+#--------------------------------#
 from game.fonts import AtariSmall, dogicapixel, PixelOperator
+#--------------------------------#
+from game.player import Player
 #================================#
 pg.init()
 #================================#
@@ -27,12 +35,17 @@ class Game:
         self.load_screen()
         self.clock = pg.time.Clock()
         #--------------------------------#
-        self.SoundHandler = SoundHandler()
         self.TextureHandler = TextureHandler()
         #--------------------------------#
         pg.display.set_icon(self.TextureHandler.get(settings.get("icon", "pyk::kaizerthrone")))
         #--------------------------------#
         self.prev_time = 0
+        #--------------------------------#
+        self.color = random.choice(["standart", "green", "gray", "yellow", "skin", "pink", "blue"])
+        self.player = Player(self, self.color)
+        #--------------------------------#
+        self.net = Network()
+        self.received_net_data = {}
     #================================#
     def load_screen(self):
         #--------------------------------#
@@ -62,19 +75,40 @@ class Game:
         #--------------------------------#
         pg.scrap.init()
     #================================#
-    def update(self, delta_time:float):
+    def update(self, dt:float):
         #--------------------------------#
-        pass
+        self.player.update(dt)
+        #--------------------------------#
+        data = {"pos": [self.player.rect.x, self.player.rect.y], "dir": [0, 0], "color":self.color}
+        self.received_net_data = self.net.send(data)
+        #--------------------------------#
+        for player_id, player_data in self.received_net_data.items():
+            #--------------------------------#
+            if int(player_id) == self.net.id:
+                continue
+            #--------------------------------#
+            ...
+            #--------------------------------#
     #================================#
     def draw(self):
         #--------------------------------#
         self.screen.fill(settings.get("bg_color", (30,30,30)))
         self.main_surface.fill(settings.get("bg_color", (30,30,30)))
-        #--------------------------------#
-        scaled_main_surface = self.main_surface
         #================================#
         self.TextureHandler.blit_random(self.main_surface, (50, 50))
         #================================#
+        self.player.draw(self.main_surface)
+        #------------------------------#
+        for player_id, player_data in self.received_net_data.items():
+            #--------------------------------#
+            if int(player_id) == self.net.id:
+                continue
+            #--------------------------------#
+            player_pos = player_data["pos"]
+            player_color = player_data["color"]
+            player_image = self.TextureHandler.get(f"pyk::dave.{player_color}")
+            self.main_surface.blit(player_image, player_pos)
+            #--------------------------------#
         #================================#
         if settings.resize:
             scaled_main_surface = pg.transform.scale(self.main_surface, settings.window_size)
@@ -105,19 +139,22 @@ class Game:
                 #     self.load_screen()
                 #--------------------------------#
                 if inputs.input_by_event(event, Inp.interact, default_key_value=pg.K_e, form="down"):
-                    self.SoundHandler.play("pyk::ui.click")
+                    sounds.play("pyk::ui.click")
                 elif inputs.input_by_event(event, "q", default_key_value=pg.K_q, form="down"):
-                    self.SoundHandler.play_group("pyk::group::sfx.cats")
+                    sounds.play_group("pyk::group::sfx.cats")
             #--------------------------------#
             #game code
-            self.draw()
             self.update(dt)
+            self.draw()
             #--------------------------------#
             pg.display.update()
             self.clock.tick()
             # self.clock.tick(60)
 #================================#
 if __name__ == "__main__":
+    #--------------------------------#
+    if not has_server():
+        start_server()
     #--------------------------------#
     game = Game()
     game.run()

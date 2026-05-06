@@ -1,3 +1,4 @@
+import pygame as pg
 from engine.configs.paths import paths
 from engine.configs.settings import settings
 from engine.handlers.sounds.sound_player import SoundPlayer
@@ -6,6 +7,7 @@ from engine.handlers.sounds.volume_mixer import VolumeMixer
 from engine.handlers.sounds.music_player import MusicPlayer
 # from engine.event_bus import event_bus, events
 
+pg.init()
 
 class SoundHandler:
     def __init__(self):
@@ -66,6 +68,8 @@ class SoundHandler:
         if category == "music":
             self.music.apply_volume()
 
+
+sounds = SoundHandler()
 
 # normal sound
 # sounds.play("ui.click")

@@ -69,7 +69,8 @@ class TextureHandler:
 
             # Normal sprite handling
             #--------------------------------#
-            if colors := meta.get("colors"):
+            colors = meta.get("colors", [])
+            if colors:
                 #--------------------------------#
                 sprite = self.resize(sprite, meta)
                 self.atlas.save(atlas_path + f".standart", sprite)
@@ -78,13 +79,14 @@ class TextureHandler:
                     #--------------------------------#
                     if color in self.color_maps:
                         #--------------------------------#
-                        sprite = recolor(sprite, self.color_maps[color])  
-                        sprite = self.resize(sprite, meta)
+                        sprite_copy = recolor(sprite, self.color_maps[color])  
+                        sprite_copy = self.resize(sprite_copy, meta)
                         #--------------------------------#
-                        self.atlas.save(atlas_path + f".{color}", sprite)
+                        self.atlas.save(atlas_path + f".{color}", sprite_copy)
                     else:
                         #--------------------------------#
                         log_error(f"Color map '{color}' specified for '{atlas_path}' not found in color maps.")
+                continue
             #--------------------------------
             self.atlas.save(atlas_path, sprite)
 
@@ -118,3 +120,5 @@ class TextureHandler:
         """
         sprite = self.random()
         target.blit(sprite, pos)
+
+
