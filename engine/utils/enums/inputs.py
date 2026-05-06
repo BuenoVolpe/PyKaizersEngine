@@ -16,7 +16,7 @@ class InputsEnum:
     #--------------------------------#
     tab = inputs.get("tab")
     #--------------------------------#
-    fast_quit = inputs.get("fast_quit")
+    quit = inputs.get("quit")
     restart = inputs.get("restart")
     #--------------------------------#
     #--------------------------------#

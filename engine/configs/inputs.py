@@ -42,7 +42,6 @@ class Inputs(Configs):
         #--------------------------------#
         # merge defaults + json overrides
         merged = {**fundamental_defaults, **raw_keys}
-        print(merged)
         #--------------------------------#
         for name, value in merged.items():
             #--------------------------------#

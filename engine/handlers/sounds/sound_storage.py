@@ -9,8 +9,8 @@ from engine.utils.log import log_error
 
 class SoundStorage:
 
-    def __init__(self, base_path):
-        self.base_path = base_path
+    def __init__(self, audio_paths:dict):
+        self.paths = audio_paths
 
         error_path = paths.get("error_sound", "assets/engine/audio/error.wav")
 
@@ -22,20 +22,18 @@ class SoundStorage:
         self.sounds = {}
         self.groups = defaultdict(list)
 
-        self._load()
+        for key, path in self.paths.items():
+            self._load(path, base=key)
 
-        print(self.sounds)
+    def _load(self, path, base="pykaizers"):
 
-    def _load(self):
+        for full_path, _ in scan_folder(path, ".wav"):
 
-        for full_path, _ in scan_folder(self.base_path, ".wav"):
-
-            rel = os.path.relpath(full_path, self.base_path)
+            rel = os.path.relpath(full_path, path)
 
             parts = rel.split(os.sep)
 
             category = parts[0] if len(parts) > 1 else "sfx"
-
             group = parts[1] if len(parts) > 2 else category
 
             key = rel.replace(".wav", "").replace("\\", ".")
@@ -45,9 +43,18 @@ class SoundStorage:
                 "category": category
             }
 
-            self.sounds[key] = data
-            self.groups[group].append(data)
-            group
+            if base == "pykaizers":
+                if category != group:
+                    self.groups[f"pyk::group::{category}.{group}"].append(data)
+                else:
+                    self.groups[f"pyk::group::{group}"].append(data)
+                self.sounds[f"pyk::{key}"] = data
+            else:
+                if category != group:
+                    self.groups[f"{base}::group::{category}.{group}"].append(data)
+                else:
+                    self.groups[f"{base}::group::{group}"].append(data)
+                self.sounds[f"{base}::{key}"] = data
 
     def get(self, key):
         return self.sounds.get(key, self.error)

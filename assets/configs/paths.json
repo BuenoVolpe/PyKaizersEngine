@@ -4,7 +4,9 @@
     "paths": "assets/configs/paths.json",
     "inputs": "assets/configs/inputs.json",
 
-    "audio": "assets/engine/audio/",
+    "engine_audio": "assets/engine/audio/",
+    "game_audio": "assets/game/audio/",
+    
     "music": "assets/engine/audio/music/",
     "sfx": "assets/engine/audio/sfx/",
     "ui": "assets/engine/audio/ui/",

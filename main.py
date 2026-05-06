@@ -88,7 +88,7 @@ class Game:
             for event in pg.event.get():
                 #--------------------------------#
                 if event.type == pg.QUIT or (
-                    inputs.input_by_event(event, Inp.fast_quit, form="down")
+                    inputs.input_by_event(event, "quit", form="down")
                 ):
                     #--------------------------------#
                     exit()
@@ -99,9 +99,9 @@ class Game:
                 #     self.load_screen()
                 #--------------------------------#
                 if inputs.input_by_event(event, Inp.interact, default_key_value=pg.K_e, form="down"):
-                    self.SoundHandler.play("ui.click")
+                    self.SoundHandler.play("pyk::ui.click")
                 elif inputs.input_by_event(event, "q", default_key_value=pg.K_q, form="down"):
-                    self.SoundHandler.play_group("cats")
+                    self.SoundHandler.play_group("pyk::group::sfx.cats")
             #--------------------------------#
             #game code
             self.draw()

@@ -10,11 +10,13 @@ from engine.handlers.sounds.music_player import MusicPlayer
 class SoundHandler:
     def __init__(self):
 
-        path = paths.get("audio", "assets/audio")
-        print(path)
+        audio_paths = {
+            "pykaizers": paths.get("engine_audio", "assets/audio/sfx"),
+            f"{settings.game_name}": paths.get("game_audio", "assets/audio/music")
+        }
 
         self.mixer = VolumeMixer(settings)
-        self.storage = SoundStorage(path)
+        self.storage = SoundStorage(audio_paths)
         self.player = SoundPlayer(self.mixer)
         self.music = MusicPlayer(
             self.mixer,
@@ -42,7 +44,7 @@ class SoundHandler:
 
     def play_group(self, group, **kwargs):
         data = self.random_from_group(group)
-        print(f"Playing sound from group '{group}': {data}")
+        # print(f"Playing sound from group '{group}': {data}")
         self.player.play(data, **kwargs)
 
     def random_from_group(self, group):
