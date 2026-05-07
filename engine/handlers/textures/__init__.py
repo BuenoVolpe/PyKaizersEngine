@@ -73,7 +73,7 @@ class TextureHandler:
             if colors:
                 #--------------------------------#
                 sprite = self.resize(sprite, meta)
-                self.atlas.save(atlas_path + f".standart", sprite)
+                self.atlas.save(atlas_path + f".standard", sprite)
                 #--------------------------------#
                 for color in colors:
                     #--------------------------------#

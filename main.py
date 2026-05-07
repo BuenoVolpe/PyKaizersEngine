@@ -41,8 +41,8 @@ class Game:
         #--------------------------------#
         self.prev_time = 0
         #--------------------------------#
-        self.color = random.choice(["standart", "green", "gray", "yellow", "skin", "pink", "blue"])
-        self.player = Player(self, self.color)
+        # self.color = random.choice(["standard", "green", "gray", "yellow", "skin", "pink", "blue"])
+        self.player = Player(self, "standard")
         #--------------------------------#
         self.net = Network()
         self.received_net_data = {}
@@ -79,7 +79,7 @@ class Game:
         #--------------------------------#
         self.player.update(dt)
         #--------------------------------#
-        data = {"pos": [self.player.rect.x, self.player.rect.y], "dir": [0, 0], "color":self.color}
+        data = {"pos": [self.player.rect.x, self.player.rect.y], "dir": [0, 0], "color":"standard"}
         self.received_net_data = self.net.send(data)
         #--------------------------------#
         for player_id, player_data in self.received_net_data.items():

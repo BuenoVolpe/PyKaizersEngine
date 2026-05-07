@@ -6,7 +6,7 @@ from game.enums.inputs import InputsEnum as Inp
 #================================#
 class Player:
     #-------------------------------#
-    def __init__(self, game, color="standart"):
+    def __init__(self, game, color="standard"):
         #-------------------------------#
         self.game = game
         #-------------------------------#
