@@ -5,6 +5,8 @@ from _thread import start_new_thread
 #================================#
 from engine.configs.serversettings import serversettings
 from engine.utils.log import log, log_error, log_success
+#--------------------------------#
+from game.server.player import Player
 #================================#
 class GameServer:
     #================================#
@@ -42,16 +44,12 @@ class GameServer:
     #================================#
     def handle_client(self, conn, player_id):
         #--------------------------------#
-        self.players[player_id] = {
-            "pos": [100, 100],
-            "dir": [0, 0],
-            "color": "standard"
-        }
+        self.players[player_id] = Player(player_id)
         #--------------------------------#
         conn.send(json.dumps({
             "id": player_id
         }).encode())
-        #--------------------------------#
+        #================================#
         while True:
             #--------------------------------#
             try:
@@ -63,24 +61,29 @@ class GameServer:
                 #--------------------------------#
                 data = json.loads(data.decode())
                 #--------------------------------#
-                self.players[player_id]["pos"] = data["pos"]
-                self.players[player_id]["dir"] = data["dir"]
+                player = self.players[player_id]
+                #--------------------------------#
+                player.update(data)
+                #--------------------------------#
+                serialized_players = {
+                    pid: p.serialize()
+                    for pid, p in self.players.items()
+                }
                 #--------------------------------#
                 conn.sendall(
-                    json.dumps(self.players).encode()
+                    json.dumps(serialized_players).encode()
                 )
-            #================================#
+            #--------------------------------#
             except Exception as e:
-                log_error(f"Error occurred while handling client {player_id}: {e}")
+                log_error(e)
                 break
-        #--------------------------------#
-        log(f"Player {player_id} disconnected", "MAGENTA", ["bright"])
+        #================================#
+        log(f"Player {player_id} disconnected", "CYAN")
         #--------------------------------#
         if player_id in self.players:
             del self.players[player_id]
         #--------------------------------#
         conn.close()
-
 #================================#
 # if __name__ == "__main__":
 server = GameServer()
