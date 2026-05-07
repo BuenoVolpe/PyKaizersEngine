@@ -1,6 +1,6 @@
 import socket
 import json
-
+from game.server.packets import create_packet, read_packet
 #================================#
 class Network:
     #================================#
@@ -16,15 +16,18 @@ class Network:
         #--------------------------------#
         self.id = data["id"]
     #================================#
-    def send(self, data):
+    def send(self, data, packet_type="move"):
         #--------------------------------#
         try:
             #--------------------------------#
-            self.client.send(json.dumps(data).encode())
+            packet = create_packet(packet_type, data)
+            self.client.send(packet)
             #--------------------------------#
             response = self.client.recv(4096)
             #--------------------------------#
-            return json.loads(response.decode())
+            packet = read_packet(response)
+
+            return packet
         #--------------------------------#
         except Exception as e:
             print("Network Error:", e)

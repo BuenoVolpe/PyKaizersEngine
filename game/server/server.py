@@ -6,7 +6,9 @@ from _thread import start_new_thread
 from engine.configs.serversettings import serversettings
 from engine.utils.log import log, log_error, log_success
 #--------------------------------#
-from game.server.player import Player
+from game.server.packets import create_packet, read_packet
+#--------------------------------#
+from game.server.objects.player import Player
 #================================#
 class GameServer:
     #================================#
@@ -59,21 +61,29 @@ class GameServer:
                 if not data:
                     break
                 #--------------------------------#
-                data = json.loads(data.decode())
+                packet = read_packet(data)
                 #--------------------------------#
-                player = self.players[player_id]
+                packet_type = packet["type"]
+                packet_data = packet["data"]
                 #--------------------------------#
-                player.update(data)
+                if packet_type == "player":
+                    #--------------------------------#
+                    player = self.players[player_id]
+                    #--------------------------------#
+                    player.update(packet_data)
+                    #--------------------------------#
+                    serialized_players = {
+                        pid: p.serialize()
+                        for pid, p in self.players.items()
+                    }
+                    #--------------------------------#
+                    conn.sendall(
+                        create_packet(
+                            "players",
+                            serialized_players
+                        )
+                    )
                 #--------------------------------#
-                serialized_players = {
-                    pid: p.serialize()
-                    for pid, p in self.players.items()
-                }
-                #--------------------------------#
-                conn.sendall(
-                    json.dumps(serialized_players).encode()
-                )
-            #--------------------------------#
             except Exception as e:
                 log_error(e)
                 break

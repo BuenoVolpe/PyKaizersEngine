@@ -17,8 +17,9 @@ from engine.utils.start_server import start_server
 #--------------------------------#
 from engine.handlers.sounds import sounds
 from engine.handlers.textures import TextureHandler
-#--------------------------------#
-from engine.server.network import Network
+#================================#
+from game.server.network import Network
+from game.server.packets import read_packet, create_packet
 #================================#
 from game.enums.inputs import InputsEnum as Inp
 #--------------------------------#
@@ -45,7 +46,7 @@ class Game:
         self.player = Player(self, "standard")
         #--------------------------------#
         self.net = Network()
-        self.received_net_data = {}
+        self.packet = {}
     #================================#
     def load_screen(self):
         #--------------------------------#
@@ -80,12 +81,12 @@ class Game:
         self.player.update(dt)
         #--------------------------------#
         data = {"pos": [self.player.rect.x, self.player.rect.y], "dir": [0, 0], "color":"standard"}
-        self.received_net_data = self.net.send(data)
+        self.packet = self.net.send(data, packet_type="player")
         #--------------------------------#
-        for player_id, player_data in self.received_net_data.items():
+        if self.packet["type"] == "world_state":
             #--------------------------------#
-            if int(player_id) == self.net.id:
-                continue
+            # if int(player_id) == self.net.id:
+                # continue
             #--------------------------------#
             ...
             #--------------------------------#
@@ -99,15 +100,17 @@ class Game:
         #================================#
         self.player.draw(self.main_surface)
         #------------------------------#
-        for player_id, player_data in self.received_net_data.items():
+        if self.packet["type"] == "players":
             #--------------------------------#
-            if int(player_id) == self.net.id:
-                continue
-            #--------------------------------#
-            player_pos = player_data["pos"]
-            player_color = player_data["color"]
-            player_image = self.TextureHandler.get(f"pyk::dave.{player_color}")
-            self.main_surface.blit(player_image, player_pos)
+            for player_id, player_data in self.packet["data"].items():
+                #--------------------------------#
+                if int(player_id) == self.net.id:
+                    continue
+                #--------------------------------#
+                player_pos = player_data["pos"]
+                player_color = player_data["color"]
+                player_image = self.TextureHandler.get(f"pyk::dave.{player_color}")
+                self.main_surface.blit(player_image, player_pos)
             #--------------------------------#
         #================================#
         if settings.resize:
