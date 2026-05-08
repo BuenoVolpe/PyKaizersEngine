@@ -26,15 +26,32 @@ class Network:
         
         if packet["type"] == PacketType.SERVER_FULL:
             raise Exception(packet["data"]["message"])
-
+        #--------------------------------#
         self.id = packet["data"]["id"]
+        self.role = packet["data"]["role"]
         #--------------------------------#
         threading.Thread(
             target=self.receive_loop,
             daemon=True
         ).start()
     #================================#
+    def disconnect(self):
+        #--------------------------------#
+        self.running = False
+        #--------------------------------#
+        try:
+            #--------------------------------#
+            self.client.shutdown(socket.SHUT_RDWR)
+        #--------------------------------#
+        except:
+            #--------------------------------#
+            pass
+        #--------------------------------#
+        self.client.close()
+    #================================#
     def send(self, data, packet_type="move"):
+        if not self.running:
+            return
         #--------------------------------#
         try:
             #--------------------------------#
@@ -59,7 +76,21 @@ class Network:
                 with self.queue_lock:
                     self.packet_queue.append(packet)
 
+            except (
+                ConnectionResetError,
+                ConnectionAbortedError,
+                OSError
+            ):
+                break
+
             except Exception as e:
                 log_error(e)
                 break
-        
+
+        self.running = False
+
+        try:
+            self.client.close()
+        except:
+            pass
+

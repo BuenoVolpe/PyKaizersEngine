@@ -8,7 +8,8 @@ from engine.configs.serversettings import serversettings
 from engine.utils.log import log, log_error, log_success
 #--------------------------------#
 from game.server.packets import create_packet, read_packet, receive_packet, send_packet
-from game.server.objects.player import Player
+from game.server.packets.player import Player
+from game.server.world import World
 #--------------------------------#
 from game.enums.packet_type import PacketType
 #================================#
@@ -19,7 +20,8 @@ class GameServer:
         self.host = host
         self.port = port
         #--------------------------------#
-        self.players = {}
+        self.world = World()
+        #--------------------------------#
         self.players_lock = threading.Lock()
         self.current_player = 0
         #--------------------------------#
@@ -45,7 +47,7 @@ class GameServer:
             conn, addr = self.socket.accept()
 
             with self.players_lock:
-                if len(self.players) >= self.max_players:
+                if len(self.world.players) >= self.max_players:
                     send_packet(conn, PacketType.SERVER_FULL, {"message": "Server is full"})
                     time.sleep(0.1)
                     conn.close()
@@ -66,13 +68,13 @@ class GameServer:
     def handle_player_packet(self, conn, player_id, data):
         with self.players_lock:
             #--------------------------------#
-            player = self.players[player_id]
+            player = self.world.players[player_id]
             #--------------------------------#
             player.update(data)
             #--------------------------------#
             serialized_players = {
                 pid: p.serialize()
-                for pid, p in self.players.items()
+                for pid, p in self.world.players.items()
             }
         #--------------------------------#
         send_packet(
@@ -96,12 +98,12 @@ class GameServer:
     def handle_client(self, conn, player_id):
         #--------------------------------#
         with self.players_lock:
-            self.players[player_id] = Player(player_id)
-
+            self.world.players[player_id] = Player(player_id)
         #--------------------------------#
         #inital packet
         send_packet(conn, PacketType.INIT, {
-            "id": player_id
+            "id": player_id,
+            "role": "host" if int(player_id) == 0 else "client"
         })
         #================================#
         while True:
@@ -120,15 +122,18 @@ class GameServer:
                 if handler:
                     handler(conn, player_id, packet_data)
                 #--------------------------------#
-            except Exception as e:
-                log_error(e)
+            except (
+                ConnectionResetError,
+                ConnectionAbortedError,
+                OSError
+            ):
                 break
         #================================#
         log(f"Player {player_id} disconnected", "CYAN")
         #--------------------------------#
         with self.players_lock:
-            if player_id in self.players:
-                del self.players[player_id]
+            if player_id in self.world.players:
+                del self.world.players[player_id]
         #--------------------------------#
         conn.close()
 #================================#

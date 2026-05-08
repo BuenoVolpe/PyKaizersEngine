@@ -33,7 +33,9 @@ pg.init()
 #================================#
 class Game:
 #================================#
-    def __init__(self):
+    def __init__(self, nickname:str="Player"):
+        #--------------------------------#
+        self.nickname = nickname
         #--------------------------------#
         self.load_screen()
         self.clock = pg.time.Clock()
@@ -105,7 +107,7 @@ class Game:
         #--------------------------------#
         self.player.update(dt)
         #--------------------------------#
-        data = {"pos": [self.player.rect.x, self.player.rect.y], "dir": [0, 0], "color":"standard"}
+        data = {"pos": [self.player.rect.x, self.player.rect.y], "dir": [0, 0], "nickname": self.nickname, "color":"standard"}
         self.packet = self.net.send(data, packet_type=PacketType.PLAYERS_INPUT)
         #--------------------------------#
     #================================#
@@ -150,17 +152,20 @@ class Game:
                     inputs.input_by_event(event, "quit", form="down")
                 ):
                     #--------------------------------#
-                    exit()
+                    self.net.disconnect()
                     pg.quit()
+                    exit()
                 #--------------------------------#
                 # if inputs.input_by_event(event, Inp.toggle_fullscreen, form="down"):
                 #     settings.fullscreen = not settings.fullscreen
                 #     self.load_screen()
                 #--------------------------------#
                 if inputs.input_by_event(event, Inp.interact, default_key_value=pg.K_e, form="down"):
-                    sounds.play("pyk::ui.click")
+                    # sounds.play("pyk::ui.click")
+                    print(self.nickname)
                 elif inputs.input_by_event(event, "q", default_key_value=pg.K_q, form="down"):
-                    sounds.play_group("pyk::group::sfx.cats")
+                    # sounds.play_group("pyk::group::sfx.cats")
+                    print(self.net.id, self.net.role)
             #--------------------------------#
             #game code
             self.process_packets()
@@ -168,15 +173,15 @@ class Game:
             self.draw()
             #--------------------------------#
             pg.display.update()
-            self.clock.tick()
-            # self.clock.tick(60)
+            # self.clock.tick()
+            self.clock.tick(60)
 #================================#
 if __name__ == "__main__":
     #--------------------------------#
     if not has_server():
-        start_server(developer_mode=True, player_count=2)
+        start_server()
     #--------------------------------#
-    game = Game()
+    game = Game(nickname="Player")
     game.run()
 #================================#
 
