@@ -6,6 +6,7 @@ import time
 import random
 #--------------------------------#
 from engine.utils.json import json_reader
+from engine.utils.log import log
 from engine.utils.scaler import scaler
 #--------------------------------#
 from engine.configs.settings import settings
@@ -22,6 +23,7 @@ from game.server.network import Network
 from game.server.packets import read_packet, create_packet
 #================================#
 from game.enums.inputs import InputsEnum as Inp
+from game.enums.packet_type import PacketType
 #--------------------------------#
 from game.fonts import AtariSmall, dogicapixel, PixelOperator
 #--------------------------------#
@@ -47,6 +49,12 @@ class Game:
         #--------------------------------#
         self.net = Network()
         self.packet = {}
+        #--------------------------------#
+        self.packet_handlers = {
+            PacketType.PLAYERS_OUTPUT: self.handle_players_output,
+            PacketType.SERVER_FULL: self.handle_server_full
+        }
+        self.players = {}
     #================================#
     def load_screen(self):
         #--------------------------------#
@@ -76,20 +84,30 @@ class Game:
         #--------------------------------#
         pg.scrap.init()
     #================================#
+    def handle_players_output(self, packet):
+        #--------------------------------#
+        self.players = packet["data"]
+    #================================#
+    def handle_server_full(self, packet):
+        #--------------------------------#
+        log("\n\nServer is full!", "CYAN", ["bright"])
+    #================================#
+    def process_packets(self):
+        with self.net.queue_lock:
+            packets = self.net.packet_queue.copy()
+            self.net.packet_queue.clear()
+            for packet in packets:
+                handler = self.packet_handlers.get(packet["type"])
+                if handler:
+                    handler(packet)
+    #================================#
     def update(self, dt:float):
         #--------------------------------#
         self.player.update(dt)
         #--------------------------------#
         data = {"pos": [self.player.rect.x, self.player.rect.y], "dir": [0, 0], "color":"standard"}
-        self.packet = self.net.send(data, packet_type="player")
+        self.packet = self.net.send(data, packet_type=PacketType.PLAYERS_INPUT)
         #--------------------------------#
-        if self.packet["type"] == "world_state":
-            #--------------------------------#
-            # if int(player_id) == self.net.id:
-                # continue
-            #--------------------------------#
-            ...
-            #--------------------------------#
     #================================#
     def draw(self):
         #--------------------------------#
@@ -99,18 +117,16 @@ class Game:
         self.TextureHandler.blit_random(self.main_surface, (50, 50))
         #================================#
         self.player.draw(self.main_surface)
-        #------------------------------#
-        if self.packet["type"] == "players":
+        #------------------------------#        
+        for player_id, player_data in self.players.items():
             #--------------------------------#
-            for player_id, player_data in self.packet["data"].items():
-                #--------------------------------#
-                if int(player_id) == self.net.id:
-                    continue
-                #--------------------------------#
-                player_pos = player_data["pos"]
-                player_color = player_data["color"]
-                player_image = self.TextureHandler.get(f"pyk::dave.{player_color}")
-                self.main_surface.blit(player_image, player_pos)
+            if int(player_id) == self.net.id:
+                continue
+            #--------------------------------#
+            player_pos = player_data["pos"]
+            player_color = player_data["color"]
+            player_image = self.TextureHandler.get(f"pyk::dave.{player_color}")
+            self.main_surface.blit(player_image, player_pos)
             #--------------------------------#
         #================================#
         if settings.resize:
@@ -147,6 +163,7 @@ class Game:
                     sounds.play_group("pyk::group::sfx.cats")
             #--------------------------------#
             #game code
+            self.process_packets()
             self.update(dt)
             self.draw()
             #--------------------------------#
@@ -157,7 +174,7 @@ class Game:
 if __name__ == "__main__":
     #--------------------------------#
     if not has_server():
-        start_server()
+        start_server(developer_mode=True, player_count=2)
     #--------------------------------#
     game = Game()
     game.run()

@@ -1,14 +1,16 @@
 import socket
 import json
 #--------------------------------#
-from _thread import start_new_thread
+import threading
+import time
 #================================#
 from engine.configs.serversettings import serversettings
 from engine.utils.log import log, log_error, log_success
 #--------------------------------#
-from game.server.packets import create_packet, read_packet
-#--------------------------------#
+from game.server.packets import create_packet, read_packet, receive_packet, send_packet
 from game.server.objects.player import Player
+#--------------------------------#
+from game.enums.packet_type import PacketType
 #================================#
 class GameServer:
     #================================#
@@ -18,7 +20,15 @@ class GameServer:
         self.port = port
         #--------------------------------#
         self.players = {}
+        self.players_lock = threading.Lock()
         self.current_player = 0
+        #--------------------------------#
+        self.max_players = serversettings.get("max_players", 4)
+        #--------------------------------#
+        self.packet_handlers = {
+            PacketType.PLAYERS_INPUT: self.handle_player_packet,
+            PacketType.BATCH: self.handle_batch_packet,
+        }
         #--------------------------------#
         self.socket = socket.socket(
             socket.AF_INET,
@@ -33,56 +43,82 @@ class GameServer:
         #--------------------------------#
         while True:
             conn, addr = self.socket.accept()
-            #--------------------------------#
+
+            with self.players_lock:
+                if len(self.players) >= self.max_players:
+                    send_packet(conn, PacketType.SERVER_FULL, {"message": "Server is full"})
+                    time.sleep(0.1)
+                    conn.close()
+                    continue
+
             log(f"Connected to: {addr}", "CYAN", ["bright"])
+
+            with self.players_lock:
+                player_id = self.current_player
+                self.current_player += 1
+
+            threading.Thread(
+                target=self.handle_client,
+                args=(conn, player_id),
+                daemon=True
+            ).start()
+    #================================#
+    def handle_player_packet(self, conn, player_id, data):
+        with self.players_lock:
             #--------------------------------#
-            player_id = self.current_player
-            self.current_player += 1
+            player = self.players[player_id]
             #--------------------------------#
-            start_new_thread(
-                self.handle_client,
-                (conn, player_id)
-            )
+            player.update(data)
+            #--------------------------------#
+            serialized_players = {
+                pid: p.serialize()
+                for pid, p in self.players.items()
+            }
+        #--------------------------------#
+        send_packet(
+            conn,
+            PacketType.PLAYERS_OUTPUT,
+            serialized_players
+        )
+    #================================#
+    def handle_batch_packet(self, conn, player_id, data):
+        #--------------------------------#
+        for packet in data:
+            #--------------------------------#
+            packet_type = packet["type"]
+            packet_data = packet["data"]
+            #--------------------------------#
+            handler = self.packet_handlers.get(packet_type)
+            #--------------------------------#
+            if handler:
+                handler(conn, player_id, packet_data)
     #================================#
     def handle_client(self, conn, player_id):
         #--------------------------------#
-        self.players[player_id] = Player(player_id)
+        with self.players_lock:
+            self.players[player_id] = Player(player_id)
+
         #--------------------------------#
-        conn.send(json.dumps({
+        #inital packet
+        send_packet(conn, PacketType.INIT, {
             "id": player_id
-        }).encode())
+        })
         #================================#
         while True:
             #--------------------------------#
             try:
                 #--------------------------------#
-                data = conn.recv(4096)
+                packet = receive_packet(conn)
                 #--------------------------------#
-                if not data:
+                if not packet:
                     break
-                #--------------------------------#
-                packet = read_packet(data)
                 #--------------------------------#
                 packet_type = packet["type"]
                 packet_data = packet["data"]
                 #--------------------------------#
-                if packet_type == "player":
-                    #--------------------------------#
-                    player = self.players[player_id]
-                    #--------------------------------#
-                    player.update(packet_data)
-                    #--------------------------------#
-                    serialized_players = {
-                        pid: p.serialize()
-                        for pid, p in self.players.items()
-                    }
-                    #--------------------------------#
-                    conn.sendall(
-                        create_packet(
-                            "players",
-                            serialized_players
-                        )
-                    )
+                handler = self.packet_handlers.get(packet_type)
+                if handler:
+                    handler(conn, player_id, packet_data)
                 #--------------------------------#
             except Exception as e:
                 log_error(e)
@@ -90,8 +126,9 @@ class GameServer:
         #================================#
         log(f"Player {player_id} disconnected", "CYAN")
         #--------------------------------#
-        if player_id in self.players:
-            del self.players[player_id]
+        with self.players_lock:
+            if player_id in self.players:
+                del self.players[player_id]
         #--------------------------------#
         conn.close()
 #================================#
