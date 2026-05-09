@@ -12,6 +12,9 @@ from engine.configs.paths import paths
 from engine.configs.inputs import inputs
 #--------------------------------#
 from game.enums.inputs import InputsEnum as Inp
+from game.enums.events import events
+#--------------------------------#
+from engine.event_bus import event_bus
 #--------------------------------#
 from engine.handlers.sounds import SoundHandler
 from engine.handlers.textures import TextureHandler
@@ -64,7 +67,8 @@ class Game:
     #================================#
     def update(self, delta_time:float):
         #--------------------------------#
-        pass
+        event_bus.process()
+        #--------------------------------#
     #================================#
     def draw(self):
         #--------------------------------#
@@ -105,21 +109,21 @@ class Game:
                 #     self.load_screen()
                 #--------------------------------#
                 if inputs.input_by_event(event, Inp.interact, default_key_value=pg.K_e, form="down"):
-                    self.SoundHandler.play("pyk::ui.click")
+                    event_bus.emit(events.PLAY_SOUND, name="pyk::ui.click")
                 elif inputs.input_by_event(event, "q", default_key_value=pg.K_q, form="down"):
-                    self.SoundHandler.play_group("pyk::group::sfx.cats")
+                    event_bus.emit(events.PLAY_SOUND_GROUP, group="pyk::group::sfx.cats")
             #--------------------------------#
             #game code
             self.draw()
             self.update(dt)
             #--------------------------------#
             pg.display.update()
-            self.clock.tick()
-            # self.clock.tick(60)
+            self.clock.tick(60)
 #================================#
 if __name__ == "__main__":
     #--------------------------------#
     game = Game()
+    #--------------------------------#
     game.run()
 #================================#
 
