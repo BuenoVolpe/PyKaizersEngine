@@ -4,5 +4,6 @@ class PacketTypeEnum:
     PLAYERS_OUTPUT = "players_output"
     BATCH = "batch"
     SERVER_FULL = "SERVER_FULL"
+    EVENT = "event"
 
 PacketType = PacketTypeEnum()

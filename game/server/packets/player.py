@@ -20,9 +20,13 @@ class Player:
         #-------------------------------#
         self.dir_x = data["dir"][0]
         self.dir_y = data["dir"][1]
+        #-------------------------------#
+        self.inputs = data.get("inputs", {})
+        #-------------------------------#
     #================================#
     def serialize(self):
         return {
+            "inputs": self.inputs,
             "id": self.id,
             "pos": [self.x, self.y],
             "dir": [self.dir_x, self.dir_y],

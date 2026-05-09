@@ -13,6 +13,8 @@ from engine.configs.settings import settings
 from engine.configs.paths import paths
 from engine.configs.inputs import inputs
 #--------------------------------#
+from engine.event_bus import event_bus
+#--------------------------------#
 from engine.utils.has_server import has_server
 from engine.utils.start_server import start_server
 #--------------------------------#
@@ -20,7 +22,10 @@ from engine.handlers.sounds import sounds
 from engine.handlers.textures import TextureHandler
 #================================#
 from game.server.network import Network
+#--------------------------------#
 from game.server.packets import read_packet, create_packet
+from game.server.packet_handlers.handle_players_output import handle_players_output
+from game.server.packet_handlers.handle_server_full import handle_server_full
 #================================#
 from game.enums.inputs import InputsEnum as Inp
 from game.enums.packet_type import PacketType
@@ -52,9 +57,11 @@ class Game:
         self.net = Network()
         self.packet = {}
         #--------------------------------#
+        event_bus.set_network(self.net)
+        #--------------------------------#
         self.packet_handlers = {
-            PacketType.PLAYERS_OUTPUT: self.handle_players_output,
-            PacketType.SERVER_FULL: self.handle_server_full
+            PacketType.PLAYERS_OUTPUT: handle_players_output,
+            PacketType.SERVER_FULL: handle_server_full
         }
         self.players = {}
     #================================#
@@ -86,14 +93,6 @@ class Game:
         #--------------------------------#
         pg.scrap.init()
     #================================#
-    def handle_players_output(self, packet):
-        #--------------------------------#
-        self.players = packet["data"]
-    #================================#
-    def handle_server_full(self, packet):
-        #--------------------------------#
-        log("\n\nServer is full!", "CYAN", ["bright"])
-    #================================#
     def process_packets(self):
         with self.net.queue_lock:
             packets = self.net.packet_queue.copy()
@@ -101,7 +100,7 @@ class Game:
             for packet in packets:
                 handler = self.packet_handlers.get(packet["type"])
                 if handler:
-                    handler(packet)
+                    handler(self, packet)
     #================================#
     def update(self, dt:float):
         #--------------------------------#

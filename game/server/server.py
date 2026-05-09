@@ -8,10 +8,12 @@ from engine.configs.serversettings import serversettings
 from engine.utils.log import log, log_error, log_success
 #--------------------------------#
 from game.server.packets import create_packet, read_packet, receive_packet, send_packet
+from game.server.packet_handlers.handle_player_packet import handle_player_packet
 from game.server.packets.player import Player
 from game.server.world import World
 #--------------------------------#
 from game.enums.packet_type import PacketType
+from game.enums.events import Events as Ev
 #================================#
 class GameServer:
     #================================#
@@ -28,8 +30,9 @@ class GameServer:
         self.max_players = serversettings.get("max_players", 4)
         #--------------------------------#
         self.packet_handlers = {
-            PacketType.PLAYERS_INPUT: self.handle_player_packet,
+            PacketType.PLAYERS_INPUT: handle_player_packet,
             PacketType.BATCH: self.handle_batch_packet,
+            PacketType.EVENT: self.handle_event,
         }
         #--------------------------------#
         self.socket = socket.socket(
@@ -65,25 +68,7 @@ class GameServer:
                 daemon=True
             ).start()
     #================================#
-    def handle_player_packet(self, conn, player_id, data):
-        with self.players_lock:
-            #--------------------------------#
-            player = self.world.players[player_id]
-            #--------------------------------#
-            player.update(data)
-            #--------------------------------#
-            serialized_players = {
-                pid: p.serialize()
-                for pid, p in self.world.players.items()
-            }
-        #--------------------------------#
-        send_packet(
-            conn,
-            PacketType.PLAYERS_OUTPUT,
-            serialized_players
-        )
-    #================================#
-    def handle_batch_packet(self, conn, player_id, data):
+    def handle_batch_packet(self, obj, conn, player_id, data):
         #--------------------------------#
         for packet in data:
             #--------------------------------#
@@ -94,6 +79,14 @@ class GameServer:
             #--------------------------------#
             if handler:
                 handler(conn, player_id, packet_data)
+    #================================#
+    def handle_event(self, server, conn, player_id, data):
+
+        event = data["event"]
+        payload = data["data"]
+
+        # if event == Ev.PLAYER_MOVE:
+            # ...
     #================================#
     def handle_client(self, conn, player_id):
         #--------------------------------#
@@ -120,7 +113,7 @@ class GameServer:
                 #--------------------------------#
                 handler = self.packet_handlers.get(packet_type)
                 if handler:
-                    handler(conn, player_id, packet_data)
+                    handler(self, conn, player_id, packet_data)
                 #--------------------------------#
             except (
                 ConnectionResetError,
