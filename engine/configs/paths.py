@@ -10,7 +10,6 @@ class Paths(Configs):
         self.configs = getattr(self, "configs", "assets/configs/")
         #--------------------------------#
         self.settings = getattr(self, "settings", "assets/configs/settings.json")
-        self.serversettings = getattr(self, "serversettings", "assets/configs/serversettings.json")
         self.paths = getattr(self, "paths", "assets/configs/paths.json")
         #--------------------------------#
         self.fonts = getattr(self, "fonts", "assets/engine/fonts/")

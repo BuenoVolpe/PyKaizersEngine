@@ -3,26 +3,26 @@ import pygame as pg
 #================================#
 class InputsEnum:
     #--------------------------------#
-    up = "up"
-    down = "down"
-    left = "left"
-    right = "right"
+    up = inputs.get("up")
+    down = inputs.get("down")
+    left = inputs.get("left")
+    right = inputs.get("right")
     #--------------------------------#
-    menu = "menu"
+    menu = inputs.get("menu")
     #--------------------------------#
-    LMB = "LMB"
-    RMB = "RMB"
-    MMB = "MMB"
+    LMB = inputs.get("LMB")
+    RMB = inputs.get("RMB")
+    MMB = inputs.get("MMB")
     #--------------------------------#
-    tab = "tab"
+    tab = inputs.get("tab")
     #--------------------------------#
-    quit = "quit"
-    restart = "restart"
+    quit = inputs.get("quit")
+    restart = inputs.get("restart")
     #--------------------------------#
     #--------------------------------#
-    confirm_key = "confirm_key"
-    alt_key = "alt_key"
+    confirm_key = inputs.get("confirm_key")
+    alt_key = inputs.get("alt_key")
     #--------------------------------#
-    interact = "interact"
+    interact = inputs.get("interact", pg.K_e)
 #================================#
 InputsEnum = InputsEnum()

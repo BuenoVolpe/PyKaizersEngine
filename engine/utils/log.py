@@ -46,24 +46,21 @@ def log(text:str, color:str=None, styles:list[str|None, str|None]=[], console:ob
     print(color + final_style + text)
     #--------------------------------#
     if console:
-        if hasattr(console, "log"):
-            console.log(text, color, styles)
+        console.log(text, color, styles)
 #================================#
 def log_error(text:str, console:object|None=None):
     #--------------------------------#
     log(f"!> {text}", "red", ["bright", "underline"], console=False)
     #--------------------------------#
     if console:
-        if hasattr(console, "log_error"):
-            console.log_error(text)
+        console.log_error(text)
 #================================#
 def log_success(text:str, console:object|None=None):
     #--------------------------------#
     log(f">>[ {text} ]<<", "yellow", ["bright"], console=False)
     #--------------------------------#
     if console:
-        if hasattr(console, "log_success"):
-            console.log_success(text)
+        console.log_success(text)
 #================================#
 def log_list(list:list, color:str=None, styles:list[str|None, str|None]=[], list_name:str=None, console:object|None=None):
     #--------------------------------#
@@ -99,7 +96,7 @@ def log_list(list:list, color:str=None, styles:list[str|None, str|None]=[], list
 #         string = f"key[{key_string}] : {value_string},"
 #         print(string)
 #         if console:
-    #             console.log(string, ...)
+#             console.log(string, ...)
 
 
 

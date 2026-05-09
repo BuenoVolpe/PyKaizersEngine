@@ -43,10 +43,10 @@ class SheetLoader:
                         #--------------------------------#
                         if color in color_maps:
                             #--------------------------------#
-                            sprite_copy = recolor(sprite, color_maps[color])  
-                            sprite_copy = self.resize(sprite_copy, sprite_meta)
+                            sprite = recolor(sprite, color_maps[color])  
+                            sprite = self.resize(sprite, sprite_meta)
                             #--------------------------------#
-                            self.atlas.save(sprite_atlas_path + f".{color}", sprite_copy)
+                            self.atlas.save(sprite_atlas_path + f".{color}", sprite)
                         else:
                             #--------------------------------#
                             log_error(f"Color map '{color}' specified for '{atlas_path}' not found in color maps.")

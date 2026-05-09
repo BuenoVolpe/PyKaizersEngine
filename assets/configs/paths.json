@@ -1,8 +1,6 @@
 {
     "configs": "assets/configs/",
-    
     "settings": "assets/configs/settings.json",
-    "serversettings": "assets/configs/serversettings.json",
     "paths": "assets/configs/paths.json",
     "inputs": "assets/configs/inputs.json",
 

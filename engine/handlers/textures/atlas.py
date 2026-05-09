@@ -30,7 +30,6 @@ class AtlasStorage:
         if self.data.get(name):
             return self.data[name]
         log_error(f"Sprite '{name}' not found in atlas. Returning error sprite.")
-        print("Available sprites:", list(self.data.keys()))
         return self.error_image
 
     def random(self):
