@@ -5,6 +5,8 @@ from engine.utils.log import log_error
 from engine.utils.event_bus import event_bus
 from game.fonts import *
 #--------------------------------#
+from engine.ecs.systems.all import *
+#--------------------------------#
 from game.enums.events import events
 from game.enums.update_priotitys import update_priotitys
 #--------------------------------#
@@ -12,11 +14,12 @@ import pygame as pg
 #=====================================#
 class Updater:
     #--------------------------------#
-    def __init__(self):
+    def __init__(self, world):
         #--------------------------------#
         self.objects = {} #priority: [elements]
         self.systems = [ #[sys1, sys2(value, key), sys3(kwarg="aa")]
-            
+            PlayerInputSystem(world),
+            SimpleMovementSystem(world)
         ] 
         #--------------------------------#
         event_bus.subscribe(events.ADD_OBJECT_UPDATE, self.add_object, priority=3)
@@ -38,7 +41,7 @@ class Updater:
     def update(self, delta_time:float):
         #--------------------------------#
         for system in self.systems:
-            system.update(delta_time)#, ctx)
+            system.update(delta_time)
         #--------------------------------#
         for priority in sorted(self.objects.keys()):
             for obj in self.objects[priority]:

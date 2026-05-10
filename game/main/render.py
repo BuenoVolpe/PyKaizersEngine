@@ -5,6 +5,8 @@ from engine.utils.log import log_error
 from engine.utils.event_bus import event_bus
 from game.fonts import *
 #--------------------------------#
+from engine.ecs.systems.all import RenderSystem
+#--------------------------------#
 from game.enums.events import events
 from game.enums.layers import layers, ui_layers
 #--------------------------------#
@@ -12,7 +14,7 @@ import pygame as pg
 #=====================================#
 class Render:
     #--------------------------------#
-    def __init__(self):
+    def __init__(self, world):
         #--------------------------------#
         self.TextureHandler = TextureHandler()
         #--------------------------------#
@@ -25,7 +27,9 @@ class Render:
         self.ui_elements = {} #priority: [elements]
         self.layers = {} #priority: [elements]
         #--------------------------------#
-        self.systems = []
+        self.systems = [
+            RenderSystem(world)
+        ]
         #--------------------------------#
         event_bus.subscribe(events.ADD_UI_ELEMENT_TO_LAYER, self.add_ui_element, priority=3)
         event_bus.subscribe(events.REMOVE_UI_ELEMENT_FROM_LAYER, self.remove_ui_element, priority=3)
@@ -74,6 +78,11 @@ class Render:
                     continue
                 #--------------------------------#
                 log_error(f"Object {obj} has no 'render' or 'draw' method.")
+        #--------------------------------#
+        for system in self.systems:
+            if not getattr(system, "on_screen", True):
+                system.update(surface)
+            
     #--------------------------------#
     def render_on_screen(self, screen:pg.Surface):
         '''render objects straight on the screen surface, use only for UI elements that need to be on top of everything else'''
@@ -91,6 +100,10 @@ class Render:
                     continue
                 #--------------------------------#
                 log_error(f"UI Element {obj} has no 'render' or 'draw' method.")
+        #--------------------------------#
+        for system in self.systems:
+            if getattr(system, "on_screen", False):
+                system.update(screen)
     #=====================================#
     def text(self, surface:pg.Surface, text:str, pos:tuple, font_name:str="AtariSmall", size:int=20, color:tuple=(255,255,255)):
         #--------------------------------#

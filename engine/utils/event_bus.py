@@ -1,19 +1,21 @@
 # from engine.console import console
 from engine.utils.log import log
 #================================#
+from collections import deque
+#================================#
 class EventBus:
     #================================#
     def __init__(self):
         #--------------------------------#
         self.listeners = {} #event_name: [(priority, callback)]
-        self.queue = []
+        self.queue = deque()
         #--------------------------------#
         self.debug = False
     #================================#
     def clear(self):
         #--------------------------------#
         self.listeners = {}
-        self.queue = []
+        self.queue = deque()
     #================================#
     def subscribe(self, event_name, callback, priority=0):
         #--------------------------------#
@@ -48,7 +50,7 @@ class EventBus:
         #--------------------------------#
         while self.queue:
             #--------------------------------#
-            event_name, data = self.queue.pop(0)
+            event_name, data = self.queue.popleft()
             #--------------------------------#
             if self.debug:
                 log(f"[EVENT] {event_name} -> {data} to {self.listeners.get(event_name, [])[:]}")#, console)
@@ -63,3 +65,6 @@ class EventBus:
                 callback(**data)
 #================================#
 event_bus = EventBus()
+
+
+

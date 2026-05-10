@@ -19,6 +19,9 @@ from engine.utils.event_bus import event_bus
 from engine.handlers.sounds import SoundHandler
 from engine.handlers.textures import TextureHandler
 #--------------------------------#
+from engine.ecs import World
+from engine.ecs.components.all import *
+#--------------------------------#
 from game.fonts import AtariSmall, dogicapixel, PixelOperator
 #================================#
 from game.main.events_handler import EventsHandler
@@ -33,12 +36,14 @@ class Game:
 #================================#
     def __init__(self):
         #================================#
+        self.world = World(self)
         self.events_handler = EventsHandler()
         self.display = Display()
-        self.render = Render()
-        self.updater = Updater()
+        self.render = Render(self.world)
+        self.updater = Updater(self.world)
         #================================#
-        #--------------------------------#
+        self._load_player()
+        #================================#
         self.clock = pg.time.Clock()
         #--------------------------------#
         self.SoundHandler = SoundHandler()
@@ -48,7 +53,17 @@ class Game:
         #--------------------------------#
         self.prev_time = 0
     #=====================================#
+    def _load_player(self):
+        player = self.world.create_entity()
+        #--------------------------------#
+        self.world.add_component(player, RenderData("pyk::dave"))
+        self.world.add_component(player, Position(*settings.base_window_center))
+        self.world.add_component(player, Velocity(0,0, max_vel=[200, 200]))
+        self.world.add_component(player, PlayerTag())
+    #=====================================#
     def run(self):
+        #--------------------------------#
+        self.prev_time = time.time()
         #================================#
         while True:
             #----------delta time----------#  
@@ -60,8 +75,8 @@ class Game:
             #--------------------------------#
             #game code
             event_bus.process()
-            self.render.draw(self.display.screen, self.display.main_surface)
             self.updater.update(dt)
+            self.render.draw(self.display.screen, self.display.main_surface)
             #--------------------------------#
             pg.display.update()
             self.clock.tick(60)

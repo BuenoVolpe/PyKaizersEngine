@@ -20,6 +20,8 @@ class Events:
     #--------------------------------#
     ADD_OBJECT_UPDATE = "pyk::add.object.update"
     REMOVE_OBJECT_UPDATE = "pyk::remove.object.update"
+    #--------------------------------#
+    KILL_ENTITY = "pyk::ecs.kill"
 
 #================================#
 events = Events()
