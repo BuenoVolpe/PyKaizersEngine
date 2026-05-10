@@ -16,6 +16,7 @@
     "fast_quit": "Lalt",
     "restart": "F5",
     "console_hotkey": "F2",
+    
     "confirm_key": "LMB",
     "alt_key": "RMB"
 }

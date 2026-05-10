@@ -14,79 +14,40 @@ from engine.configs.inputs import inputs
 from game.enums.inputs import InputsEnum as Inp
 from game.enums.events import events
 #--------------------------------#
-from engine.event_bus import event_bus
+from engine.utils.event_bus import event_bus
 #--------------------------------#
 from engine.handlers.sounds import SoundHandler
 from engine.handlers.textures import TextureHandler
 #--------------------------------#
 from game.fonts import AtariSmall, dogicapixel, PixelOperator
 #================================#
+from game.main.events_handler import EventsHandler
+from game.main.display import Display
+from game.main.render import Render
+from game.main.updater import Updater
+#================================#
 pg.init()
+pg.key.set_repeat(400, 40)
 #================================#
 class Game:
 #================================#
     def __init__(self):
+        #================================#
+        self.events_handler = EventsHandler()
+        self.display = Display()
+        self.render = Render()
+        self.updater = Updater()
+        #================================#
         #--------------------------------#
-        self.load_screen()
         self.clock = pg.time.Clock()
         #--------------------------------#
         self.SoundHandler = SoundHandler()
-        self.TextureHandler = TextureHandler()
+        self.TextureHandler = self.render.TextureHandler
         #--------------------------------#
         pg.display.set_icon(self.TextureHandler.get(settings.get("icon", "pyk::kaizerthrone")))
         #--------------------------------#
         self.prev_time = 0
-    #================================#
-    def load_screen(self):
-        #--------------------------------#
-        MIN_RES:tuple = settings.base_window_size
-        RES:tuple = settings.window_size
-        #--------------------------------#
-        if settings.fullscreen:
-            #------------------------------#
-            os.environ["SDL_VIDEO_CENTERED"] = "1"
-            info = pg.display.Info()
-            #------------------------------#
-            WIDTH:int = info.current_w
-            HEIGHT:int = info.current_h
-            RES:tuple = (WIDTH, HEIGHT)
-            #------------------------------#            
-            settings.window_width, settings.window_height = settings.window_size = RES
-            settings.window_center = RES[0]//2, RES[1]//2
-            #------------------------------#            
-            scaler.update()
-        #--------------------------------#
-        MIN_RES:tuple = settings.base_window_size if settings.resize else RES
-        #--------------------------------#
-        self.main_surface = pg.Surface(MIN_RES)
-        #--------------------------------#
-        self.screen = pg.display.set_mode(RES)
-        pg.display.set_caption(settings.window_title)
-        #--------------------------------#
-        pg.scrap.init()
-    #================================#
-    def update(self, delta_time:float):
-        #--------------------------------#
-        event_bus.process()
-        #--------------------------------#
-    #================================#
-    def draw(self):
-        #--------------------------------#
-        self.screen.fill(settings.get("bg_color", (30,30,30)))
-        self.main_surface.fill(settings.get("bg_color", (30,30,30)))
-        #--------------------------------#
-        scaled_main_surface = self.main_surface
-        #================================#
-        self.TextureHandler.blit_random(self.main_surface, (50, 50))
-        #================================#
-        #================================#
-        if settings.resize:
-            scaled_main_surface = pg.transform.scale(self.main_surface, settings.window_size)
-        #------------------------------#
-        AtariSmall.render(scaled_main_surface, (10, 10), f"FPS: {self.clock.get_fps():.0f}", size=30)
-        self.screen.blit(scaled_main_surface, (0, 0))
-        #------------------------------#
-    #================================#
+    #=====================================#
     def run(self):
         #================================#
         while True:
@@ -95,27 +56,12 @@ class Game:
             dt = now - self.prev_time
             self.prev_time = now
             #--------------------------------#
-            for event in pg.event.get():
-                #--------------------------------#
-                if event.type == pg.QUIT or (
-                    inputs.input_by_event(event, "quit", form="down")
-                ):
-                    #--------------------------------#
-                    exit()
-                    pg.quit()
-                #--------------------------------#
-                # if inputs.input_by_event(event, Inp.toggle_fullscreen, form="down"):
-                #     settings.fullscreen = not settings.fullscreen
-                #     self.load_screen()
-                #--------------------------------#
-                if inputs.input_by_event(event, Inp.interact, default_key_value=pg.K_e, form="down"):
-                    event_bus.emit(events.PLAY_SOUND, name="pyk::ui.click")
-                elif inputs.input_by_event(event, "q", default_key_value=pg.K_q, form="down"):
-                    event_bus.emit(events.PLAY_SOUND_GROUP, group="pyk::group::sfx.cats")
+            self.events_handler.handle_events()
             #--------------------------------#
             #game code
-            self.draw()
-            self.update(dt)
+            event_bus.process()
+            self.render.draw(self.display.screen, self.display.main_surface)
+            self.updater.update(dt)
             #--------------------------------#
             pg.display.update()
             self.clock.tick(60)

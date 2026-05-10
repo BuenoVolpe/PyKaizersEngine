@@ -14,6 +14,7 @@ class Font:
         #------------------------------#
         for i in range(1, 101):  # Example: Create fonts for sizes 1 to 100
             self.fonts[i] = pg.font.Font(path, scaler.constant(i))
+            setattr(self, f"size_{i}", self.fonts[i])  # Set attributes like size_10, size_20, etc.
         #------------------------------#
         self.size_10 = pg.font.Font(path, scaler.constant(10))
         self.size_20 = pg.font.Font(path, scaler.constant(20))

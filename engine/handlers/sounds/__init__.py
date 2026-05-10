@@ -1,4 +1,4 @@
-from engine.event_bus import event_bus
+from engine.utils.event_bus import event_bus
 from game.enums.events import events
 #--------------------------------#
 from engine.configs.paths import paths
@@ -28,12 +28,12 @@ class SoundHandler:
         #----------------------------#
         self._apply_initial_volumes()
         #----------------------------#
-        event_bus.subscribe(events.PLAY_SOUND, self.play)
-        event_bus.subscribe(events.PLAY_3D_SOUND, self.play)
-        event_bus.subscribe(events.PLAY_SOUND_GROUP, self.play_group)
-        event_bus.subscribe(events.PLAY_3D_SOUND_GROUP, self.play_group)
-        event_bus.subscribe(events.RELOAD_VOLUMES, self.reload_volumes)
-        event_bus.subscribe(events.SET_VOLUME, self.set_volume)
+        event_bus.subscribe(events.PLAY_SOUND, self.play, priority=1)
+        event_bus.subscribe(events.PLAY_3D_SOUND, self.play, priority=1)
+        event_bus.subscribe(events.PLAY_SOUND_GROUP, self.play_group, priority=1)
+        event_bus.subscribe(events.PLAY_3D_SOUND_GROUP, self.play_group, priority=1)
+        event_bus.subscribe(events.RELOAD_VOLUMES, self.reload_volumes, priority=1)
+        event_bus.subscribe(events.SET_VOLUME, self.set_volume, priority=1)
     #================================#
     def _apply_initial_volumes(self):
         #--------------------------------#

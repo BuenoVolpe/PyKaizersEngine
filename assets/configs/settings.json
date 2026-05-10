@@ -2,8 +2,8 @@
     "window_title": "PyKaizersEngine",
     "game_name": "PyK_instance",
     
-    "engine_version": "0.1.0.0",
-    "game_version": "0.0.0.0-0.1.0pyk",
+    "engine_version": "0.1.1.0",
+    "game_version": "0.0.0.0-0.1.1pyk",
 
     "icon": "pyk::kaizerthrone",
 
@@ -13,6 +13,8 @@
     "resize": true,
     "scale_constant": 1,
 
-    "fullscreen": false
+    "fullscreen": false,
+    "console_actived": true,
+    "console_actived_by_hotkey": true
 }
 

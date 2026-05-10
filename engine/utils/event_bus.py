@@ -5,7 +5,7 @@ class EventBus:
     #================================#
     def __init__(self):
         #--------------------------------#
-        self.listeners = {}
+        self.listeners = {} #event_name: [(priority, callback)]
         self.queue = []
         #--------------------------------#
         self.debug = False
@@ -17,12 +17,18 @@ class EventBus:
     #================================#
     def subscribe(self, event_name, callback, priority=0):
         #--------------------------------#
+        if self.debug:
+            log(f"[EVENT] Subscribed to {event_name} with priority {priority} -> {callback}")#, console)
+        #--------------------------------#
         #Input>Gameplay>Sounds>UI>Debug
         self.listeners.setdefault(event_name, []).append((priority, callback))
         #--------------------------------#
         self.listeners[event_name].sort(key=lambda x: x[0], reverse=True)
     #================================#
     def unsubscribe(self, event_name, callback):
+        #--------------------------------#
+        if self.debug:
+            log(f"[EVENT] Unsubscribed from {event_name} -> {callback}")#, console)
         #--------------------------------#
         if event_name in self.listeners:
             #--------------------------------#
@@ -33,6 +39,9 @@ class EventBus:
     #================================#
     def emit(self, event_name, **data):
         #--------------------------------#
+        if self.debug:
+            log(f"[EVENT] Emitted {event_name} -> {data} to {self.listeners.get(event_name, [])[:]}")#, console)
+        #--------------------------------# 
         self.queue.append((event_name, data))
     #================================#
     def process(self):
@@ -42,7 +51,7 @@ class EventBus:
             event_name, data = self.queue.pop(0)
             #--------------------------------#
             if self.debug:
-                log(f"[EVENT] {event_name} -> {data}")#, console)
+                log(f"[EVENT] {event_name} -> {data} to {self.listeners.get(event_name, [])[:]}")#, console)
             #--------------------------------#
             for _, callback in self.listeners.get(event_name, [])[:]:
                 #--------------------------------#
