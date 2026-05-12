@@ -25,7 +25,7 @@ class TextureHandler:
         #--------------------------------#
         self.paths = {
             "pykaizers": paths.get("engine_textures", "assets/engine/textures/"),
-            f"{settings.game_name}": paths.get("game_textures", "assets/game/textures/")
+            f"{settings.game_acronym}": paths.get("game_textures", "assets/game/textures/")
         }
         #--------------------------------#
         self.atlas = AtlasStorage(

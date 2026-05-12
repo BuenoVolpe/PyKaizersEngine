@@ -1,0 +1,7 @@
+{
+    "components": {
+        "pyk::RenderData": {"texture":"pyk::penguin::idle", "scale":[16,16]},
+        "pyk::Position": {"x":0, "y":0},
+        "pyk::Velocity": {"x":0, "y":10, "max_velocity": [0, 10]}
+    }
+}

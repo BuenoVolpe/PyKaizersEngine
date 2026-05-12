@@ -1,0 +1,10 @@
+{
+    "components": {
+        "pyk::RenderData": {"texture":{"choice": ["pyk::penguin::idle", "pyk::dave_sheet::walk_down.green"]}, "scale":[16,16]},
+        "pyk::Position": {"x":{"random":[0,100]}, "y":{"random":[0,100]}},
+        "pyk::Velocity": {"x":{"random_float":[0,10]}, "y":{"random_float":[0,10]}, "max_velocity": [0, 10]}
+    }
+}
+
+
+

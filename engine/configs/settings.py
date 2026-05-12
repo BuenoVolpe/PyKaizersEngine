@@ -11,6 +11,7 @@ class Settings(Configs):
         self.window_title = getattr(self, "window_title", "PyKaizersEngine")
         #--------------------------------#
         self.game_name = getattr(self, "game_name", "PyK_instance")
+        self.game_acronym = getattr(self, "game_acronym", "pkinst")
         #--------------------------------#
         self.engine_version = getattr(self, "engine_version", "error: missing engine_version")
         self.game_version = getattr(self, "game_version", "error: missing game_version")

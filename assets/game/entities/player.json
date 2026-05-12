@@ -1,0 +1,8 @@
+{
+    "components": {
+        "pykinst::PlayerTag": {},
+        "pyk::RenderData": {"texture":"pyk::dave.standart"},
+        "pyk::Position": {"x":0, "y":0},
+        "pyk::Velocity": {"x":0, "y":0, "max_velocity": [200, 200]}
+    }
+}

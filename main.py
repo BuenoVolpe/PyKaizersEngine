@@ -20,6 +20,7 @@ from engine.handlers.sounds import SoundHandler
 from engine.handlers.textures import TextureHandler
 #--------------------------------#
 from engine.ecs import World
+from engine.ecs.entity_factory import EntityFactory
 from engine.ecs.components.all import *
 #--------------------------------#
 from game.fonts import AtariSmall, dogicapixel, PixelOperator
@@ -41,8 +42,9 @@ class Game:
         self.display = Display()
         self.render = Render(self.world)
         self.updater = Updater(self.world)
+        self.entity_factory = EntityFactory(self.world, self)
         #================================#
-        self._load_player()
+        self.entity_factory.create_entities()
         #================================#
         self.clock = pg.time.Clock()
         #--------------------------------#
@@ -52,14 +54,6 @@ class Game:
         pg.display.set_icon(self.TextureHandler.get(settings.get("icon", "pyk::kaizerthrone")))
         #--------------------------------#
         self.prev_time = 0
-    #=====================================#
-    def _load_player(self):
-        player = self.world.create_entity()
-        #--------------------------------#
-        self.world.add_component(player, RenderData("pyk::dave"))
-        self.world.add_component(player, Position(*settings.base_window_center))
-        self.world.add_component(player, Velocity(0,0, max_vel=[200, 200]))
-        self.world.add_component(player, PlayerTag())
     #=====================================#
     def run(self):
         #--------------------------------#

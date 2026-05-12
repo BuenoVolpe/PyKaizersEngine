@@ -50,6 +50,9 @@ class SheetLoader:
                         else:
                             #--------------------------------#
                             log_error(f"Color map '{color}' specified for '{atlas_path}' not found in color maps.")
+                    continue
+                self.atlas.save(sprite_atlas_path, sprite)
+                
             return
         #--------------------------------#
         log_error(f"Sprite sheet '{atlas_path}' is missing 'sprites' metadata.")

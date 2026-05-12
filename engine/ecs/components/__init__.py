@@ -1,9 +1,14 @@
+from engine.configs.settings import settings
 #================================#
 COMPONENT_REGISTRY = {}
 #--------------------------------#
-def register_component(cls):
+def register_game_component(cls):
     #--------------------------------#
-    COMPONENT_REGISTRY[cls.__name__] = cls
+    COMPONENT_REGISTRY[f"{settings.game_acronym}::{cls.__name__}"] = cls
+    return cls
+def register_engine_component(cls):
+    #--------------------------------#
+    COMPONENT_REGISTRY[f"pyk::{cls.__name__}"] = cls
     return cls
 #================================#
 class ComponentStorage:

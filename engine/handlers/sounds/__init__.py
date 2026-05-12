@@ -15,7 +15,7 @@ class SoundHandler:
         #--------------------------------#
         audio_paths = {
             "pykaizers": paths.get("engine_audio", "assets/audio/sfx"),
-            f"{settings.game_name}": paths.get("game_audio", "assets/audio/music")
+            f"{settings.game_acronym}": paths.get("game_audio", "assets/audio/music")
         }
         #--------------------------------#
         self.mixer = VolumeMixer(settings)
