@@ -65,7 +65,7 @@ class Render:
     def render(self, surface:pg.Surface):
         '''render objects on the main surface'''
         #--------------------------------#
-        self.TextureHandler.blit("pyk::penguin::idle", surface, (50, 50))
+        # self.TextureHandler.blit("texture@pyk::penguin::idle", surface, (50, 50))
         #--------------------------------#
         for priority in sorted(self.layers.keys()):
             for obj in self.layers[priority]:

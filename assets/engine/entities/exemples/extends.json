@@ -1,6 +1,6 @@
 {
-    "extends": "pyk::exemples.exemple",
+    "extends": "entity@pyk::exemples.exemple",
     "components": {
-        "pyk::Position": {"x":100, "y":0}
+        "component@pyk::Position": {"x":100, "y":0}
     }
 }

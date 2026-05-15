@@ -43,7 +43,12 @@ class EntityFactory:
                     .replace("/", ".")
                 )
                 #-------------------------------------#
-                entity_id = f"{origin}::{entity_id}"
+                if origin == "game":
+                    origin = settings.game_acronym
+                elif origin == "engine":
+                    origin = "pyk"
+                #-------------------------------------#
+                entity_id = f"entity@{origin}::{entity_id}"
                 #-------------------------------------#
                 self.entity_registry[entity_id] = json_path    
     #=====================================#
@@ -63,24 +68,29 @@ class EntityFactory:
         return self.build_entity_from_data(json_data)
     #=====================================#
     def get_path(self, name: str):
-        origin, name_ = name.split("::")
-        name_ = name_.replace(".", "/")
+        path = self.entity_registry.get(name)
         #-------------------------------------#
-        origin = self.paths.get(origin)
-        #-------------------------------------#
-        if not origin:
+        if not path:
             log_error(f"entity {name} does not exist!")
             return
-        #-------------------------------------#
-        path = f"{origin}/{name_}.json"
         #-------------------------------------#
         return path
     def create_entity(self, name: str):
         #-------------------------------------#
         name = name.replace(".", "/")
-        origin, name = name.split("::")
+        prefix, name_ = name.split("::")
+        origin = prefix.replace("entity@", "")
         #-------------------------------------#
-        json_path = f"{self.paths[origin]}/{name}.json"
+        if origin == "engine":
+            origin = "pyk"
+        elif origin == "game":
+            origin = settings.game_acronym
+        #-------------------------------------#
+        if not self.paths.get(origin):
+            log_error(f"cannot find entity: {name} with origin {origin}")
+            return
+        #-------------------------------------#
+        json_path = f"{self.paths[origin]}/{name_}.json"
         json_data = json_reader(json_path)
         #-------------------------------------#
         return self.build_entity_from_data(json_data)
@@ -109,13 +119,15 @@ class EntityFactory:
         #-------------------------------------#
         return merged
     #=====================================#
-    def build_entity_from_data(self, data):
+    def build_entity_from_data(self, data, do_log_errors=True):
         entity = self.world.create_entity()
         #-------------------------------------#
         data = self.resolve_extends(data)
         #-------------------------------------#
         components = copy.deepcopy(data.get("components", {}))
         extends = copy.deepcopy(data.get("extends"))
+        #-------------------------------------#
+        errors = 0
         #-------------------------------------#
         for comp_name, comp_values in components.items():
             #-------------------------------------#
@@ -149,7 +161,67 @@ class EntityFactory:
                 continue
                 #-------------------------------------#    
             else:
+                errors += 1
                 log_error(f"can't find Component: {comp_name}")
+        #-------------------------------------#
+        if do_log_errors and errors:
+            log_error(f"find {errors} errors, while creating entity")
+        return entity
+    #=====================================#
+    def spawn_entity(self, name: str, overrides: dict | None = None):
+        #-------------------------------------#
+        name = name.replace(".", "/")
+        prefix, name_ = name.split("::")
+        #-------------------------------------#
+        origin = prefix.replace("entity@", "")
+        if origin == "engine":
+            origin = "pyk"
+        elif origin == "game":
+            origin = settings.game_acronym
+        #-------------------------------------#
+        if not self.paths.get(origin):
+            log_error(f"cannot find entity: {name} with origin {origin}")
+            return
+        #-------------------------------------#
+        json_path = f"{self.paths[origin]}/{name_}.json"
+        json_data = json_reader(json_path)
+        #-------------------------------------#
+        entity = self.build_entity_from_data(json_data)
+        #-------------------------------------#
+        if overrides:
+            self.apply_overrides(entity, overrides)
+        #-------------------------------------#
+        return entity
+    #=====================================#
+    def apply_overrides(self, entity, overrides: dict):
+        """
+        overrides format:
+        {
+            "Transform": {"x": 10, "y": 20},
+            "Health": {"value": 999}
+        }
+        """
+        #-------------------------------------#
+        for comp_name, values in overrides.items():
+            #-------------------------------------#
+            comp_class = self.component_map.get(comp_name)
+            #-------------------------------------#
+            if not comp_class:
+                log_error(f"Override component not found: {comp_name}")
+                continue
+            #-------------------------------------#
+            storage = self.world.get_storage(comp_class)
+            component = storage.get(entity) if storage else None
+            #-------------------------------------#
+            if component:
+                #-------------------------------------#
+                for k, v in values.items():
+                    setattr(component, k, v)
+            #-------------------------------------#
+            else:
+                #-------------------------------------#
+                component = comp_class(**values)
+                self.world.add_component(entity, component)
 #=====================================#
 def validate_component(comp_class, data):
     #-------------------------------------#

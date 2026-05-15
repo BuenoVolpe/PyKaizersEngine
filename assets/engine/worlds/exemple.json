@@ -1,0 +1,20 @@
+{
+    "entities": [
+        {
+            "prefab": "entity@pyk::exemples.exemple",
+            "positions": [[0,0], [50,50]]
+        },
+        {
+            "prefab": "entity@pykinst::player"
+        },
+        {
+            "prefab": "entity@pyk::exemples.exemple",
+            "overrides": {
+                "component@pyk::RenderData": {
+                    "texture":"texture@pyk::penguin::idle", "scale":[64,64]
+                }
+            },
+            "positions": [[300,0]]
+        }
+    ]
+}

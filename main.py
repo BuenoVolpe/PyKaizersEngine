@@ -21,6 +21,7 @@ from engine.handlers.textures import TextureHandler
 #--------------------------------#
 from engine.ecs import World
 from engine.ecs.entity_factory import EntityFactory
+from engine.ecs.world_factory import WorldFactory
 from engine.ecs.components.all import *
 #--------------------------------#
 from game.fonts import AtariSmall, dogicapixel, PixelOperator
@@ -43,15 +44,17 @@ class Game:
         self.render = Render(self.world)
         self.updater = Updater(self.world)
         self.entity_factory = EntityFactory(self.world, self)
+        self.world_factory = WorldFactory(self.world, self.entity_factory, self)
         #================================#
-        self.entity_factory.create_entities()
+        # self.entity_factory.create_entities()
+        self.world_factory.create_world("world@pyk::exemple")
         #================================#
         self.clock = pg.time.Clock()
         #--------------------------------#
         self.SoundHandler = SoundHandler()
         self.TextureHandler = self.render.TextureHandler
         #--------------------------------#
-        pg.display.set_icon(self.TextureHandler.get(settings.get("icon", "pyk::kaizerthrone")))
+        pg.display.set_icon(self.TextureHandler.get(settings.get("icon", "texture@pyk::kaizerthrone")))
         #--------------------------------#
         self.prev_time = 0
     #=====================================#

@@ -3,10 +3,10 @@
     "game_name": "PyK_instance",
     "game_acronym": "pykinst",
     
-    "engine_version": "0.1.3.0",
-    "game_version": "0.0.0.0-0.1.3pyk",
+    "engine_version": "0.1.4.0",
+    "game_version": "0.0.0.0-0.1.4pyk",
 
-    "icon": "pyk::kaizerthrone",
+    "icon": "texture@pyk::kaizerthrone",
 
     "window_size": [640, 360],
     "base_window_size": [320, 180],

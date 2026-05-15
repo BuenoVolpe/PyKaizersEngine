@@ -33,6 +33,18 @@ class World:
         #--------------------------------------#
         return eid
     #================================#
+    def clear(self):
+        #--------------------------------------#
+        for storage in self.components.values():
+            storage.data.clear()
+        #--------------------------------------#
+        self.components.clear()
+        self.query_cache.clear()
+        self.sprite_to_entity.clear()
+        self.to_remove.clear()
+        #--------------------------------------#
+        self.next_entity = 0 
+    #================================#
     def remove_entity(self, entity:int):
         #--------------------------------------#
         self.to_remove.add(entity)

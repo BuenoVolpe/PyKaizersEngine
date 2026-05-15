@@ -45,16 +45,16 @@ class SoundStorage:
 
             if base == "pykaizers":
                 if category != group:
-                    self.groups[f"pyk::group::{category}.{group}"].append(data)
+                    self.groups[f"audio@pyk::group::{category}.{group}"].append(data)
                 else:
-                    self.groups[f"pyk::group::{group}"].append(data)
-                self.sounds[f"pyk::{key}"] = data
+                    self.groups[f"audio@pyk::group::{group}"].append(data)
+                self.sounds[f"audio@pyk::{key}"] = data
             else:
                 if category != group:
-                    self.groups[f"{base}::group::{category}.{group}"].append(data)
+                    self.groups[f"audio@{base}::group::{category}.{group}"].append(data)
                 else:
-                    self.groups[f"{base}::group::{group}"].append(data)
-                self.sounds[f"{base}::{key}"] = data
+                    self.groups[f"audio@{base}::group::{group}"].append(data)
+                self.sounds[f"audio@{base}::{key}"] = data
 
     def get(self, key):
         return self.sounds.get(key, self.error)

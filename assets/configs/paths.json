@@ -22,6 +22,9 @@
     "engine_entities": "assets/engine/entities/",
     "game_entities": "assets/game/entities/",
     
+    "engine_worlds": "assets/engine/worlds/",
+    "game_worlds": "assets/game/worlds/",
+    
     "fonts": "assets/engine/fonts/",
     "AtariSmall": "assets/engine/fonts/AtariSmall.ttf",
     "dogicapixel": "assets/engine/fonts/dogicapixel.ttf",

@@ -58,9 +58,9 @@ class TextureHandler:
             atlas_path = os.path.relpath(image_path, path)
             atlas_path = atlas_path.replace(".png", "").replace("\\", ".")
             if base != "pykaizers":
-                atlas_path = f"{base}::{atlas_path}"
+                atlas_path = f"texture@{base}::{atlas_path}"
             else:
-                atlas_path = f"pyk::{atlas_path}"
+                atlas_path = f"texture@pyk::{atlas_path}"
 
             # Sprite sheet handling
             if meta.get("type") == "sheet":
