@@ -10,6 +10,8 @@ from engine.ecs.systems.all import RenderSystem
 from game.enums.events import events
 from game.enums.layers import layers, ui_layers
 #--------------------------------#
+from engine.console import console
+#--------------------------------#
 import pygame as pg
 #=====================================#
 class Render:
@@ -82,12 +84,11 @@ class Render:
         for system in self.systems:
             if not getattr(system, "on_screen", True):
                 system.update(surface)
-            
     #--------------------------------#
     def render_on_screen(self, screen:pg.Surface):
         '''render objects straight on the screen surface, use only for UI elements that need to be on top of everything else'''
         #--------------------------------#
-        self.text(screen, f"time: {pg.time.get_ticks()//1000}", (10, 10), font_name="AtariSmall", size=30)
+        self.text(screen, f"time: {pg.time.get_ticks()//1000}", (10, 10), font_name="AtariSmall", size=10)
         #--------------------------------#
         for priority in sorted(self.ui_elements.keys()):
             for obj in self.ui_elements[priority]:
@@ -104,6 +105,8 @@ class Render:
         for system in self.systems:
             if getattr(system, "on_screen", False):
                 system.update(screen)
+        #--------------------------------#
+        console.draw(screen)
     #=====================================#
     def text(self, surface:pg.Surface, text:str, pos:tuple, font_name:str="AtariSmall", size:int=20, color:tuple=(255,255,255)):
         #--------------------------------#

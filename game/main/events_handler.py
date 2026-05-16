@@ -7,6 +7,8 @@ from engine.utils.event_bus import event_bus
 #--------------------------------#
 from engine.utils.log import log_error
 #--------------------------------#
+from engine.console import console
+#--------------------------------#
 from game.enums.events import events
 from game.enums.inputs import InputsEnum as Inp
 #================================#
@@ -14,7 +16,7 @@ class EventsHandler:
     #--------------------------------#
     def __init__(self):
         #--------------------------------#
-        self.objects = {}
+        self.objects = {"console":console}
         #--------------------------------#
         event_bus.subscribe(events.ADD_OBJECT_TO_EVENT_HANDLER, self.add_object, priority=3)
         event_bus.subscribe(events.REMOVE_OBJECT_FROM_EVENT_HANDLER, self.remove_object, priority=3)
@@ -51,17 +53,30 @@ class EventsHandler:
                 obj.handle_events(event)
                 continue
             #------------------------------#
-            log_error(f"Object {obj.__class__.__name__} does not have handle_event or handle_events method.")
+            if hasattr(obj, "events"):
+                obj.events(event)
+                continue
+            #------------------------------#
+            log_error(f"Object {obj.__class__.__name__} does not have handle_event or handle_events or events method.")
         #------------------------------#
     #================================#
     def add_object(self, object_id:str, obj):
+        #------------------------------#
         self.objects[object_id] = obj
+        #------------------------------#
     def remove_object(self, object_id:str):
+        #------------------------------#
         if object_id in self.objects:
             del self.objects[object_id]
+        #------------------------------#
     #================================#
     def handle_keydown(self, event):
-        pass
+        #------------------------------#
+        if (inputs.input_by_event(event, "console_hotkey", default_key_value=pg.K_F2, form="down") and 
+            settings.get("console_actived", False) and 
+            settings.get("console_actived_by_hotkey", False)):
+            console.visible = not console.visible
+        #------------------------------#
     #================================#
     def handle_keyup(self, event):
         pass

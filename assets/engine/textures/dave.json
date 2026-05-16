@@ -1,6 +1,6 @@
 {
     "type": "sprite",
-    "resize": [32,32],
+    "resize": [16,16],
     "use_scale_constant": true,
     "use_colorkey": false,
     "colors":[

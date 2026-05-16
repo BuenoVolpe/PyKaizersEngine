@@ -11,7 +11,7 @@
             "prefab": "entity@pyk::exemples.exemple",
             "overrides": {
                 "component@pyk::RenderData": {
-                    "texture":"texture@pyk::penguin::idle", "scale":[64,64]
+                    "texture":"texture@pyk::penguin::idle", "scale":[32,32]
                 }
             },
             "positions": [[300,0]]

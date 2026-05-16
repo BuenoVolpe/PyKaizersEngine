@@ -16,8 +16,8 @@ class Scaler:
     def update(self):
         #------------------------------#
         # Ratio between current window size and base window size
-        self.W_RATIO = settings.window_width / settings.window_width
-        self.H_RATIO = settings.window_height / settings.window_height
+        self.W_RATIO = settings.window_width / settings.base_window_width
+        self.H_RATIO = settings.window_height / settings.base_window_height
     #------------------------------#
     def constant(self, value: float) -> int:
         return int(value * settings.scale_constant * min(self.W_RATIO, self.H_RATIO))

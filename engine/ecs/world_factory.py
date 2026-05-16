@@ -22,7 +22,6 @@ class WorldFactory:
         #------------------------+-------------#
         self.world_registry = {}
         self.load_registry()
-        print(self.world_registry)
         #-------------------------------------#
         self.entity_factory = entity_factory
         self.world = world

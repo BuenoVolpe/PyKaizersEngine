@@ -24,6 +24,8 @@ from engine.ecs.entity_factory import EntityFactory
 from engine.ecs.world_factory import WorldFactory
 from engine.ecs.components.all import *
 #--------------------------------#
+from engine.console import console
+#--------------------------------#
 from game.fonts import AtariSmall, dogicapixel, PixelOperator
 #================================#
 from game.main.events_handler import EventsHandler
