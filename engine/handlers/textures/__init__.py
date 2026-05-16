@@ -14,6 +14,8 @@ from engine.configs.settings import settings
 from engine.utils.json import scan_folder_with_json
 # from engine.utils.json import json, json_reader, json_writer, scan_folder, scan_folder_for_json, scan_folder_with_json
 #--------------------------------#
+from engine.console import console
+#--------------------------------#
 from engine.utils.log import log_error
 from engine.utils.recolor import recolor, darken_color
 from engine.utils.scaler import scaler
@@ -84,7 +86,7 @@ class TextureHandler:
                         self.atlas.save(atlas_path + f".{color}", sprite)
                     else:
                         #--------------------------------#
-                        log_error(f"Color map '{color}' specified for '{atlas_path}' not found in color maps.")
+                        log_error(f"Color map '{color}' specified for '{atlas_path}' not found in color maps.", console)
             #--------------------------------
             self.atlas.save(atlas_path, sprite)
 

@@ -5,6 +5,7 @@ import pygame as pg
 from engine.utils.scaler import scaler
 from engine.utils.recolor import recolor
 from engine.utils.log import log_error
+from engine.console import console
 
 class SheetLoader:
     """
@@ -49,13 +50,13 @@ class SheetLoader:
                             self.atlas.save(sprite_atlas_path + f".{color}", sprite)
                         else:
                             #--------------------------------#
-                            log_error(f"Color map '{color}' specified for '{atlas_path}' not found in color maps.")
+                            log_error(f"Color map '{color}' specified for '{atlas_path}' not found in color maps.", console)
                     continue
                 self.atlas.save(sprite_atlas_path, sprite)
                 
             return
         #--------------------------------#
-        log_error(f"Sprite sheet '{atlas_path}' is missing 'sprites' metadata.")
+        log_error(f"Sprite sheet '{atlas_path}' is missing 'sprites' metadata.", console)
         return sheet
 
     def resize(self, sprite, meta):

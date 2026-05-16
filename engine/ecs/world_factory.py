@@ -5,6 +5,8 @@ import copy
 from engine.utils.json import json_reader, scan_folder_for_json
 from engine.utils.log import *
 #-------------------------------------#
+from engine.console import console
+#-------------------------------------#
 from engine.configs.paths import paths
 from engine.configs.settings import settings
 #-------------------------------------#
@@ -50,7 +52,7 @@ class WorldFactory:
         #-------------------------------------#
         world_path = self.world_registry.get(world_id)
         if world_path is None:
-            log_error(f"world {world_id} not found")
+            log_error(f"world {world_id} not found", console)
             return
         #-------------------------------------#
         self.world.clear()
@@ -67,10 +69,10 @@ class WorldFactory:
                 overrides = entity_data.get("overrides")
                 #-------------------------------------#
                 if not prefab:
-                    log_error(f"entity of index {i} has no prefab")
+                    log_error(f"entity of index {i} has no prefab", console)
                     continue
                 if not self.entity_factory.get_path(prefab):
-                    log_error(f"entity {prefab} does not exist")
+                    log_error(f"entity {prefab} does not exist", console)
                     continue
                 #-------------------------------------#
                 if not positions:
@@ -86,7 +88,7 @@ class WorldFactory:
 
         #-------------------------------------#
         else:
-            log_error(f"world {world_id} has no entities")
+            log_error(f"world {world_id} has no entities", console)
     #=====================================#
         
 

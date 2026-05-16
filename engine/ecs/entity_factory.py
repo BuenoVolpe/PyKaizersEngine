@@ -4,6 +4,7 @@ import copy
 #=====================================#
 from engine.utils.json import json_reader, scan_folder_for_json
 from engine.utils.log import *
+from engine.console import console
 #-------------------------------------#
 from engine.configs.paths import paths
 from engine.configs.settings import settings
@@ -71,7 +72,7 @@ class EntityFactory:
         path = self.entity_registry.get(name)
         #-------------------------------------#
         if not path:
-            log_error(f"entity {name} does not exist!")
+            log_error(f"entity {name} does not exist!", console)
             return
         #-------------------------------------#
         return path
@@ -87,7 +88,7 @@ class EntityFactory:
             origin = settings.game_acronym
         #-------------------------------------#
         if not self.paths.get(origin):
-            log_error(f"cannot find entity: {name} with origin {origin}")
+            log_error(f"cannot find entity: {name} with origin {origin}", console)
             return
         #-------------------------------------#
         json_path = f"{self.paths[origin]}/{name_}.json"
@@ -106,7 +107,7 @@ class EntityFactory:
         #-------------------------------------#
         if not parent_path:
             #-------------------------------------#
-            log_error(f"Parent entity {parent_name} not found")
+            log_error(f"Parent entity {parent_name} not found", console)
             return data
         #-------------------------------------#
         parent_data = json_reader(parent_path)
@@ -162,10 +163,10 @@ class EntityFactory:
                 #-------------------------------------#    
             else:
                 errors += 1
-                log_error(f"can't find Component: {comp_name}")
+                log_error(f"can't find Component: {comp_name}", console)
         #-------------------------------------#
         if do_log_errors and errors:
-            log_error(f"find {errors} errors, while creating entity")
+            log_error(f"find {errors} errors, while creating entity", console)
         return entity
     #=====================================#
     def spawn_entity(self, name: str, overrides: dict | None = None):
@@ -180,7 +181,7 @@ class EntityFactory:
             origin = settings.game_acronym
         #-------------------------------------#
         if not self.paths.get(origin):
-            log_error(f"cannot find entity: {name} with origin {origin}")
+            log_error(f"cannot find entity: {name} with origin {origin}", console)
             return
         #-------------------------------------#
         json_path = f"{self.paths[origin]}/{name_}.json"
@@ -207,7 +208,7 @@ class EntityFactory:
             comp_class = self.component_map.get(comp_name)
             #-------------------------------------#
             if not comp_class:
-                log_error(f"Override component not found: {comp_name}")
+                log_error(f"Override component not found: {comp_name}", console)
                 continue
             #-------------------------------------#
             storage = self.world.get_storage(comp_class)
@@ -231,7 +232,7 @@ def validate_component(comp_class, data):
     #-------------------------------------#
     except Exception as e:
         #-------------------------------------#
-        log_error(f"Error at Component {comp_class.__name__}: {e}")
+        log_error(f"Error at Component {comp_class.__name__}: {e}", console)
         return False
     #-------------------------------------#
     return True

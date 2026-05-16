@@ -25,6 +25,7 @@ from engine.ecs.world_factory import WorldFactory
 from engine.ecs.components.all import *
 #--------------------------------#
 from engine.console import console
+from engine.commands.all import *
 #--------------------------------#
 from game.fonts import AtariSmall, dogicapixel, PixelOperator
 #================================#
@@ -39,6 +40,8 @@ pg.key.set_repeat(400, 40)
 class Game:
 #================================#
     def __init__(self):
+        #================================#
+        console.game = self
         #================================#
         self.world = World(self)
         self.events_handler = EventsHandler()

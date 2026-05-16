@@ -6,6 +6,7 @@ from engine.configs.paths import paths
 from engine.configs.settings import settings
 from engine.utils.json import scan_folder
 from engine.utils.log import log_error
+from engine.console import console
 
 class SoundStorage:
 
@@ -61,7 +62,7 @@ class SoundStorage:
 
     def random_from_group(self, group):
         if group not in self.groups:
-            log_error(f"group: {group} not in self.groups", False)
+            log_error(f"group: {group} not in self.groups", console)
             print(self.groups)
             return self.error
         return choice(self.groups[group])

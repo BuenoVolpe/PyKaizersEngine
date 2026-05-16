@@ -1,5 +1,6 @@
 from random import choice
 from engine.utils.log import log_error
+from engine.console import console
 
 class AtlasStorage:
     """
@@ -29,7 +30,7 @@ class AtlasStorage:
         """
         if self.data.get(name):
             return self.data[name]
-        log_error(f"Sprite '{name}' not found in atlas. Returning error sprite.")
+        log_error(f"Sprite '{name}' not found in atlas. Returning error sprite.", console)
         return self.error_image
 
     def random(self):
