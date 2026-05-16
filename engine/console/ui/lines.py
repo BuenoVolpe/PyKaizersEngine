@@ -16,6 +16,7 @@ class ConsoleLines:
         #--------------------------------#
         self.console_font = self.parent.console_font
         #--------------------------------#
+        self.max_autocomplete_candidates = settings.get("console_max_autocomplete_candidates", 4)
         self.visible_lines = settings.get("console_max_visible_lines", 9)
         padding = settings.get("console_output_padding", [3,3])
         self.padding = scaler.constant(padding[0]), scaler.constant(padding[1])
@@ -55,11 +56,58 @@ class ConsoleLines:
         #--------------------------------#
         return visible, cursor_px
     #================================#
-    def draw_input(self, surface):
+    def draw_suggestions(self, surface):
         #--------------------------------#
         core = self.grandparent.core
         #--------------------------------#
+        if not core.autocomplete_candidates:
+            return
+        #--------------------------------#
+        y = (
+            self.parent.console_surface.rect.bottom
+        )
+        #--------------------------------#
+        for i, suggestion in enumerate(core.autocomplete_candidates[:self.max_autocomplete_candidates]):
+            #--------------------------------#
+            color = (255,255,0) if i == core.autocomplete_index else (180,180,180)
+            bg_color = (0,0,0,150)
+            #--------------------------------#
+            text_surface = self.console_font.render(
+                suggestion["display"],
+                False,
+                color,
+                bg_color
+            )
+            #--------------------------------#
+            surface.blit(text_surface, (118, y))
+            #--------------------------------#
+            y += self.console_font.get_height() + 2
+    #================================#
+    def draw_input(self, surface):
+        core = self.grandparent.core
+        #--------------------------------#
         y = self.parent.console_surface.input_surface.get_height()//2 + self.parent.console_surface.output_surface.get_height() - self.padding[1] * 2
+        #-----------------------#
+        if core.text_input.has_selection():
+            start, end = sorted([core.text_input.selection_start, core.text_input.selection_end])
+
+            prefix = "> "
+
+            font = self.console_font
+
+            start_x = font.render(prefix + core.text_input.text[:start], False, (0,0,0)).get_width()
+            end_x = font.render(prefix + core.text_input.text[:end], False, (0,0,0)).get_width()
+
+            pg.draw.rect(
+                surface,
+                (settings.get("console_selection_color", [80, 80, 160])),  # cor da seleção
+                (
+                    self.padding[0] + start_x, #- core.scroll_offset,
+                    y,
+                    end_x - start_x,
+                    font.get_height()
+                )
+            )
         #--------------------------------#
         visible_surface, cursor_x = self.get_visible_input(
             self.console_font,
@@ -104,7 +152,8 @@ class ConsoleLines:
         #--------------------------------#
         return lines
     #================================#
-    def draw(self, surface):
+    def draw(self, surface, screen):
         self.draw_lines(surface)
         self.draw_input(surface)
+        self.draw_suggestions(screen)
 

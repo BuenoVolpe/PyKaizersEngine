@@ -38,6 +38,7 @@ class TextInput:
                     self.text[self.cursor_pos:]
                 )
                 self.cursor_pos -= 1
+            return "__BACKSPACE__"
 
         # DELETE
         elif event.key == pg.K_DELETE:
@@ -48,6 +49,7 @@ class TextInput:
                     self.text[:self.cursor_pos] +
                     self.text[self.cursor_pos + 1:]
                 )
+            return "__BACKSPACE__"
 
         # LEFT
         elif event.key == pg.K_LEFT:

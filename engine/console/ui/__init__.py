@@ -31,7 +31,7 @@ class ConsoleUI:
     def draw(self, surface:pg.Surface):
         #--------------------------------#
         self.console_surface.clean_surface()
-        self.console_lines.draw(self.surface)
+        self.console_lines.draw(self.surface, screen=surface)
         #--------------------------------#
         surface.blit(self.surface, self.surface_rect)
     #================================#

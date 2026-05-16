@@ -41,6 +41,7 @@ class Console:
             "help": func.__doc__ or "No description",
             "protection":protection_level
         }
+
     #--------------------------------#
     def draw(self, surface:pg.Surface):
         #--------------------------------#
