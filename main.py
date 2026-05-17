@@ -79,6 +79,7 @@ class Game:
             event_bus.process()
             self.updater.update(dt)
             self.render.draw(self.display.screen, self.display.main_surface)
+            self.world.flush()
             #--------------------------------#
             pg.display.update()
             self.clock.tick(60)

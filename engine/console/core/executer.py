@@ -20,7 +20,11 @@ class ConsoleExecute:
     #================================#
     def execute(self, raw:str):
         #--------------------------------#
-        parts = shlex.split(raw.strip())
+        try:
+            parts = shlex.split(raw.strip())
+        except ValueError as e:
+            self.error(f"Syntax error: {e}")
+            return False
         #--------------------------------#
         if not parts:
             return False
@@ -98,24 +102,34 @@ def parse_args(args):
     #--------------------------------#
     return positional, kwargs
 #================================#
+import ast
+
+#================================#
 def auto_convert(value):
     #--------------------------------#
-    if isinstance(value, str):
-        #--------------------------------#
-        v = value.lower()
-        #--------------------------------#
-        if v == "true":
-            return True
-        if v == "false":
-            return False
-        #--------------------------------#
-    try:
-        #--------------------------------#
-        if "." in value:
-            #--------------------------------#
-            return float(value)
-        #--------------------------------#
-        return int(value)
-    #--------------------------------#
-    except:
+    if not isinstance(value, str):
         return value
+
+    #--------------------------------#
+    v = value.strip()
+
+    #--------------------------------#
+    low = v.lower()
+
+    if low == "true":
+        return True
+
+    if low == "false":
+        return False
+
+    if low == "none":
+        return None
+
+    #--------------------------------#
+    try:
+        return ast.literal_eval(v)
+
+    #--------------------------------#
+    except (ValueError, SyntaxError):
+        return v
+    

@@ -1,5 +1,6 @@
 import shlex
 import inspect
+from engine.configs.settings import settings
 
 class ConsoleSuggestions:
     def __init__(self, core, parent):
@@ -79,7 +80,7 @@ class ConsoleSuggestions:
             return None
 
         self.index = (self.index + 1) % min(
-            4,
+            settings.get("console_max_autocomplete_candidates", 4),
             len(self.candidates)
         )
 

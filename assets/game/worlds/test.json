@@ -1,1 +1,8 @@
-{}
+{
+    "entities": [
+        {
+            "prefab": "entity@pykinst::player",
+            "positions": [[160,90]]
+        }
+    ]
+}

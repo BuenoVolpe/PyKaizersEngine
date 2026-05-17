@@ -45,7 +45,9 @@ class ConsoleCore:
                     #--------------------------------#
                     if self.suggestions.candidates:
                         #--------------------------------#
-                        suggestion = self.suggestions.next()
+                        suggestion = self.suggestions.candidates[self.suggestions.index]["replace"]
+                        #--------------------------------#
+                        self.suggestions.next()
                         #--------------------------------#
                         if suggestion:
                             text = self.text_input.text
@@ -83,7 +85,7 @@ class ConsoleCore:
                 #     self.history_index = len(self.command_history)
     #================================#
     def max_scroll(self):
-        return max(0, len(self.history) - self.parent.ui.visible_lines)
+        return max(0, len(self.history))# - self.parent.ui.visible_lines)
     #================================#
 
 

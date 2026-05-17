@@ -9,6 +9,9 @@ from engine.console import console
 from engine.configs.paths import paths
 from engine.configs.settings import settings
 #-------------------------------------#
+from engine.utils.event_bus import event_bus
+from game.enums.events import events
+#-------------------------------------#
 from engine.ecs.components import COMPONENT_REGISTRY
 from engine.ecs.components.all import *
 from engine.ecs.systems.all import *
@@ -28,6 +31,9 @@ class EntityFactory:
         self.game = game
         #-------------------------------------#
         self.component_map = COMPONENT_REGISTRY
+        #-------------------------------------#
+        event_bus.subscribe(events.SPAWN_ENTITY, self.spawn_entity, priority=1)
+        event_bus.subscribe(events.ENTITY_OVERRIDE, self.apply_overrides, priority=2)
     #=====================================#
     def load_registry(self):
         for origin, path in self.paths.items():
@@ -172,7 +178,12 @@ class EntityFactory:
     def spawn_entity(self, name: str, overrides: dict | None = None):
         #-------------------------------------#
         name = name.replace(".", "/")
-        prefix, name_ = name.split("::")
+        name_ = name.split("::")
+        if len(name_) > 1:
+            prefix, name_ = name_
+        else:
+            log_error(f"cannot find entity: {name}", console)
+            return
         #-------------------------------------#
         origin = prefix.replace("entity@", "")
         if origin == "engine":
@@ -186,6 +197,9 @@ class EntityFactory:
         #-------------------------------------#
         json_path = f"{self.paths[origin]}/{name_}.json"
         json_data = json_reader(json_path)
+        if not json_data:
+            log_error(f"cannot find entity: {name} with path {json_path}", console)
+            return
         #-------------------------------------#
         entity = self.build_entity_from_data(json_data)
         #-------------------------------------#
@@ -216,6 +230,8 @@ class EntityFactory:
             #-------------------------------------#
             if component:
                 #-------------------------------------#
+                if isinstance(values, list):
+                    log_error("list are not acepted", console) 
                 for k, v in values.items():
                     setattr(component, k, v)
             #-------------------------------------#

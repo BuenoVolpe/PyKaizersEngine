@@ -5,6 +5,9 @@ from engine.ecs.components import ComponentStorage
 from engine.ecs.systems.all import *
 #--------------------------------#
 from engine.utils.event_bus import event_bus
+from game.enums.events import events
+#--------------------------------#
+from engine.utils.event_bus import event_bus
 from engine.utils.log import log, log_error, log_list, log_success
 from game.enums.events import events
 #================================#
@@ -20,6 +23,8 @@ class World:
         self.sprite_to_entity = {}
         #--------------------------------------#
         self.to_remove = set()
+        #--------------------------------------#
+        event_bus.subscribe(events.KILL_ENTITY, self.remove_entity, priority=2)
     #================================#
     def get_component(self, entity:int, comp_type:object):
         #--------------------------------------#

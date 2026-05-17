@@ -25,4 +25,5 @@ class VolumeMixer:
         self.volumes[category] = value
 
         self.settings.set(f"{category}_volume", value)
+        self.reload()
 

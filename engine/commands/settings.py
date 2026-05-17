@@ -6,11 +6,13 @@ from engine.console.ui.surface import ConsoleSurface
 #================================#
 @command("console.settings.set", protection_level=1)
 def settings_set(key, value):
+    """chane a key fro value from settings"""
     #--------------------------------#
     settings.set(key, value)
 #================================#
 @command("console.settings.get", protection_level=1)
 def settings_get(key):
+    """get a key from settings"""
     #--------------------------------#
     value = settings.get(key)
     if value is None:

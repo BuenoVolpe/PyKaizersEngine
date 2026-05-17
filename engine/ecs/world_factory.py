@@ -10,6 +10,9 @@ from engine.console import console
 from engine.configs.paths import paths
 from engine.configs.settings import settings
 #-------------------------------------#
+from engine.utils.event_bus import event_bus
+from game.enums.events import events
+#-------------------------------------#
 from engine.ecs.components import COMPONENT_REGISTRY
 from engine.ecs.components.all import *
 from engine.ecs.systems.all import *
@@ -28,6 +31,8 @@ class WorldFactory:
         self.entity_factory = entity_factory
         self.world = world
         self.game = game
+        #-------------------------------------#
+        event_bus.subscribe(events.CREATE_WORLD, self.create_world, priority=255)
     #=====================================#
     def load_registry(self):
         for origin, path in self.paths.items():
@@ -49,6 +54,21 @@ class WorldFactory:
                 self.world_registry[world_id] = json_path
     #=====================================#
     def create_world(self, world_id:str):
+        #-------------------------------------#
+        name_ = world_id.split("::")
+        if len(name_) > 1:
+            prefix, name_ = name_
+        else:
+            log_error(f"cannot find world: {world_id}", console)
+            return
+        #-------------------------------------#
+        origin = prefix.replace("world@", "")
+        if origin == "engine":
+            world_id = world_id.replace("@engine::", "@pyk::")
+            origin = "pyk"
+        elif origin == "game":
+            world_id = world_id.replace("@game::", f"@{settings.game_acronym}::")
+            origin = settings.game_acronym
         #-------------------------------------#
         world_path = self.world_registry.get(world_id)
         if world_path is None:

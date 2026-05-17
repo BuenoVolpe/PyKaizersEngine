@@ -8,6 +8,7 @@ from engine.utils.event_bus import event_bus
 from engine.utils.log import log_error
 #--------------------------------#
 from engine.console import console
+from engine.console.konami_detector import KonamiDetector
 #--------------------------------#
 from game.enums.events import events
 from game.enums.inputs import InputsEnum as Inp
@@ -18,6 +19,7 @@ class EventsHandler:
     def __init__(self):
         #--------------------------------#
         self.objects = {"console":console}
+        self.konami_detector = KonamiDetector(inputs, inputs.event_input("confirm_key"), inputs.event_input("alt_key"))
         #--------------------------------#
         event_bus.subscribe(events.ADD_OBJECT_TO_EVENT_HANDLER, self.add_object, priority=priority.ADD)
         event_bus.subscribe(events.REMOVE_OBJECT_FROM_EVENT_HANDLER, self.remove_object, priority=priority.REMOVE)
@@ -42,7 +44,21 @@ class EventsHandler:
             elif event.type == pg.MOUSEBUTTONUP:
                 self.handle_mouseup(event)
             #------------------------------#
+            self.console_active(event)
+            #------------------------------#
             self.handle_object_events(event)
+    #================================#
+    def console_active(self, event):
+        did_konami = self.konami_detector.update(event)
+        if (did_konami or
+                (inputs.input_by_event(event, "console_hotkey", pg.K_F2, "up") and settings.get("console_actived_by_hotkey", False))
+                ) and settings.get("console_actived", False):
+            #------------------------------#  
+            if did_konami:
+                event_bus.emit(events.PLAY_SOUND_GROUP, group="audio@pyk::group::sfx.console_open", source_pos=(0,0), listener_pos=(0,0))
+            #------------------------------#  
+            console.visible = not console.visible
+            console.core.suggestions.reset()
     #================================#
     def handle_object_events(self, event):
         #------------------------------#
@@ -77,10 +93,6 @@ class EventsHandler:
         #------------------------------#
         if inputs.input_by_event(event, "menu", default_key_value=pg.K_ESCAPE, form="down"):
             event_bus.emit(events.PAUSE) 
-        if (inputs.input_by_event(event, "console_hotkey", default_key_value=pg.K_F2, form="down") and 
-            settings.get("console_actived", False) and 
-            settings.get("console_actived_by_hotkey", False)):
-            console.visible = not console.visible
         #------------------------------#
     #================================#
     def handle_keyup(self, event):

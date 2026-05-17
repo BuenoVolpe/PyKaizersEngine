@@ -68,7 +68,7 @@ class ConsoleLines:
         max_candidates = settings.get("console_max_autocomplete_candidates", 4)
         for i, suggestion in enumerate(core.suggestions.candidates[:max_candidates]):
             #--------------------------------#
-            color = (255,255,0) if i == core.suggestions.index else (180,180,180)
+            color = (255,255,0) if i == core.suggestions.index-1 else (180,180,180)
             bg_color = (0,0,0,150)
             #--------------------------------#
             text_surface = self.console_font.render(

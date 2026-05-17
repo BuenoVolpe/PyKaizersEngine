@@ -24,9 +24,13 @@ class Events:
     ADD_OBJECT_UPDATE = "pyk::add.object.update"
     #--------------------------------#
     KILL_ENTITY = "pyk::ecs.kill"
+    SPAWN_ENTITY = "pyk::ecs.spawn"
+    ENTITY_OVERRIDE = "pyk::ecs.override"
+    CREATE_WORLD = "pyk::ecs.create_world"
     #--------------------------------#
     PAUSE = "pyk::pause"
     QUIT_GAME = "pyk::game.quit"
+    #--------------------------------#
 
 #================================#
 events = Events()

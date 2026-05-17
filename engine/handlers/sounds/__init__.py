@@ -79,18 +79,18 @@ class SoundHandler:
             self.music.apply_volume()
 #================================#
 # normal sound
-# sounds.play("ui.click")
+# sounds.play("audio@pyk::ui.click")
 
 # spacial sound
 # sounds.play(
-#     "pyk::ui.click",
+#     "audio@pyk::ui.click",
 #     source_pos=enemy.pos,
 #     listener_pos=player.pos
 # )
 
 # group sound
 # sounds.play_group(
-#     "pyk::group::sfx.cats",
+#     "audio@pyk::group::sfx.cats",
 #     source_pos=cat.pos,
 #     listener_pos=player.pos
 # )
