@@ -17,13 +17,31 @@ class ConsoleUI:
     def __init__(self, parent, size=size, input_size=input_size, output_size=output_size):
         self.parent = parent
         #--------------------------------#
-        font_name = settings.get("console_output_font")
-        font_size = settings.get("console_output_font_size")
+        font_name = settings.get("console_font")
+        font_size = settings.get("console_font_size")
         font = fonts.get(font_name, AtariSmall)
         self.console_font = font.get_size(font_size)
         #--------------------------------#
         self.console_surface = ConsoleSurface(size, input_size, output_size)
         self.console_lines = ConsoleLines(self, parent)
+        #--------------------------------#
+        self.surface = self.console_surface.surface
+        self.surface_rect = self.console_surface.rect
+    #================================#
+    def reload(self):
+        #--------------------------------#
+        self.console_surface = ConsoleSurface(
+            size=settings.get("console_size", [320, 200]),
+            input_size=settings.get("console_input_size", [300, 150]),
+            output_size=settings.get("console_output_size", [300, 50])
+        )
+        #--------------------------------#
+        font_name = settings.get("console_font")
+        font_size = settings.get("console_font_size")
+        font = fonts.get(font_name, AtariSmall)
+        self.console_font = font.get_size(font_size)
+        #--------------------------------#
+        self.console_lines = ConsoleLines(self, self.parent)
         #--------------------------------#
         self.surface = self.console_surface.surface
         self.surface_rect = self.console_surface.rect

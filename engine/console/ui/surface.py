@@ -7,7 +7,7 @@ from engine.utils.scaler import scaler
 size = settings.get("console_size", [320, 200])
 input_size = settings.get("console_input_size", [300, 150])
 output_size = settings.get("console_output_size", [300, 50])
-
+default_outline_width = settings.get("outline_width", 2)
 #--------------------------------#
 class ConsoleSurface:
     def __init__(self, size=size, input_size=input_size, output_size=output_size):
@@ -89,8 +89,34 @@ class ConsoleSurface:
         pg.draw.line(self.output_surface, output_color_light,
                      start_pos3, end_pos3, scaler.constant(self.line_width))
     #================================#
-    def build_surface(self, size, input_size, output_size):
-        outline_width = settings.get("outline_width", 2)
+    def save_console_personalization(self):
+        #--------------------------------#
+        console_personalization = {
+            "console_line_width": 4,
+            "console_outline_width": 1,
+            "console_size": [200, 100],
+            "console_input_size": [200, 25],
+            "console_output_size": [200, 75],
+            "console_default_color": [30, 30, 30],
+            "console_selection_color": [80, 80, 160],
+            "console_default_input_color": [100, 100, 100],
+            
+            "console_actived": True,
+            "console_permition": 3,
+            "console_actived_by_hotkey": True,
+            
+            "console_max_lines": 100,
+            "console_max_visible_lines": 8,
+            "console_max_autocomplete_candidates": 4,
+            "console_output_padding": [2,1],
+            "console_output_font": "atarismall",
+            "console_output_font_size": 8
+        }
+        #--------------------------------#
+        for key, value in console_personalization.items():
+            settings.set(key, value)
+    #================================#
+    def build_surface(self, size, input_size, output_size, outline_width=default_outline_width):
         self.scaled_outline_width = scaler.constant(outline_width)
         #--------------------------------#
         size = scaler.constant(size[0]+outline_width), scaler.constant(size[1]+outline_width)

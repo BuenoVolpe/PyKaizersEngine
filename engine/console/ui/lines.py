@@ -16,8 +16,6 @@ class ConsoleLines:
         #--------------------------------#
         self.console_font = self.parent.console_font
         #--------------------------------#
-        self.max_autocomplete_candidates = settings.get("console_max_autocomplete_candidates", 4)
-        self.visible_lines = settings.get("console_max_visible_lines", 9)
         padding = settings.get("console_output_padding", [3,3])
         self.padding = scaler.constant(padding[0]), scaler.constant(padding[1])
     #================================#
@@ -26,7 +24,7 @@ class ConsoleLines:
         #--------------------------------#
         total_lines = len(core.history)
         #--------------------------------#
-        visible_lines = self.visible_lines
+        visible_lines = settings.get("console_max_visible_lines", 9)
         scroll_y = max(0, min(core.scroll_y, max(0, total_lines - visible_lines)))
         #--------------------------------#
         start = max(0, total_lines - visible_lines - scroll_y)
@@ -60,16 +58,17 @@ class ConsoleLines:
         #--------------------------------#
         core = self.grandparent.core
         #--------------------------------#
-        if not core.autocomplete_candidates:
+        if not core.suggestions.candidates:
             return
         #--------------------------------#
         y = (
             self.parent.console_surface.rect.bottom
         )
         #--------------------------------#
-        for i, suggestion in enumerate(core.autocomplete_candidates[:self.max_autocomplete_candidates]):
+        max_candidates = settings.get("console_max_autocomplete_candidates", 4)
+        for i, suggestion in enumerate(core.suggestions.candidates[:max_candidates]):
             #--------------------------------#
-            color = (255,255,0) if i == core.autocomplete_index else (180,180,180)
+            color = (255,255,0) if i == core.suggestions.index else (180,180,180)
             bg_color = (0,0,0,150)
             #--------------------------------#
             text_surface = self.console_font.render(

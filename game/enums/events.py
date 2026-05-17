@@ -13,15 +13,20 @@ class Events:
     ADD_OBJECT_TO_EVENT_HANDLER = "pyk::add.object.event"
     REMOVE_OBJECT_FROM_EVENT_HANDLER = "pyk::remove.object.event"
     #--------------------------------#
-    ADD_UI_ELEMENT_TO_LAYER = "pyk::add.ui_element"
     REMOVE_UI_ELEMENT_FROM_LAYER = "pyk::remove.ui_element"
-    ADD_OBJECT_TO_LAYER = "pyk::add.object.layer"
-    REMOVE_OBJECT_FROM_LAYER = "pyk::remove.object.layer"
     #--------------------------------#
-    ADD_OBJECT_UPDATE = "pyk::add.object.update"
+    REMOVE_OBJECT_FROM_LAYER = "pyk::remove.object.layer"
     REMOVE_OBJECT_UPDATE = "pyk::remove.object.update"
     #--------------------------------#
+    ADD_UI_ELEMENT_TO_LAYER = "pyk::add.ui_element"
+    #--------------------------------#
+    ADD_OBJECT_TO_LAYER = "pyk::add.object.layer"
+    ADD_OBJECT_UPDATE = "pyk::add.object.update"
+    #--------------------------------#
     KILL_ENTITY = "pyk::ecs.kill"
+    #--------------------------------#
+    PAUSE = "pyk::pause"
+    QUIT_GAME = "pyk::game.quit"
 
 #================================#
 events = Events()

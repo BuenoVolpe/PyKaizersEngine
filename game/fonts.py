@@ -22,16 +22,20 @@ class Font:
         self.size_30 = pg.font.Font(path, scaler.constant(30))
 
     def get_size(self, size):
-        font = getattr(self, f"size_{size}")
+        font = getattr(self, f"size_{size}", None)
         if not font:
             log_error(f"cannot find size {size}, returning size 10")
             return self.size_10
         return font
 
-    def render(self, surface:pg.Surface, pos:tuple[int, int], text:str, size:int=10, color:tuple[int, int, int]=(255,255,255)):
+    def render(self, surface:pg.Surface, pos:tuple[int, int], text:str, size:int=10, color:tuple[int, int, int]=(255,255,255), aligment="topleft"):
         font = self.fonts.get(size, self.size_10)  # Get the font of the requested size, or default to size_10
         text_surface = font.render(text, True, color)
-        surface.blit(text_surface, pos)
+        
+        text_rect = text_surface.get_rect()
+        setattr(text_rect, aligment, pos)
+
+        surface.blit(text_surface, text_rect)
 
 #================================#
 AtariSmall = Font(paths.get("AtariSmall"))

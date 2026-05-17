@@ -8,6 +8,7 @@ from game.fonts import *
 from engine.ecs.systems.all import RenderSystem
 #--------------------------------#
 from game.enums.events import events
+from game.enums.event_priority import event_prioritys as priority
 from game.enums.layers import layers, ui_layers
 #--------------------------------#
 from engine.console import console
@@ -29,14 +30,24 @@ class Render:
         self.ui_elements = {} #priority: [elements]
         self.layers = {} #priority: [elements]
         #--------------------------------#
+        self.game_paused = settings.get("start_game_paused", False)
+        self.paused_text = {
+            "text":"---------------- game paused ----------------", "pos":(settings.window_width_center, scaler.coordenates(0, 10)[1]),
+            "font_name":"AtariSmall", "size":15, "aligment":"center"
+            }
+        #--------------------------------#
         self.systems = [
             RenderSystem(world)
         ]
         #--------------------------------#
-        event_bus.subscribe(events.ADD_UI_ELEMENT_TO_LAYER, self.add_ui_element, priority=3)
-        event_bus.subscribe(events.REMOVE_UI_ELEMENT_FROM_LAYER, self.remove_ui_element, priority=3)
-        event_bus.subscribe(events.ADD_OBJECT_TO_LAYER, self.add_object, priority=3)
-        event_bus.subscribe(events.REMOVE_OBJECT_FROM_LAYER, self.remove_object, priority=3)
+        event_bus.subscribe(events.ADD_UI_ELEMENT_TO_LAYER, self.add_ui_element, priority=priority.ADD)
+        event_bus.subscribe(events.REMOVE_UI_ELEMENT_FROM_LAYER, self.remove_ui_element, priority=priority.REMOVE)
+        event_bus.subscribe(events.ADD_OBJECT_TO_LAYER, self.add_object, priority=priority.ADD)
+        event_bus.subscribe(events.REMOVE_OBJECT_FROM_LAYER, self.remove_object, priority=priority.REMOVE)
+        event_bus.subscribe(events.PAUSE, self._on_pause, priority=priority.PRE_UI)
+    #=====================================#
+    def _on_pause(self):
+        self.game_paused = not self.game_paused
     #=====================================#
     def add_ui_element(self, element, priority:int=0):
         #--------------------------------#
@@ -89,6 +100,8 @@ class Render:
         '''render objects straight on the screen surface, use only for UI elements that need to be on top of everything else'''
         #--------------------------------#
         self.text(screen, f"time: {pg.time.get_ticks()//1000}", (10, 10), font_name="AtariSmall", size=10)
+        if self.game_paused:
+            self.text(screen, **self.paused_text)
         #--------------------------------#
         for priority in sorted(self.ui_elements.keys()):
             for obj in self.ui_elements[priority]:
@@ -108,14 +121,14 @@ class Render:
         #--------------------------------#
         console.draw(screen)
     #=====================================#
-    def text(self, surface:pg.Surface, text:str, pos:tuple, font_name:str="AtariSmall", size:int=20, color:tuple=(255,255,255)):
+    def text(self, surface:pg.Surface, text:str, pos:tuple, font_name:str="AtariSmall", size:int=20, color:tuple=(255,255,255), aligment="topleft"):
         #--------------------------------#
         font = self.fonts.get(font_name)
         if not font:
             font = AtariSmall
             log_error(f"Font '{font_name}' not found. Using default font 'AtariSmall'.")
         #--------------------------------#
-        font.render(surface, pos, text, size=size, color=color)
+        font.render(surface, pos, text, size=size, color=color, aligment=aligment)
     #=====================================#
     def draw(self, screen:pg.Surface, main_surface:pg.Surface):
         #--------------------------------#

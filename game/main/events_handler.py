@@ -11,6 +11,7 @@ from engine.console import console
 #--------------------------------#
 from game.enums.events import events
 from game.enums.inputs import InputsEnum as Inp
+from game.enums.event_priority import event_prioritys as priority
 #================================#
 class EventsHandler:
     #--------------------------------#
@@ -18,17 +19,19 @@ class EventsHandler:
         #--------------------------------#
         self.objects = {"console":console}
         #--------------------------------#
-        event_bus.subscribe(events.ADD_OBJECT_TO_EVENT_HANDLER, self.add_object, priority=3)
-        event_bus.subscribe(events.REMOVE_OBJECT_FROM_EVENT_HANDLER, self.remove_object, priority=3)
-
+        event_bus.subscribe(events.ADD_OBJECT_TO_EVENT_HANDLER, self.add_object, priority=priority.ADD)
+        event_bus.subscribe(events.REMOVE_OBJECT_FROM_EVENT_HANDLER, self.remove_object, priority=priority.REMOVE)
+        event_bus.subscribe(events.QUIT_GAME, self.quit, priority=priority.LAST)
     #================================#
     def handle_events(self):
+        #--------------------------------#
         for event in pg.event.get():
+            #--------------------------------#
             if event.type == pg.QUIT or (
                     inputs.input_by_event(event, "quit", form="down")
                 ):
-                pg.quit()
-                exit()
+                #--------------------------------#
+                event_bus.emit(events.QUIT_GAME)
             #------------------------------#
             elif event.type == pg.KEYDOWN:
                 self.handle_keydown(event)
@@ -72,6 +75,8 @@ class EventsHandler:
     #================================#
     def handle_keydown(self, event):
         #------------------------------#
+        if inputs.input_by_event(event, "menu", default_key_value=pg.K_ESCAPE, form="down"):
+            event_bus.emit(events.PAUSE) 
         if (inputs.input_by_event(event, "console_hotkey", default_key_value=pg.K_F2, form="down") and 
             settings.get("console_actived", False) and 
             settings.get("console_actived_by_hotkey", False)):
@@ -86,6 +91,11 @@ class EventsHandler:
     #================================#
     def handle_mouseup(self, event):
         pass
+    #================================#
+    def quit(self):
+        #--------------------------------#
+        pg.quit()
+        exit()
 
 #--------------------------------#
 

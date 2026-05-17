@@ -6,9 +6,11 @@ from engine.utils.event_bus import event_bus
 from game.fonts import *
 #--------------------------------#
 from engine.ecs.systems.all import *
+from engine.console import console
 #--------------------------------#
 from game.enums.events import events
-from game.enums.update_priotitys import update_priotitys
+from game.enums.update_prioritys import update_prioritys as priority
+from game.enums.event_priority import event_prioritys as ev_priority
 #--------------------------------#
 import pygame as pg
 #=====================================#
@@ -22,8 +24,14 @@ class Updater:
             SimpleMovementSystem(world)
         ] 
         #--------------------------------#
-        event_bus.subscribe(events.ADD_OBJECT_UPDATE, self.add_object, priority=3)
-        event_bus.subscribe(events.REMOVE_OBJECT_UPDATE, self.remove_object, priority=3)
+        self.pause = settings.get("start_game_paused", False)
+        #--------------------------------#
+        event_bus.subscribe(events.ADD_OBJECT_UPDATE, self.add_object, priority=ev_priority.ADD)
+        event_bus.subscribe(events.REMOVE_OBJECT_UPDATE, self.remove_object, priority=ev_priority.REMOVE)
+        event_bus.subscribe(events.PAUSE, self.pause_game, priority=ev_priority.PRE_LOGIC)
+    #=====================================#
+    def pause_game(self):
+        self.pause = not self.pause
     #=====================================#
     def add_object(self, obj:object, priority:int=0):
         #--------------------------------#  
@@ -39,6 +47,8 @@ class Updater:
                 return
     #=====================================#
     def update(self, delta_time:float):
+        if self.pause or console.visible:
+            return
         #--------------------------------#
         for system in self.systems:
             system.update(delta_time)
