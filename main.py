@@ -1,5 +1,6 @@
 import pygame as pg
 from sys import exit
+import numpy as np
 #--------------------------------#
 import os
 import time
@@ -13,6 +14,7 @@ from engine.configs.inputs import inputs
 #--------------------------------#
 from game.enums.inputs import InputsEnum as Inp
 from game.enums.events import events
+from game.enums.event_priority import event_prioritys
 #--------------------------------#
 from engine.utils.event_bus import event_bus
 #--------------------------------#
@@ -26,6 +28,9 @@ from engine.ecs.components.all import *
 #--------------------------------#
 from engine.console import console
 from engine.commands.all import *
+#--------------------------------#
+from engine.raycaster.renderer import RaycasterRenderer
+from engine.raycaster.map import Map
 #--------------------------------#
 from game.fonts import AtariSmall, dogicapixel, PixelOperator
 #================================#
@@ -52,7 +57,7 @@ class Game:
         self.world_factory = WorldFactory(self.world, self.entity_factory, self)
         #================================#
         # self.entity_factory.create_entities()
-        self.world_factory.create_world("world@pyk::exemple")
+        self.world_factory.create_world("world@pyk::empty")
         #================================#
         self.clock = pg.time.Clock()
         #--------------------------------#
@@ -62,6 +67,24 @@ class Game:
         pg.display.set_icon(self.TextureHandler.get(settings.get("icon", "texture@pyk::kaizerthrone")))
         #--------------------------------#
         self.prev_time = 0
+        event_bus.subscribe(events.CHANGE_RENDER_3D, self._on_change_rendermode, priority=event_prioritys.SIMPLE_RESPONSE)
+    #=====================================#
+    def _on_change_rendermode(self, **kwargs):
+        #--------------------------------#
+        if not self.render.render3D:
+            return
+        #--------------------------------#
+        self.render.raycast = RaycasterRenderer(self, *self.display.main_surface.get_size())
+        self.render.map = Map()
+        self.render.textures_array = self.TextureHandler.atlas.raycaster_textures
+        #--------------------------------#
+        class Camera:
+            pos = np.array((22, 11.5), dtype=np.float64)
+            dir = np.array((-1,0), dtype=np.float64)
+            plane = np.array((0,0.66), dtype=np.float64)
+        #--------------------------------#
+        self.render.camera = Camera()
+
     #=====================================#
     def run(self):
         #--------------------------------#

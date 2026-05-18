@@ -25,7 +25,7 @@ class EventBus:
         #Input>Gameplay>Sounds>UI>Debug
         self.listeners.setdefault(event_name, []).append((priority, callback))
         #--------------------------------#
-        self.listeners[event_name].sort(key=lambda x: x[0], reverse=True)
+        self.listeners[event_name].sort(key=lambda x: x[0])#, reverse=True)
     #================================#
     def unsubscribe(self, event_name, callback):
         #--------------------------------#

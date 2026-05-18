@@ -2,9 +2,15 @@
     "window_title": "PyKaizersEngine",
     "game_name": "PyK_instance",
     "game_acronym": "pykinst",
-    "engine_version": "0.2.3.0",
-    "game_version": "0.0.0.0-0.2.3pyk",
+    "engine_version": "0.3.0.0",
+    "game_version": "0.0.0.0-0.3.0pyk",
     "icon": "texture@pyk::kaizerthrone",
+
+    "floorDefaultTex": "texture@pyk::raycaster.mine::grass",
+    "ceilDefaultTex": "texture@pyk::raycaster.mine::pine_planks",
+    
+    "texture_size":16,
+    "render3D": false,
     "window_size": [
         640,
         360

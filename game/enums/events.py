@@ -30,6 +30,7 @@ class Events:
     #--------------------------------#
     PAUSE = "pyk::pause"
     QUIT_GAME = "pyk::game.quit"
+    CHANGE_RENDER_3D = "pyk::game.change_render"
     #--------------------------------#
 
 #================================#

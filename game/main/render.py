@@ -6,6 +6,7 @@ from engine.utils.event_bus import event_bus
 from game.fonts import *
 #--------------------------------#
 from engine.ecs.systems.all import RenderSystem
+from engine.raycaster.map import *
 #--------------------------------#
 from game.enums.events import events
 from game.enums.event_priority import event_prioritys as priority
@@ -14,12 +15,19 @@ from game.enums.layers import layers, ui_layers
 from engine.console import console
 #--------------------------------#
 import pygame as pg
+#--------------------------------#
+import numpy as np
+#--------------------------------#
 #=====================================#
 class Render:
     #--------------------------------#
     def __init__(self, world):
         #--------------------------------#
         self.TextureHandler = TextureHandler()
+        #--------------------------------#
+        self.render3D = settings.get("render3D", False) 
+        if self.render3D:
+            self.change_rendermode()
         #--------------------------------#
         self.fonts = {
             "AtariSmall": AtariSmall,
@@ -45,6 +53,9 @@ class Render:
         event_bus.subscribe(events.ADD_OBJECT_TO_LAYER, self.add_object, priority=priority.ADD)
         event_bus.subscribe(events.REMOVE_OBJECT_FROM_LAYER, self.remove_object, priority=priority.REMOVE)
         event_bus.subscribe(events.PAUSE, self._on_pause, priority=priority.PRE_UI)
+    #=====================================#
+    def change_rendermode(self):
+        event_bus.emit(events.CHANGE_RENDER_3D, )
     #=====================================#
     def _on_pause(self):
         self.game_paused = not self.game_paused
@@ -74,6 +85,11 @@ class Render:
             if element in self.layers[priority]:
                 self.layers[priority].remove(element)
                 return
+    #=====================================#
+    def render_3d(self, surface:pg.surface):
+        frame = self.raycast.render(self.camera, self.map, self.textures_array, self.map.sprites)
+        frame_surface = buffer_to_surface(frame)
+        surface.blit(frame_surface, (0,0))
     #=====================================#
     def render(self, surface:pg.Surface):
         '''render objects on the main surface'''
@@ -135,7 +151,10 @@ class Render:
         screen.fill(settings.get("bg_color", (30,30,30)))
         main_surface.fill(settings.get("bg_color", (30,30,30)))
         #--------------------------------#
-        self.render(main_surface)
+        if self.render3D:
+            self.render_3d(main_surface)
+        else:
+            self.render(main_surface)
         #--------------------------------#
         scaled_main_surface = main_surface
         if settings.resize:
@@ -144,4 +163,17 @@ class Render:
         screen.blit(scaled_main_surface, (0, 0))
         #--------------------------------#
         self.render_on_screen(screen)
+
+
+
+#=====================================#
+def buffer_to_surface(buffer):
+    r = ((buffer >> 16) & 0xFF).astype(np.uint8)
+    g = ((buffer >> 8) & 0xFF).astype(np.uint8)
+    b = (buffer & 0xFF).astype(np.uint8)
+
+    rgb = np.dstack((r,g,b))
+    rgb = np.transpose(rgb, (1,0,2))
+
+    return pg.surfarray.make_surface(rgb)
 

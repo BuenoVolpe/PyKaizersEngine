@@ -1,6 +1,7 @@
 from importlib.resources import path
 
 import pygame as pg
+import numpy as np
 import os
 #--------------------------------#
 from engine.handlers.textures.loader import ImageLoader
@@ -15,6 +16,9 @@ from engine.utils.json import scan_folder_with_json
 # from engine.utils.json import json, json_reader, json_writer, scan_folder, scan_folder_for_json, scan_folder_with_json
 #--------------------------------#
 from engine.console import console
+from engine.utils.event_bus import event_bus
+from game.enums.events import events
+from game.enums.event_priority import event_prioritys
 #--------------------------------#
 from engine.utils.log import log_error
 from engine.utils.recolor import recolor, darken_color
@@ -40,7 +44,29 @@ class TextureHandler:
         #--------------------------------#]
         for key, path in self.paths.items():
             self._load_all(path, key)
+        #--------------------------------#]
+        event_bus.subscribe(events.CHANGE_RENDER_3D, self.change_3d_textures, priority=event_prioritys.IMPORTANT_RESPONSE)
+
     #--------------------------------
+    def change_3d_textures(self, **kwargs):
+        print("a")
+        self.set_texture_as_raycaster_texture("texture@pyk::error")
+        #-----------------------------------------------#
+        for original_key, sprite in self.atlas.data.items():
+            #-----------------------------------------------#
+            #* texture, origin, sheet, idle.standart
+            #*texture@pyk::dave_sheet:: *idle.standart*
+            #-----------------------------------------------#
+            key = original_key.replace("texture@", "")
+            key = key.replace("pyk::", "")
+            key = key.replace(f"{settings.get("game_acronym"), "pykinst"}::", "")
+            key = key.replace("::", ".")
+            #-----------------------------------------------#
+            key_list = key.split(".")
+            if "raycaster" in key_list:
+                self.set_texture_as_raycaster_texture(original_key)
+        self.atlas.raycaster_textures = np.array(self.atlas.raycaster_textures)
+                
     def _load_all(self, path: str, base="pykaizers"):
         """
         Scans the sprite folder and loads everything into the atlas.
@@ -96,6 +122,64 @@ class TextureHandler:
         sprite = scaler.surface(sprite, meta_resize, use_scale_constant=meta_use_scale_constant)
         return sprite
 
+    #--------------------------------#
+    def is_texture_size(self, sprite):
+        #-------------------#
+        texture_size = settings.get("texture_size", 32)
+        #-------------------#
+        texture = self.get(sprite)
+        #-------------------#
+        if texture.get_height() != texture_size:
+            return False
+        if texture.get_width() != texture_size:
+            return False
+        #-------------------#
+        return True
+    
+    def set_texture_to_correct_size(self, sprite):
+        #--------------------------------#
+        if self.is_texture_size:
+            #--------------------------------#
+            texture = self.get(sprite)
+            self.atlas.save(sprite, texture)
+            return texture
+        #--------------------------------#
+        texture = self.get(sprite)
+        texture_size = settings.get("texture_size", 32)
+        #--------------------------------#
+        meta = {
+            "resize": [texture_size, texture_size],
+            "use_scale_constant": False
+        }
+        #--------------------------------#
+        resized_sprite = self.resize(texture, meta)
+        self.atlas.save(resized_sprite, texture)
+        return resized_sprite
+
+    def set_texture_to_array(self, surf):
+        arr = pg.surfarray.pixels3d(surf).copy()
+        arr = np.transpose(arr, (1,0,2)).astype(np.uint8)
+
+        rgb32 = (
+            (arr[:,:,0].astype(np.uint32) << 16) |
+            (arr[:,:,1].astype(np.uint32) << 8) |
+            arr[:,:,2].astype(np.uint32)
+        )
+
+        return rgb32
+
+    def set_texture_as_raycaster_texture(self, key):
+        raycater_texture = self.set_texture_to_correct_size(key)
+        raycater_texture = self.set_texture_to_array(raycater_texture)
+        #--------------------------------#
+        self.atlas.raycaster_textures_count += 1
+        #--------------------------------#
+        self.atlas.raycaster_textures_id[key] = self.atlas.raycaster_textures_count
+        self.atlas.raycaster_textures_keys.append(key) 
+        #--------------------------------#         
+        self.atlas.raycaster_textures.append(raycater_texture) 
+        
+
     #================================#
     def get(self, name: str):
         """
@@ -103,6 +187,13 @@ class TextureHandler:
         Retrieves any sprite from the atlas.
         """
         return self.atlas.get(name)
+    #================================#
+    def get_raycaster_texture_path(self, id:int):
+        return self.atlas.get_raycaster_texture_path(id)
+    def get_raycaster_texture_id(self, name: str):
+        return self.atlas.get_raycaster_texture_id(name)
+    def get_raycaster_texture_by_id(self, id:int):
+        return self.atlas.get_raycaster_texture_id(int)
     #================================#
     def random(self):
         return self.atlas.random()
