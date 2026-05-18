@@ -5,7 +5,8 @@ import math
 @njit(fastmath=True)
 def check_thin_walls(posX, posY, rayDirX, rayDirY, thin_walls):
     closest_dist = 1e30
-    hit_tex = -1
+    hit_tex = 0
+    tex_sum = 1
     hit_side = 0
     wallX = 0.0
 
@@ -32,7 +33,7 @@ def check_thin_walls(posX, posY, rayDirX, rayDirY, thin_walls):
             if abs(y_hit - wy) <= thickness * 0.5:
                 if t < closest_dist:
                     closest_dist = t
-                    hit_tex = tex
+                    hit_tex = tex + tex_sum
                     hit_side = 0
                     wallX = y_hit - math.floor(y_hit)
 
@@ -49,7 +50,7 @@ def check_thin_walls(posX, posY, rayDirX, rayDirY, thin_walls):
             if abs(x_hit - wx) <= thickness * 0.5:
                 if t < closest_dist:
                     closest_dist = t
-                    hit_tex = tex
+                    hit_tex = tex + tex_sum
                     hit_side = 1
                     wallX = x_hit - math.floor(x_hit)
 
@@ -58,7 +59,8 @@ def check_thin_walls(posX, posY, rayDirX, rayDirY, thin_walls):
 @njit(fastmath=True)
 def check_doors(posX, posY, rayDirX, rayDirY, doors):
     closest_dist = 1e30
-    hit_tex = -1
+    hit_tex = 0
+    tex_sum = 1
     hit_side = 0
     wallX = 0.0
 
@@ -86,7 +88,7 @@ def check_doors(posX, posY, rayDirX, rayDirY, doors):
             if abs(y_hit - y) <= width/2:
                 if t < closest_dist:
                     closest_dist = t
-                    hit_tex = tex
+                    hit_tex = tex + tex_sum
                     hit_side = 0
                     wallX = (y_hit - offset) - math.floor(y_hit - offset)
 
@@ -105,7 +107,7 @@ def check_doors(posX, posY, rayDirX, rayDirY, doors):
             if abs(x_hit - x) <= width/2:
                 if t < closest_dist:
                     closest_dist = t
-                    hit_tex = tex
+                    hit_tex = tex + tex_sum
                     hit_side = 1
                     wallX = (x_hit - offset) - math.floor(x_hit - offset)
 
@@ -123,6 +125,7 @@ def render_walls(
     TEX_W=32, TEX_H=32
 ):
     h, w = buffer_out.shape
+    tex_sum = 1
 
     for x in range(w):
 
@@ -173,7 +176,7 @@ def render_walls(
         else:
             perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY
 
-        texNum = worldMap[mapX, mapY] - 1
+        texNum = worldMap[mapX, mapY] + tex_sum
 
         # ===== THIN WALL CHECK =====
         thin_tex, thin_dist, thin_side, thin_wallX = check_thin_walls(

@@ -2,11 +2,10 @@ from engine.ecs.components import register_game_component
 from game.ecs.components.tags import TagComponent
 #=====================================#
 @register_game_component
-class PlayerTag(TagComponent):
-    IS_PLAYER = True
+class ColisionTag(TagComponent):
+    #--------------------------------#
+    HAS_COLISION = True
+#=====================================#
 
-@register_game_component
-class RaycasterPlayerTag(TagComponent):
-    IS_PLAYER = True
-    IS_RAYCASTER = True
+
 

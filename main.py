@@ -52,12 +52,15 @@ class Game:
         self.events_handler = EventsHandler()
         self.display = Display()
         self.render = Render(self.world)
+        #-------------------------#
+        self.render.map = Map()
+        #-------------------------#
         self.updater = Updater(self.world)
         self.entity_factory = EntityFactory(self.world, self)
         self.world_factory = WorldFactory(self.world, self.entity_factory, self)
         #================================#
         # self.entity_factory.create_entities()
-        self.world_factory.create_world("world@pyk::empty")
+        self.world_factory.create_world("world@pyk::raycast")
         #================================#
         self.clock = pg.time.Clock()
         #--------------------------------#
@@ -74,16 +77,23 @@ class Game:
         if not self.render.render3D:
             return
         #--------------------------------#
+        pg.mouse.set_visible(False)
+        pg.event.set_grab(True)
+        #--------------------------------#
         self.render.raycast = RaycasterRenderer(self, *self.display.main_surface.get_size())
-        self.render.map = Map()
         self.render.textures_array = self.TextureHandler.atlas.raycaster_textures
         #--------------------------------#
         class Camera:
+            player_id = 0
             pos = np.array((22, 11.5), dtype=np.float64)
             dir = np.array((-1,0), dtype=np.float64)
             plane = np.array((0,0.66), dtype=np.float64)
+            # set_fov(-90)
+
+
+        self.camera = Camera()
         #--------------------------------#
-        self.render.camera = Camera()
+        self.render.camera = self.camera
 
     #=====================================#
     def run(self):
@@ -97,6 +107,8 @@ class Game:
             self.prev_time = now
             #--------------------------------#
             self.events_handler.handle_events()
+            if not pg.mouse.get_focused():
+                self.updater.pause = True
             #--------------------------------#
             #game code
             event_bus.process()

@@ -21,7 +21,10 @@ class Updater:
         self.objects = {} #priority: [elements]
         self.systems = [ #[sys1, sys2(value, key), sys3(kwarg="aa")]
             PlayerInputSystem(world),
-            SimpleMovementSystem(world)
+            RaycastPlayerMouseSystem(world),
+            RaycasterPlayerColisionSystem(world, map=world.game.render.map),
+            SimpleMovementSystem(world),
+            RaycastCameraUpdateSystem(world, game=world.game),
         ] 
         #--------------------------------#
         self.pause = settings.get("start_game_paused", False)
@@ -32,6 +35,19 @@ class Updater:
     #=====================================#
     def pause_game(self):
         self.pause = not self.pause
+        #--------------------------------#  
+        if self.pause:
+            if not pg.mouse.get_visible():
+                pg.mouse.set_visible(True)
+            if pg.event.get_grab():
+                pg.event.set_grab(False)
+        #--------------------------------#  
+        else:
+            if settings.get("render3D"):
+                if pg.mouse.get_visible():
+                    pg.mouse.set_visible(False)
+                if not pg.event.get_grab():
+                    pg.event.set_grab(True)
     #=====================================#
     def add_object(self, obj:object, priority:int=0):
         #--------------------------------#  

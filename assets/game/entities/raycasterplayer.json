@@ -1,0 +1,10 @@
+{
+    "components": {
+        "component@pykinst::RaycasterPlayerTag": {},
+        "component@pykinst::ColisionTag": {"type":"RAYCAST_CAMERA"},
+        "component@pyk::Position": {"x":0, "y":0},
+        "component@pyk::Velocity": {"x":0, "y":0, "max_velocity": [5, 5]},
+        "component@pyk::CameraFov": {"angle":-90, "camera_plane":[0,0.66], "camera_dir":[-1,0]},
+        "component@pyk::CameraSensitivity": {"sensitivity":0.002}
+    }
+}
