@@ -105,10 +105,13 @@ class WorldFactory:
                     overrides_copy["component@pyk::Position"] = {"x":x, "y":y}
                     self.entity_factory.spawn_entity(prefab, overrides_copy)
                 #-------------------------------------#
-
         #-------------------------------------#
         else:
             log_error(f"world {world_id} has no entities", console)
+        #-------------------------------------#
+        type = world_data.get("type", "NOT_SPECIFIED")
+        if type == "raycast3D":
+            event_bus.emit(events.CREATE_WORLD_RAYCAST, world_data=world_data)
     #=====================================#
         
 

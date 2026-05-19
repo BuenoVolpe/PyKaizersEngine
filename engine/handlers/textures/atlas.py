@@ -38,7 +38,7 @@ class AtlasStorage:
         if texture is None:
             log_error(f"texture {name} not found as a raycaster texture, returning error image", console)
             print(self.raycaster_textures_id)
-            return 1 #error
+            return 0 #error
         return texture
 
     def get_raycaster_texture_by_id(self, id: int):
@@ -46,7 +46,6 @@ class AtlasStorage:
             log_error(f"id {id} is too big try something between 0 and {len(self.raycaster_textures_keys)-1}. Returning error texture", console)
             return self.get("texture@pyk::error")
         return self.raycaster_textures[id-1]
-
 
     def get(self, name: str):
         """

@@ -49,7 +49,7 @@ class TextureHandler:
 
     #--------------------------------
     def change_3d_textures(self, **kwargs):
-        print("a")
+        self.set_texture_as_raycaster_texture("texture@pyk::error")
         self.set_texture_as_raycaster_texture("texture@pyk::error")
         #-----------------------------------------------#
         for original_key, sprite in self.atlas.data.items():
@@ -193,7 +193,7 @@ class TextureHandler:
     def get_raycaster_texture_id(self, name: str):
         return self.atlas.get_raycaster_texture_id(name)
     def get_raycaster_texture_by_id(self, id:int):
-        return self.atlas.get_raycaster_texture_id(int)
+        return self.atlas.get_raycaster_texture_id(id)
     #================================#
     def random(self):
         return self.atlas.random()

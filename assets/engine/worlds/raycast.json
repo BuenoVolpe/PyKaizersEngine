@@ -1,8 +1,0 @@
-{
-    "entities": [
-        {
-            "prefab": "entity@pykinst::raycasterplayer",
-            "positions": [[22, 11.5]]
-        }
-    ]
-}

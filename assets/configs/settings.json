@@ -2,13 +2,10 @@
     "window_title": "PyKaizersEngine",
     "game_name": "PyK_instance",
     "game_acronym": "pykinst",
-    "engine_version": "0.3.1.0",
-    "game_version": "0.0.0.0-0.3.1pyk",
+    "engine_version": "0.3.2.0",
+    "game_version": "0.0.0.0-0.3.2pyk",
     "icon": "texture@pyk::kaizerthrone",
 
-    "floorDefaultTex": "texture@pyk::raycaster.mine::grass",
-    "ceilDefaultTex": "texture@pyk::raycaster.mine::pine_planks",
-    
     "texture_size":16,
     "render3D": true,
     "window_size": [
@@ -21,8 +18,9 @@
     ],
     "fullscreen": false,
     "resize": true,
+    "show_fps_on_title": true,
     "scale_constant": 1,
-    "start_game_paused": true,
+    "start_game_paused": false,
     "console_line_width": 4,
     "console_outline_width": 1,
     "console_size": [
@@ -63,5 +61,14 @@
         1
     ],
     "console_font": "atarismall",
-    "console_font_size": 8
+    "console_font_size": 8,
+
+    "raycast_thin_walls_array_size": 6,
+    "raycast_thin_doors_array_size": 10,
+    "raycast_thin_sprites_array_size": 6,
+    "raycast_floor_tex_sum": 0,
+    "raycast_ceil_tex_sum": 1,
+    "raycast_thin_wall_tex_sum": -1,
+    "raycast_door_tex_sum": -1,
+    "raycast_wall_tex_sum": -1
 }

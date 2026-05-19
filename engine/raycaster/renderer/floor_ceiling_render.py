@@ -1,5 +1,9 @@
 from numba import njit
 import numpy as np
+from engine.configs.settings import settings
+
+settings_floor_tex_sum = settings.get("raycast_floor_tex_sum", 0)
+settings_ceil_tex_sum = settings.get("raycast_ceil_tex_sum", 0)
 
 @njit(fastmath=True)
 def render_floor_ceiling(
@@ -8,9 +12,12 @@ def render_floor_ceiling(
     buffer_out,
     ZBuffer,
     floorMap, ceilMap,
-    floorDefaultTex=1, ceilDefaultTex=2,
+    floorDefaultTex1=1, floorDefaultTex2=1, ceilDefaultTex=2,
     TEX_W=32, TEX_H=32
 ):
+    floor_tex_sum = settings_floor_tex_sum
+    ceil_tex_sum = settings_ceil_tex_sum
+    
     h, w = buffer_out.shape
     num_textures = textures.shape[0]
     floor_map_h, floor_map_w = floorMap.shape
@@ -49,24 +56,25 @@ def render_floor_ceiling(
             floorY += floorStepY
 
             # Floor
-            # mapValue = floorMap[cellX, cellY]
-            # if mapValue == 0:
-            #     floorTex = min(floorDefaultTex, num_textures - 1)
-            # else:
-            #     floorTex = min(mapValue - 1, num_textures - 1)
-
             checker = (cellX + cellY) & 1
-            floorTex = 3 if checker == 0 else 4
+            floorTex = floorDefaultTex1 if checker == 0 else floorDefaultTex2
 
-            color = textures[floorTex, ty, tx]
+            mapValue = floorMap[cellX, cellY]
+            if mapValue == 0:
+                floorTex = min(floorTex, num_textures - 1)
+            else:
+                floorTex = min(mapValue - 1, num_textures - 1)
+
+
+            color = textures[floorTex+floor_tex_sum, ty, tx]
             buffer_out[y, x] = (color >> 1) & 8355711  # escurece
 
             # Ceiling
             mapValue = ceilMap[cellX, cellY]
             if mapValue == 0:
-                ceilTex = min(ceilDefaultTex, num_textures - 1)
+                ceilTex = min(ceilDefaultTex, num_textures + ceil_tex_sum)
             else:
-                ceilTex = min(mapValue - 1, num_textures - 1)
+                ceilTex = min(mapValue + ceil_tex_sum, num_textures + ceil_tex_sum)
 
             color = textures[ceilTex, ty, tx]
             buffer_out[h - y - 1, x] = (color >> 1) & 8355711

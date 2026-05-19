@@ -21,8 +21,9 @@ class RaycasterRenderer:
         self.game = game
         self.TextureHandler = game.TextureHandler
         #--------------------------------#
-        self.floorDefaultTex = self.TextureHandler.get_raycaster_texture_id(settings.get("floorDefaultTex", "texture@pyk::raycaster.mine::grass"))
-        self.ceilDefaultTex = self.TextureHandler.get_raycaster_texture_id(settings.get("ceilDefaultTex", "texture@pyk::raycaster.mine::pine_planks"))
+        # self.floorDefaultTex1 = self.TextureHandler.get_raycaster_texture_id(settings.get("floorDefaultTex1", "texture@pyk::raycaster.mine::grass"))
+        # self.floorDefaultTex2 = self.TextureHandler.get_raycaster_texture_id(settings.get("floorDefaultTex2", "texture@pyk::raycaster.mine::grass"))
+        # self.ceilDefaultTex = self.TextureHandler.get_raycaster_texture_id(settings.get("ceilDefaultTex", "texture@pyk::raycaster.mine::pine_planks"))
     #================================#
     def render(self, camera:object, world:object, textures:array_surf, sprites:array, TEX_W = settings.get("texture_size", 32),TEX_H = settings.get("texture_size", 32)):
         #---------cleans buff---------#
@@ -37,7 +38,7 @@ class RaycasterRenderer:
             self.buffer,
             self.zbuffer,
             world.ceil_grid, world.floor_grid,
-            floorDefaultTex = self.floorDefaultTex, ceilDefaultTex = self.ceilDefaultTex,
+            floorDefaultTex1 = world.floorDefaultTex1, floorDefaultTex2 = world.floorDefaultTex2, ceilDefaultTex = world.ceilDefaultTex,
             TEX_W=TEX_W,TEX_H=TEX_H
 
         )

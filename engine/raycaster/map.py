@@ -1,118 +1,118 @@
 import numpy as np
-# --- mapa---
-world_data = np.array([
-  [8,8,8,8,8,8,8,8,8,8,8,4,4,6,4,4,6,4,6,4,4,4,6,4],
-  [8,0,0,0,0,0,0,0,0,0,8,4,0,0,0,0,0,0,0,0,0,0,0,4],
-  [8,0,3,3,0,0,0,0,0,8,8,4,0,0,0,0,0,0,0,0,0,0,0,6],
-  [8,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6],
-  [8,0,3,3,0,0,0,0,0,8,8,4,0,0,0,0,0,0,0,0,0,0,0,4],
-  [8,0,0,0,0,0,0,0,0,0,8,4,0,0,0,0,0,6,6,6,0,6,4,6],
-  [8,8,8,8,0,8,8,8,8,8,8,4,4,4,4,4,4,6,0,0,0,0,0,6],
-  [7,7,7,7,0,7,7,7,7,0,8,0,8,0,8,0,8,4,0,4,0,6,0,6],
-  [7,7,0,0,0,0,0,0,7,8,0,8,0,8,0,8,8,6,0,0,0,0,0,6],
-  [7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,6,0,0,0,0,0,4],
-  [7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,6,0,6,0,6,0,6],
-  [7,7,0,0,0,0,0,0,7,8,0,8,0,8,0,8,8,6,4,6,0,6,6,6],
-  [7,7,7,7,0,7,7,7,7,8,8,4,0,6,8,4,8,3,3,3,0,3,3,3],
-  [2,2,2,2,0,2,2,2,2,4,6,4,0,0,6,0,6,3,0,0,0,0,0,3],
-  [2,2,0,0,0,0,0,2,2,4,0,0,0,0,0,0,4,3,0,0,0,0,0,3],
-  [2,0,0,0,0,0,0,0,2,4,0,0,0,0,0,0,4,3,0,0,0,0,0,3],
-  [1,0,0,0,0,0,0,0,1,4,4,4,4,4,6,0,6,3,3,0,0,0,3,3],
-  [2,0,0,0,0,0,0,0,2,2,2,1,2,2,2,6,6,0,0,5,0,5,0,5],
-  [2,2,0,0,0,0,0,2,2,2,0,0,0,2,2,0,5,0,5,0,0,0,5,5],
-  [2,0,0,0,0,0,0,0,2,0,0,0,0,0,2,5,0,5,0,5,0,5,0,5],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5],
-  [2,0,0,0,0,0,0,0,2,0,0,0,0,0,2,5,0,5,0,5,0,5,0,5],
-  [2,2,0,0,0,0,0,2,2,2,0,0,0,2,2,0,5,0,5,0,0,0,5,5],
-  [2,2,2,2,1,2,2,2,2,2,2,1,2,2,2,5,5,5,5,5,5,5,5,5]
-], dtype=np.int32)
-
-ceil_world_data = np.array([
-  [8,8,8,8,8,8,8,8,8,8,8,4,4,6,4,4,6,4,6,4,4,4,6,4],
-  [8,1,1,1,1,1,1,1,1,1,8,4,1,1,1,1,1,1,1,1,1,1,1,4],
-  [8,1,3,3,1,1,1,1,1,8,8,4,1,1,1,1,1,1,1,1,1,1,1,6],
-  [8,2,2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6],
-  [8,3,3,3,3,3,3,3,3,8,8,4,3,3,3,3,3,3,3,3,3,3,3,4],
-  [8,3,3,3,3,3,3,3,3,3,8,4,3,3,3,3,3,6,6,6,3,6,4,6],
-  [8,8,8,8,3,8,8,8,8,8,8,4,4,4,4,4,4,6,3,3,3,3,3,6],
-  [7,7,7,7,0,7,7,7,7,0,8,0,8,0,8,0,8,4,0,4,0,6,0,6],
-  [7,7,0,0,0,0,0,0,7,8,0,8,0,8,0,8,8,6,0,0,0,0,0,6],
-  [7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,6,0,0,0,0,0,4],
-  [7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,6,0,6,0,6,0,6],
-  [7,7,0,0,0,0,0,0,7,8,0,8,0,8,0,8,8,6,4,6,0,6,6,6],
-  [7,7,7,7,0,7,7,7,7,8,8,4,0,6,8,4,8,3,3,3,0,3,3,3],
-  [2,2,2,2,0,2,2,2,2,4,6,4,0,0,6,0,6,3,0,0,0,0,0,3],
-  [2,2,0,0,0,0,0,2,2,4,0,0,0,0,0,0,4,3,0,0,0,0,0,3],
-  [2,0,0,0,0,0,0,0,2,4,0,0,0,0,0,0,4,3,0,0,0,0,0,3],
-  [1,0,0,0,0,0,0,0,1,4,4,4,4,4,6,0,6,3,3,0,0,0,3,3],
-  [2,0,0,0,0,0,0,0,2,2,2,1,2,2,2,6,6,0,0,5,0,5,0,5],
-  [2,2,0,0,0,0,0,2,2,2,0,0,0,2,2,0,5,0,5,0,0,0,5,5],
-  [2,0,0,0,0,0,0,0,2,0,0,0,0,0,2,5,0,5,0,5,0,5,0,5],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5],
-  [2,0,0,0,0,0,0,0,2,0,0,0,0,0,2,5,0,5,0,5,0,5,0,5],
-  [2,2,0,0,0,0,0,2,2,2,0,0,0,2,2,0,5,0,5,0,0,0,5,5],
-  [2,2,2,2,1,2,2,2,2,2,2,1,2,2,2,5,5,5,5,5,5,5,5,5]
-], dtype=np.int32)
-
-floor_world_data = np.array([
-  [8,8,8,8,8,8,8,8,8,8,8,4,4,6,4,4,6,4,6,4,4,4,6,4],
-  [8,1,1,1,1,1,1,1,1,1,8,4,1,1,1,1,1,1,1,1,1,1,1,4],
-  [8,1,3,3,1,1,1,1,1,8,8,4,1,1,1,1,1,1,1,1,1,1,1,6],
-  [8,2,2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6],
-  [8,3,3,3,3,3,3,3,3,8,8,4,3,3,3,3,3,3,3,3,3,3,3,4],
-  [8,3,3,3,3,3,3,3,3,3,8,4,3,3,3,3,3,6,6,6,3,6,4,6],
-  [8,8,8,8,3,8,8,8,8,8,8,4,4,4,4,4,4,6,3,3,3,3,3,6],
-  [7,7,7,7,0,7,7,7,7,0,8,0,8,0,8,0,8,4,0,4,0,6,0,6],
-  [7,7,0,0,0,0,0,0,7,8,0,8,0,8,0,8,8,6,0,0,0,0,0,6],
-  [7,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,8,6,5,5,5,5,5,4],
-  [7,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,8,6,5,6,5,6,5,6],
-  [7,7,5,5,5,5,5,5,7,8,5,8,5,8,5,8,8,6,4,6,5,6,6,6],
-  [7,7,7,7,5,7,7,7,7,8,8,4,5,6,8,4,8,3,3,3,5,3,3,3],
-  [2,2,2,2,5,2,2,2,2,4,6,4,5,5,6,5,6,3,5,5,5,5,5,3],
-  [2,2,5,5,5,5,5,2,2,4,5,5,5,5,5,5,4,3,5,5,5,5,5,3],
-  [2,5,5,5,5,5,5,5,2,4,5,5,5,5,5,5,4,3,5,5,5,5,5,3],
-  [1,5,5,5,5,5,5,5,1,4,4,4,4,4,6,5,6,3,3,5,5,5,3,3],
-  [2,5,5,5,5,5,5,5,2,2,2,1,2,2,2,6,6,5,5,5,5,5,5,5],
-  [2,2,5,5,0,0,0,2,2,2,0,0,0,2,2,0,5,0,5,0,0,0,5,5],
-  [2,0,0,0,0,0,0,0,2,0,0,0,0,0,2,5,0,5,0,5,0,5,0,5],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5],
-  [2,0,0,0,0,0,0,0,2,0,0,0,0,0,2,5,0,5,0,5,0,5,0,5],
-  [2,2,0,0,0,0,0,2,2,2,0,0,0,2,2,0,5,0,5,0,0,0,5,5],
-  [2,2,2,2,1,2,2,2,2,2,2,1,2,2,2,5,5,5,5,5,5,5,5,5]
-], dtype=np.int32)
-
-# x, y, tipo[0v, 1h], espessura, textura, colisão?
-thin_walls = np.array([
-    # [5.0, 5.0, 0, 1, 9, 0],   # vertical
-    [5.0, 7.0, 1, 1, 8, 1], # horizontal
-], dtype=np.float64)
-# thin_walls = np.empty((0, 5), dtype=np.float64)
-
-doors = np.array([
-    # x, y, tipo, largura, tex, offset(qnt abriu), speed, open_state, H?, H_texture
-    [5.5, 5.5, 0, 0.8, 9, 0.0, 1.5, 0, 1, 1],  
-    [3.5, 5.0, 1, 0.8, 9, 0.0, 1.5, 0, 1, 0],  
-    [3.5, 6.5, 1, 1, 9, 0.0, 1.5, 0, 1, 3],  
-], dtype=np.float64)
-
-# thin_walls = np.vstack((thin_walls, build_door_frames(doors)))
-
-# --- sprites ---
-sprites_data = np.array([
-    # x, y, tex, scale, offsetZ, flags
-    (19.5, 9.5, 10, 1, 0, 0),
-    (19.5, 10.5, 9, .5, 0, 0),
-    (19.5, 11.5, 9, .5, .3, 0),
-    (19.5, 12.5, 9, .5, -.28, 0),
-    (19.5, 13.5, 8, 1, 0, 0),
-], dtype=np.float64)
-
-
+#================================#
+from engine.configs.settings import settings
+from engine.utils.event_bus import event_bus
+from game.enums.events import events
+from game.enums.event_priority import event_prioritys
+#================================#
+from engine.raycaster.hard_coded_maps.original import *
+from engine.raycaster.hard_coded_maps.default_map import *
+#================================#
 class Map:
-    ceil_grid = ceil_world_data
-    thin_walls = thin_walls
-    floor_grid = floor_world_data
-    grid = world_data
-    doorsMap = doors
-    sprites=sprites_data
+    #-------------------------#
+    def __init__(self, game):
+        self.game = game
+        #-------------------------#
+        self.floorDefaultTex1 = "texture@pyk::raycaster.mine::grass"
+        self.floorDefaultTex2 = "texture@pyk::raycaster.mine::grass"
+        self.ceilDefaultTex = "texture@pyk::raycaster.mine::pine_planks"
+        #-------------------------#
+        self.grid = default_world_data
+        self.ceil_grid = default_ceil_world_data
+        self.floor_grid = default_floor_world_data
+        self.doorsMap = default_doors
+        self.sprites = default_sprites_data
+        #-------------------------#
+        self.thin_walls = np.vstack((default_thin_walls, self.build_door_frames(default_doors)))
+        #-------------------------#
+        event_bus.subscribe(events.CREATE_WORLD_RAYCAST, self.build_map, priority=event_prioritys.ADD)
+    #================================#
+    def build_map(self, world_data):
+        get_texture_id = self.game.TextureHandler.get_raycaster_texture_id
+        # get_texture_id(name)
+        #-------------------------#
+        map_info = world_data.get("map", {})
+        #-------------------------#
+        self.ceil_grid = map_info.get("ceil_grid", default_ceil_world_data)
+        self.ceil_grid = np.array(self.ceil_grid, dtype=np.int32)
+        self.grid = map_info.get("grid", default_world_data)
+        self.grid = np.array(self.grid, dtype=np.int32)
+        self.floor_grid = map_info.get("floor_grid", default_floor_world_data)
+        self.floor_grid = np.array(self.floor_grid, dtype=np.int32)
+        self.thin_walls = map_info.get("thin_walls", default_thin_walls)
+        #-------------------------#
+        self.thin_walls = np.array(self.thin_walls, dtype=np.float64)
+        self.doorsMap = map_info.get("doorsMap", default_doors)
+        self.doorsMap = np.array(self.doorsMap, dtype=np.float64)
+        self.thin_walls = np.vstack((self.thin_walls, self.build_door_frames(self.doorsMap)))
+        #-------------------------#
+        textures = world_data.get("textures")
+        if textures:
+            #-------------------------#
+            self.floorDefaultTex1 = textures.get("floorDefaultTex1", self.floorDefaultTex1)
+            self.floorDefaultTex1 = get_texture_id(self.floorDefaultTex1)
+            self.floorDefaultTex2 = textures.get("floorDefaultTex2", self.floorDefaultTex2)
+            self.floorDefaultTex2 = get_texture_id(self.floorDefaultTex2)
+            self.ceilDefaultTex = textures.get("ceilDefaultTex", self.ceilDefaultTex)
+            self.ceilDefaultTex = get_texture_id(self.ceilDefaultTex)
+            #-------------------------#
+            for y, line in enumerate(self.grid):
+                for x, value in enumerate(line):
+                    if value:
+                        name = textures.get(str(value),"texture@pyk::error")
+                        texture_id = get_texture_id(name)
+                        self.grid[y,x] = texture_id
+            #-------------------------#
+            for y, line in enumerate(self.ceil_grid):
+                for x, value in enumerate(line):
+                    if value:
+                        name = textures.get(str(value),"texture@pyk::error")
+                        texture_id = get_texture_id(name)
+                        self.ceil_grid[y,x] = texture_id
+            #-------------------------#
+            for y, line in enumerate(self.ceil_grid):
+                for x, value in enumerate(line):
+                    if value:
+                        name = textures.get(str(value),"texture@pyk::error")
+                        texture_id = get_texture_id(name)
+                        self.ceil_grid[y,x] = texture_id
+            #-------------------------#
+            for wall_index, wall_data in enumerate(self.thin_walls):
+                name = textures.get(str(int(self.thin_walls[wall_index, 4])), "texture@pyk::error")
+                texture_id = get_texture_id(name)
+                self.thin_walls[wall_index, 4] = texture_id
+            #-------------------------#
+            for door_index, door_data in enumerate(self.doorsMap):
+                name = textures.get(str(int(self.doorsMap[door_index, 4])), "texture@pyk::error")
+                texture_id = get_texture_id(name)
+                self.doorsMap[door_index, 4] = texture_id
+            #-------------------------#
+        world_data.get("sprites")
+    #================================#
+    def build_door_frames(self, doors):
+        #-------------------------#
+        frames = []
+        #-------------------------#
+        for i in range(doors.shape[0]):
+            #-------------------------#
+            x, y, t, width, use_H, Htex = doors[i, 0], doors[i, 1], int(doors[i, 2]), doors[i, 3], bool(doors[i, 8]), int(doors[i, 9])
+            #-------------------------#            
+            if not use_H:
+                continue
+            #-------------------------#
+            offset = 1-width
+            #-------------------------#
+            if t == 0:  # vertical
+                # laterais horizontais
+                frames.append([int(x), y-offset/2, 1, 1, Htex, 0])
+                frames.append([int(x), y-1+offset/2, 1, 1, Htex, 0])
+            #-------------------------#
+            else:  # horizontal1
+                # laterais verticais
+                frames.append([x-offset/2, int(y), 0, 1, Htex, 0])
+                frames.append([x+offset/2-1, int(y), 0, 1, Htex, 0])
+        #-------------------------#
+        if not frames:
+            return np.empty((0, settings.get("raycast_thin_walls_array_size", 6)), dtype=np.float64)
+        return np.array(frames, dtype=np.float64)
 

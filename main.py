@@ -53,14 +53,14 @@ class Game:
         self.display = Display()
         self.render = Render(self.world)
         #-------------------------#
-        self.render.map = Map()
+        self.render.map = Map(self)
         #-------------------------#
         self.updater = Updater(self.world)
         self.entity_factory = EntityFactory(self.world, self)
         self.world_factory = WorldFactory(self.world, self.entity_factory, self)
         #================================#
         # self.entity_factory.create_entities()
-        self.world_factory.create_world("world@pyk::raycast")
+        self.world_factory.create_world("world@pyk::raycaster.exemple")
         #================================#
         self.clock = pg.time.Clock()
         #--------------------------------#
@@ -107,12 +107,14 @@ class Game:
             self.prev_time = now
             #--------------------------------#
             self.events_handler.handle_events()
-            if not pg.mouse.get_focused():
-                self.updater.pause = True
+            # if not pg.mouse.get_focused():
+            #     self.updater.pause = True
             #--------------------------------#
             #game code
             event_bus.process()
             self.updater.update(dt)
+            if settings.get("show_fps_on_title", False):
+                pg.display.set_caption(f"{settings.window_title} | {self.clock.get_fps():0f}")
             self.render.draw(self.display.screen, self.display.main_surface)
             self.world.flush()
             #--------------------------------#

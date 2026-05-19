@@ -1,12 +1,18 @@
 from numba import njit
 import numpy as np
 import math
+from engine.configs.settings import settings
+
+
+thin_wall_tex_sum = np.int32(settings.get("raycast_thin_wall_tex_sum", 0))
+door_tex_sum = np.int32(settings.get("raycast_door_tex_sum", 0))
+wall_tex_sum = np.int32(settings.get("raycast_wall_tex_sum", 0))
 
 @njit(fastmath=True)
 def check_thin_walls(posX, posY, rayDirX, rayDirY, thin_walls):
     closest_dist = 1e30
     hit_tex = 0
-    tex_sum = 1
+    tex_sum = thin_wall_tex_sum
     hit_side = 0
     wallX = 0.0
 
@@ -60,7 +66,7 @@ def check_thin_walls(posX, posY, rayDirX, rayDirY, thin_walls):
 def check_doors(posX, posY, rayDirX, rayDirY, doors):
     closest_dist = 1e30
     hit_tex = 0
-    tex_sum = 1
+    tex_sum = -1
     hit_side = 0
     wallX = 0.0
 
@@ -125,7 +131,7 @@ def render_walls(
     TEX_W=32, TEX_H=32
 ):
     h, w = buffer_out.shape
-    tex_sum = 1
+    tex_sum = wall_tex_sum
 
     for x in range(w):
 
