@@ -53,7 +53,7 @@ class RaycasterRenderer:
             self.zbuffer,
             world.thin_walls,
             world.doorsMap,
-            TEX_W,TEX_H
+            TEX_W=TEX_W,TEX_H=TEX_H
         )
         #---------sprites render---------#
         render_sprites(
@@ -63,7 +63,8 @@ class RaycasterRenderer:
             sprites,#.get(),
             textures,
             self.buffer,
-            self.zbuffer
+            self.zbuffer,
+            TEX_W=TEX_W,TEX_H=TEX_H
         )
         #---------returns buffer---------#
         return self.buffer

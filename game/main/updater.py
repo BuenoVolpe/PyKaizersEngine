@@ -11,12 +11,14 @@ from engine.console import console
 from game.enums.events import events
 from game.enums.update_prioritys import update_prioritys as priority
 from game.enums.event_priority import event_prioritys as ev_priority
+from engine.raycaster.doors import update_doors
 #--------------------------------#
 import pygame as pg
 #=====================================#
 class Updater:
     #--------------------------------#
-    def __init__(self, world):
+    def __init__(self, world, game):
+        self.game = game
         #--------------------------------#
         self.objects = {} #priority: [elements]
         self.systems = [ #[sys1, sys2(value, key), sys3(kwarg="aa")]
@@ -57,17 +59,22 @@ class Updater:
         self.objects[priority].append(obj)
     #--------------------------------#
     def remove_object(self, obj:object):
-        for priority in self.layers:
-            if obj in self.layers[priority]:
-                self.layers[priority].remove(obj)
+        for priority in self.objects:
+            if obj in self.objects[priority]:
+                self.objects[priority].remove(obj)
                 return
     #=====================================#
     def update(self, delta_time:float):
         if self.pause or console.visible:
             return
+        if delta_time > settings.get("max_delta_time_value", 1):
+            return
         #--------------------------------#
         for system in self.systems:
             system.update(delta_time)
+        #--------------------------------#
+        if self.game.render.render3D:
+            update_doors(self.game.render.map.doorsMap, self.game.camera.pos, delta_time)
         #--------------------------------#
         for priority in sorted(self.objects.keys()):
             for obj in self.objects[priority]:

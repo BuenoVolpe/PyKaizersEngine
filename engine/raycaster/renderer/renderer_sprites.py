@@ -12,7 +12,9 @@ def render_sprites(
     textures,
     buffer,
     zbuffer,
-    max_transformY=20
+    max_transformY=20,
+    TEX_W = 32,
+    TEX_H = 32
 ):
     h, w = buffer.shape
     num_sprites = sprites.shape[0]
@@ -33,10 +35,10 @@ def render_sprites(
                 order[i], order[j] = order[j], order[i]
 
     for i in range(num_sprites):
-        s = sprites[order[i]]
+        sprite = sprites[order[i]]
 
-        spriteX = s[0] - posX
-        spriteY = s[1] - posY
+        spriteX = sprite[0] - posX
+        spriteY = sprite[1] - posY
 
         invDet = 1.0 / (planeX*dirY - dirX*planeY)
 
@@ -48,9 +50,9 @@ def render_sprites(
 
         spriteScreenX = int((w / 2) * (1 + transformX / transformY))
 
-        scale = s[3]
+        scale = sprite[3]
         spriteHeight = abs(int(h / transformY * scale))
-        offsetZ = s[4]
+        offsetZ = sprite[4]
         screen_offset = int(offsetZ / transformY * h)
 
         drawStartY = max(-spriteHeight // 2 + h // 2 - screen_offset, 0)
@@ -60,21 +62,19 @@ def render_sprites(
         drawStartX = max(-spriteWidth // 2 + spriteScreenX, 0)
         drawEndX = min(spriteWidth // 2 + spriteScreenX, w - 1)
 
-        tex_id = int(s[2])
+        tex_id = int(sprite[2])
 
         for stripe in range(drawStartX, drawEndX):
             if 0 <= stripe < w and transformY < zbuffer[stripe]:
 
-                texX = int((stripe - (-spriteWidth//2 + spriteScreenX)) * 64 / spriteWidth)
+                texX = int((stripe - (-spriteWidth//2 + spriteScreenX)) * TEX_W / spriteWidth)
 
                 for y in range(drawStartY, drawEndY):
                     d = (y + screen_offset) * 256 - h * 128 + spriteHeight * 128
-                    texY = ((d * 64) // spriteHeight) // 256
+                    texY = ((d * TEX_H) // spriteHeight) // 256
 
-                    if 0 <= texY < 64:
-                        color = textures[tex_id, texY, texX & 63]
-                        if color != 0:
-                            buffer[y, stripe] = color
+                    if 0 <= texY < TEX_H:
+                        color = textures[tex_id, texY, texX & (TEX_W-1)]
 
                     if color != 0:
                         buffer[y, stripe] = color

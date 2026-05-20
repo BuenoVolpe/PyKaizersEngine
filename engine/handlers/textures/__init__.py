@@ -138,22 +138,17 @@ class TextureHandler:
     
     def set_texture_to_correct_size(self, sprite):
         #--------------------------------#
-        if self.is_texture_size:
-            #--------------------------------#
-            texture = self.get(sprite)
-            self.atlas.save(sprite, texture)
-            return texture
+        # if self.is_texture_size(sprite):
+        #     #--------------------------------#
+        #     texture = self.get(sprite)
+        #     self.atlas.save(sprite, texture)
+        #     return texture
         #--------------------------------#
         texture = self.get(sprite)
         texture_size = settings.get("texture_size", 32)
         #--------------------------------#
-        meta = {
-            "resize": [texture_size, texture_size],
-            "use_scale_constant": False
-        }
-        #--------------------------------#
-        resized_sprite = self.resize(texture, meta)
-        self.atlas.save(resized_sprite, texture)
+        resized_sprite = pg.transform.scale(texture, [texture_size, texture_size])
+        self.atlas.save(sprite, resized_sprite)
         return resized_sprite
 
     def set_texture_to_array(self, surf):

@@ -1,5 +1,5 @@
 from random import choice
-from engine.utils.log import log_error
+from engine.utils.log import log_error, log
 from engine.console import console
 
 class AtlasStorage:
@@ -18,6 +18,7 @@ class AtlasStorage:
         self.raycaster_textures = []
 
         # Fallback sprite if something is missing
+        self.error_already_happen = False
         self.error_image = error_image
         self.save("texture@pyk::error", error_image)
 
@@ -37,7 +38,9 @@ class AtlasStorage:
         texture = self.raycaster_textures_id.get(name)
         if texture is None:
             log_error(f"texture {name} not found as a raycaster texture, returning error image", console)
-            print(self.raycaster_textures_id)
+            if not self.error_already_happen:
+                self.error_already_happen = True
+                log(self.raycaster_textures_id, console=console)
             return 0 #error
         return texture
 

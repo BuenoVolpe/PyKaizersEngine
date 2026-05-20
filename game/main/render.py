@@ -87,7 +87,7 @@ class Render:
                 return
     #=====================================#
     def render_3d(self, surface:pg.surface):
-        frame = self.raycast.render(self.camera, self.map, self.textures_array, self.map.sprites)
+        frame = self.raycast.render(self.camera, self.map, self.textures_array, self.map.get_sprites())
         frame_surface = buffer_to_surface(frame)
         surface.blit(frame_surface, (0,0))
     #=====================================#

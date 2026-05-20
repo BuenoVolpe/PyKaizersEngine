@@ -13,6 +13,7 @@ from engine.console.konami_detector import KonamiDetector
 from game.enums.events import events
 from game.enums.inputs import InputsEnum as Inp
 from game.enums.event_priority import event_prioritys as priority
+from game.enums.interactions import interactions
 #================================#
 class EventsHandler:
     #--------------------------------#
@@ -91,9 +92,19 @@ class EventsHandler:
     #================================#
     def handle_keydown(self, event):
         #------------------------------#
-        if inputs.input_by_event(event, "menu", default_key_value=pg.K_ESCAPE, form="down"):
+        if inputs.input_by_event(event, Inp.menu, default_key_value=pg.K_ESCAPE, form="down"):
             event_bus.emit(events.PAUSE) 
         #------------------------------#
+        if inputs.input_by_event(event, Inp.interact, default_key_value=pg.K_5, form="down"):
+            event_bus.emit(events.PLAYER_INTERACT, interaction_type=interactions.DOORS)
+        #     for i in range(doors.shape[0]):
+
+        #         dx = camera.pos[0] - doors[i, 0]
+        #         dy = camera.pos[1] - doors[i, 1]
+
+        #         if dx*dx + dy*dy < 2.0:
+        #             if can_open_door(camera, doors[i]):
+        #                 toggle_door(doors, i)
     #================================#
     def handle_keyup(self, event):
         pass

@@ -30,6 +30,7 @@ from engine.console import console
 from engine.commands.all import *
 #--------------------------------#
 from engine.raycaster.renderer import RaycasterRenderer
+from engine.raycaster.doors import update_doors
 from engine.raycaster.map import Map
 #--------------------------------#
 from game.fonts import AtariSmall, dogicapixel, PixelOperator
@@ -55,7 +56,7 @@ class Game:
         #-------------------------#
         self.render.map = Map(self)
         #-------------------------#
-        self.updater = Updater(self.world)
+        self.updater = Updater(self.world, self)
         self.entity_factory = EntityFactory(self.world, self)
         self.world_factory = WorldFactory(self.world, self.entity_factory, self)
         #================================#
@@ -89,8 +90,6 @@ class Game:
             dir = np.array((-1,0), dtype=np.float64)
             plane = np.array((0,0.66), dtype=np.float64)
             # set_fov(-90)
-
-
         self.camera = Camera()
         #--------------------------------#
         self.render.camera = self.camera
@@ -114,7 +113,7 @@ class Game:
             event_bus.process()
             self.updater.update(dt)
             if settings.get("show_fps_on_title", False):
-                pg.display.set_caption(f"{settings.window_title} | {self.clock.get_fps():0f}")
+                pg.display.set_caption(f"{settings.window_title} | {self.clock.get_fps():.0f}")
             self.render.draw(self.display.screen, self.display.main_surface)
             self.world.flush()
             #--------------------------------#

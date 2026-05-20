@@ -3,10 +3,12 @@ import numpy as np
 from engine.configs.settings import settings
 from engine.utils.event_bus import event_bus
 from game.enums.events import events
+from game.enums.interactions import interactions
 from game.enums.event_priority import event_prioritys
 #================================#
 from engine.raycaster.hard_coded_maps.original import *
 from engine.raycaster.hard_coded_maps.default_map import *
+from engine.raycaster.doors import toggle_door, can_open_door
 #================================#
 class Map:
     #-------------------------#
@@ -26,6 +28,7 @@ class Map:
         self.thin_walls = np.vstack((default_thin_walls, self.build_door_frames(default_doors)))
         #-------------------------#
         event_bus.subscribe(events.CREATE_WORLD_RAYCAST, self.build_map, priority=event_prioritys.ADD)
+        event_bus.subscribe(events.PLAYER_INTERACT, self.interact_with_doors, priority=event_prioritys.SIMPLE_RESPONSE)
     #================================#
     def build_map(self, world_data):
         get_texture_id = self.game.TextureHandler.get_raycaster_texture_id
@@ -34,14 +37,16 @@ class Map:
         map_info = world_data.get("map", {})
         #-------------------------#
         self.ceil_grid = map_info.get("ceil_grid", default_ceil_world_data)
-        self.ceil_grid = np.array(self.ceil_grid, dtype=np.int32)
         self.grid = map_info.get("grid", default_world_data)
-        self.grid = np.array(self.grid, dtype=np.int32)
         self.floor_grid = map_info.get("floor_grid", default_floor_world_data)
-        self.floor_grid = np.array(self.floor_grid, dtype=np.int32)
         self.thin_walls = map_info.get("thin_walls", default_thin_walls)
+        self.sprites = map_info.get("sprites", default_sprites_data)
         #-------------------------#
+        self.ceil_grid = np.array(self.ceil_grid, dtype=np.int32)
+        self.grid = np.array(self.grid, dtype=np.int32)
+        self.floor_grid = np.array(self.floor_grid, dtype=np.int32)
         self.thin_walls = np.array(self.thin_walls, dtype=np.float64)
+        #-------------------------#
         self.doorsMap = map_info.get("doorsMap", default_doors)
         self.doorsMap = np.array(self.doorsMap, dtype=np.float64)
         self.thin_walls = np.vstack((self.thin_walls, self.build_door_frames(self.doorsMap)))
@@ -70,12 +75,12 @@ class Map:
                         texture_id = get_texture_id(name)
                         self.ceil_grid[y,x] = texture_id
             #-------------------------#
-            for y, line in enumerate(self.ceil_grid):
+            for y, line in enumerate(self.floor_grid):
                 for x, value in enumerate(line):
                     if value:
                         name = textures.get(str(value),"texture@pyk::error")
                         texture_id = get_texture_id(name)
-                        self.ceil_grid[y,x] = texture_id
+                        self.floor_grid[y,x] = texture_id
             #-------------------------#
             for wall_index, wall_data in enumerate(self.thin_walls):
                 name = textures.get(str(int(self.thin_walls[wall_index, 4])), "texture@pyk::error")
@@ -87,7 +92,15 @@ class Map:
                 texture_id = get_texture_id(name)
                 self.doorsMap[door_index, 4] = texture_id
             #-------------------------#
+            for sprite_index, sprite_data in enumerate(self.sprites):
+                name = textures.get(str(int(self.sprites[sprite_index][2])), "texture@pyk::error")
+                texture_id = get_texture_id(name)
+                self.sprites[sprite_index][2] = texture_id
+            #-------------------------#
         world_data.get("sprites")
+    #================================#
+    def get_sprites(self):
+        return np.array(self.sprites, dtype=np.float64)
     #================================#
     def build_door_frames(self, doors):
         #-------------------------#
@@ -115,4 +128,18 @@ class Map:
         if not frames:
             return np.empty((0, settings.get("raycast_thin_walls_array_size", 6)), dtype=np.float64)
         return np.array(frames, dtype=np.float64)
+    #===============================#
+    def interact_with_doors(self, interaction_type=None):
+        if interaction_type != interactions.DOORS:
+            return
+        #-------------------------#
+        camera = self.game.camera
+        for i in range(self.doorsMap.shape[0]):
+
+            dx = camera.pos[0] - doors[i, 0]
+            dy = camera.pos[1] - doors[i, 1]
+
+            if dx*dx + dy*dy < 2.0:
+                if can_open_door(camera, doors[i]):
+                    self.doorsMap[i, 7] = toggle_door(doors, i)
 

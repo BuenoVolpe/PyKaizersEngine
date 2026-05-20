@@ -2,9 +2,12 @@
     "window_title": "PyKaizersEngine",
     "game_name": "PyK_instance",
     "game_acronym": "pykinst",
-    "engine_version": "0.3.2.0",
-    "game_version": "0.0.0.0-0.3.2pyk",
+    "engine_version": "0.3.3.0",
+    "game_version": "0.0.0.0-0.3.3pyk",
     "icon": "texture@pyk::kaizerthrone",
+
+    "event_bus_debug": false,
+    "max_delta_time_value": 1,
 
     "texture_size":16,
     "render3D": true,
