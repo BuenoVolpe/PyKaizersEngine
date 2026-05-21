@@ -55,7 +55,7 @@ class TextureHandler:
         for original_key, sprite in self.atlas.data.items():
             #-----------------------------------------------#
             #* texture, origin, sheet, idle.standart
-            #*texture@pyk::dave_sheet:: *idle.standart*
+            #*texture@pyk::.dave_sheet:: *idle.standart*
             #-----------------------------------------------#
             key = original_key.replace("texture@", "")
             key = key.replace("pyk::", "")
@@ -99,17 +99,19 @@ class TextureHandler:
             #--------------------------------#
             if colors := meta.get("colors"):
                 #--------------------------------#
-                sprite = self.resize(sprite, meta)
+                original_sprite = self.resize(sprite, meta)
+                self.atlas.save(atlas_path, sprite)
                 self.atlas.save(atlas_path + f".standart", sprite)
                 #--------------------------------#
                 for color in colors:
                     #--------------------------------#
                     if color in self.color_maps:
                         #--------------------------------#
-                        sprite = recolor(sprite, self.color_maps[color])  
+                        sprite = recolor(original_sprite, self.color_maps[color])  
                         sprite = self.resize(sprite, meta)
                         #--------------------------------#
                         self.atlas.save(atlas_path + f".{color}", sprite)
+                        continue
                     else:
                         #--------------------------------#
                         log_error(f"Color map '{color}' specified for '{atlas_path}' not found in color maps.", console)
@@ -123,26 +125,7 @@ class TextureHandler:
         return sprite
 
     #--------------------------------#
-    def is_texture_size(self, sprite):
-        #-------------------#
-        texture_size = settings.get("texture_size", 32)
-        #-------------------#
-        texture = self.get(sprite)
-        #-------------------#
-        if texture.get_height() != texture_size:
-            return False
-        if texture.get_width() != texture_size:
-            return False
-        #-------------------#
-        return True
-    
     def set_texture_to_correct_size(self, sprite):
-        #--------------------------------#
-        # if self.is_texture_size(sprite):
-        #     #--------------------------------#
-        #     texture = self.get(sprite)
-        #     self.atlas.save(sprite, texture)
-        #     return texture
         #--------------------------------#
         texture = self.get(sprite)
         texture_size = settings.get("texture_size", 32)
@@ -174,7 +157,6 @@ class TextureHandler:
         #--------------------------------#         
         self.atlas.raycaster_textures.append(raycater_texture) 
         
-
     #================================#
     def get(self, name: str):
         """

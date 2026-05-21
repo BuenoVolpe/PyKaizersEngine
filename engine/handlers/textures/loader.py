@@ -1,5 +1,6 @@
 import pygame as pg
 from engine.utils.recolor import apply_multi_colorkey
+from engine.configs.settings import settings
 
 pg.init()
 
@@ -17,7 +18,7 @@ class ImageLoader:
         """
         if use_color_key:
             image = pg.image.load(path).convert()
-            image = apply_multi_colorkey(image, [(255, 0, 255), (175, 0, 175)])
+            image = apply_multi_colorkey(image, [settings.set("color_key1", [255,0,255]), settings.get("color_key2", [175, 0, 175])])
             return image
 
         if alpha:

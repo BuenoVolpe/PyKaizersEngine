@@ -1,11 +1,14 @@
 import pygame as pg
+from engine.configs.settings import settings
 
-
-def recolor (image:pg.Surface, color_map:dict):
+def recolor (image:pg.Surface, color_map:dict, use_colorkey_on_color_map:bool=False):
     img = image.copy()
     px = pg.PixelArray(img)
 
     for src, dst in color_map.items():
+        if not use_colorkey_on_color_map:
+            if list(src) in [settings.get("color_key1", [255, 0, 255]), settings.get("color_key2", [175, 0, 175])]:
+                continue
         px.replace(src, dst[:3])
 
     del px

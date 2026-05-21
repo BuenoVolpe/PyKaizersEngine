@@ -2,7 +2,7 @@
     "window_title": "PyKaizersEngine",
     "game_name": "PyK_instance",
     "game_acronym": "pykinst",
-    "engine_version": "0.3.3.0",
+    "engine_version": "0.3.3.1",
     "game_version": "0.0.0.0-0.3.3pyk",
     "icon": "texture@pyk::kaizerthrone",
 
@@ -66,6 +66,9 @@
     "console_font": "atarismall",
     "console_font_size": 8,
 
+    "color_key1": [255, 0, 255],
+    "color_key2": [175, 0, 175],
+
     "raycast_thin_walls_array_size": 6,
     "raycast_thin_doors_array_size": 10,
     "raycast_thin_sprites_array_size": 6,
@@ -73,5 +76,6 @@
     "raycast_ceil_tex_sum": 1,
     "raycast_thin_wall_tex_sum": -1,
     "raycast_door_tex_sum": -1,
-    "raycast_wall_tex_sum": -1
+    "raycast_wall_tex_sum": -1,
+    "raycast_sprite_tex_sum": -1
 }

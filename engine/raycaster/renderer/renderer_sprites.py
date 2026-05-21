@@ -1,7 +1,14 @@
 from numba import njit
 import math
+import numpy as np
+from engine.configs.settings import settings
 
 
+sprite_tex_sum = np.int32(settings.get("raycast_sprite_tex_sum", 0))
+settings.get("color_key1", [255, 0, 255])
+settings.get("color_key2", [175, 0, 175])
+COLORKEY_1 = np.int32(0xFF00FF)
+COLORKEY_2 = np.int32(0xAF00AF)
 
 @njit(fastmath=True)
 def render_sprites(
@@ -16,6 +23,7 @@ def render_sprites(
     TEX_W = 32,
     TEX_H = 32
 ):
+    tex_sum = sprite_tex_sum
     h, w = buffer.shape
     num_sprites = sprites.shape[0]
 
@@ -62,7 +70,7 @@ def render_sprites(
         drawStartX = max(-spriteWidth // 2 + spriteScreenX, 0)
         drawEndX = min(spriteWidth // 2 + spriteScreenX, w - 1)
 
-        tex_id = int(sprite[2])
+        tex_id = int(sprite[2]) + tex_sum
 
         for stripe in range(drawStartX, drawEndX):
             if 0 <= stripe < w and transformY < zbuffer[stripe]:
@@ -76,6 +84,7 @@ def render_sprites(
                     if 0 <= texY < TEX_H:
                         color = textures[tex_id, texY, texX & (TEX_W-1)]
 
-                    if color != 0:
-                        buffer[y, stripe] = color
+                        if color != COLORKEY_1 and color != COLORKEY_2:
+                            buffer[y, stripe] = color
+
                     

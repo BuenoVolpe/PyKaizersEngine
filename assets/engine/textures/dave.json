@@ -3,6 +3,7 @@
     "resize": [32,32],
     "use_scale_constant": true,
     "use_colorkey": false,
+    "use_colorkey_on_color_map":true,
     "colors":[
         "green", "gray", "yellow", "skin", "pink", "blue"
     ]

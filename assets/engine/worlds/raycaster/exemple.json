@@ -19,8 +19,14 @@
         "14": "texture@pyk::raycaster.mine::pine_planks",
         "15": "texture@pyk::raycaster.mine::dark_oak_planks",
 
-        "16": "texture@pyk::raycaster.dave.blue",
-        "18": "texture@pyk::raycaster.kaizer",
+        "16": "texture@pyk::raycaster.dave.standart",
+        "17": "texture@pyk::raycaster.dave.green",
+        "18": "texture@pyk::raycaster.dave.gray",
+        "19": "texture@pyk::raycaster.dave.yellow",
+        "20": "texture@pyk::raycaster.dave.skin",
+        "21": "texture@pyk::raycaster.dave.pink",
+        "22": "texture@pyk::raycaster.dave.blue",
+        "23": "texture@pyk::raycaster.kaizer",
 
         "floorDefaultTex1":"texture@pyk::raycaster.mine::smooth_andesite",
         "floorDefaultTex2":"texture@pyk::raycaster.mine::smooth_stone",
@@ -121,10 +127,13 @@
         ],
         "sprites": [
             [19.5, 9.5, 16, 1, 0, 0],
-            [19.5, 10.5, 18, 1, 0, 0],
-            [19.5, 11.5, 16, 0.5, 0.3, 0],
-            [19.5, 12.5, 9, 0.5, -0.28, 0],
-            [19.5, 13.5, 8, 1, 0, 0]
+            [19.5, 10.5, 17, 1, 0, 0],
+            [19.5, 11.5, 18, 0.5, 0.3, 0],
+            [19.5, 12.5, 19, 0.5, -0.28, 0],
+            [19.5, 13.5, 20, 1, 0, 0],
+            [22.5, 10.5, 21, 1, 0, 0],
+            [22.5, 11.5, 22, 1, 0, 0],
+            [22.5, 12.5, 23, 1, 0, 0]
         ]
     }
 }
