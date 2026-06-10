@@ -1,0 +1,9 @@
+{
+    "window_title": "PyKaizersEngine",
+    "name": "PyK_instance",
+    "acronym": "pykinst",
+    "version": "0.0.0.0",
+    "texture_size": 32,
+    "window_size": [640,360],
+    "base_window_size": [320,180]
+}
