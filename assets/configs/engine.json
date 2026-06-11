@@ -1,8 +1,10 @@
 {
     "render3D": true,
     "max_delta_time_value": 1,
-    "version": "0.0.0.0",
+    "version": "0.1.0.0",
     "name": "PyKaizersEngines",
-    "acronym": "pyk"
+    "acronym": "pyk",
+    "max_fps": 60,
+    "show_fps_in_title":true
 
 }
