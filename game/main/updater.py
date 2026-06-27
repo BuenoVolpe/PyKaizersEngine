@@ -3,6 +3,7 @@ import pygame as pg
 from sys import exit
 #=====================================#
 from engine.utils.log import log_error
+from engine.configs.configs import configs
 #=====================================#
 class Updater:
     #=====================================#
@@ -15,7 +16,7 @@ class Updater:
     #=====================================#
     def update(self, delta_time:float):
         max_delta_time_value = 1
-        if delta_time > max_delta_time_value:
+        if delta_time > configs.engine.max_delta_time_value:
             return
         #--------------------------------#
         # signal_bus.process()

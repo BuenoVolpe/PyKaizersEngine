@@ -7,6 +7,8 @@ from game.main.loader import Loader
 from game.main.updater import Updater
 from game.main.render import Render
 #=====================================#
+from engine.configs.configs import configs
+#=====================================#
 pg.init()
 #=====================================#
 class Main:
@@ -45,6 +47,7 @@ class Main:
             dt = self.get_delta_time()
             #-------------------------------------#
             for event in pg.event.get():
+                #-------------------------------------#
                 if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_LALT):
                     pg.quit()
                     exit()
@@ -53,7 +56,7 @@ class Main:
             self.render.draw(self.screen, self.main_surface, dt)
             #-------------------------------------#
             pg.display.update()
-            self.clock.tick(60)
+            self.clock.tick(configs.game.fps)
 
 #=====================================#
 if __name__ == "__main__":

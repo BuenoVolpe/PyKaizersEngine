@@ -1,0 +1,17 @@
+{
+    "window_title": "PyKaizersEngine",
+    "name": "PyK_instance",
+    "acronym": "pykinst",
+    
+    "version": "0.0.0.0",
+
+    "window_size": [640,360],
+    "base_window_size": [320,180],
+
+    "constant_scale": 1,
+    "resize_main_surface":true,
+    
+    "max_fps": 60,
+    "show_fps_in_title":true
+}
+

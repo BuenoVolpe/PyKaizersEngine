@@ -1,0 +1,24 @@
+from engine.configs.base import ConfigsBase
+#================================#
+class Paths(ConfigsBase):
+    def __init__(self, path:str="assets/configs/paths.json"):
+        #--------------------------------#
+        super().__init__(path)
+    #================================#
+    def set_essential_values(self):
+        """set default values for essential paths if they are not provided in the JSON"""
+        self.configs = getattr(self, "configs", "assets/configs/")
+        #--------------------------------#
+        self.game_configs = getattr(self, "game_configs", "assets/configs/game.json")
+        self.inputs = getattr(self, "inputs", "assets/configs/inputs.json")
+        self.engine_configs = getattr(self, "engine_configs", "assets/configs/engine.json")
+        self.paths = getattr(self, "paths", "assets/configs/paths.json")
+        #--------------------------------#
+        self.fonts = getattr(self, "fonts", "assets/engine/fonts/")
+        #--------------------------------#
+        self.AtariSmall = getattr(self, "AtariSmall", "assets/engine/fonts/AtariSmall.ttf")
+        self.dogicapixel = getattr(self, "dogicapixel", "assets/engine/fonts/dogicapixel.ttf")
+        self.PixelOperator = getattr(self, "PixelOperator", "assets/engine/fonts/PixelOperator.ttf")
+#================================#
+paths = Paths()
+#--------------------------------#

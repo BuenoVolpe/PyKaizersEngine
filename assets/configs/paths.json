@@ -1,0 +1,6 @@
+{
+    "configs": "assets/configs/",
+    "paths": "assets/configs/paths.json",
+    "engine_configs":"assets/configs/engine.json",
+    "game_configs":"assets/configs/game.json"
+}
