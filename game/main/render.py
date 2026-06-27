@@ -2,6 +2,8 @@
 import pygame as pg
 from sys import exit
 #=====================================#
+from engine.utils.log import log_error
+#=====================================#
 class Render:
     #=====================================#
     def __init__(self):
@@ -56,7 +58,7 @@ class Render:
                     obj.draw(surface)
                     continue
                 #-------------------------------------#
-                # log_error(f"Object {obj} has no 'render' or 'draw' method.")
+                log_error(f"Object {obj} has no 'render' or 'draw' method.")
         #-------------------------------------#
         for system in self.systems:
             if not getattr(system, "on_screen", True):
@@ -73,7 +75,7 @@ class Render:
                     obj.draw(screen)
                     continue
                 #-------------------------------------#
-                # log_error(f"UI Element {obj} has no 'render' or 'draw' method.")
+                log_error(f"UI Element {obj} has no 'render' or 'draw' method.")
         #-------------------------------------#
         for system in self.systems:
             if getattr(system, "on_screen", False):

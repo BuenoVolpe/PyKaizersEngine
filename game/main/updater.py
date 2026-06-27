@@ -2,6 +2,8 @@
 import pygame as pg
 from sys import exit
 #=====================================#
+from engine.utils.log import log_error
+#=====================================#
 class Updater:
     #=====================================#
     def __init__(self):
@@ -28,7 +30,7 @@ class Updater:
                     obj.update(delta_time)
                     continue
                 #--------------------------------#
-                # log_error(f"Object {obj} has no 'update' method.")
+                log_error(f"Object {obj} has no 'update' method.")
     #=====================================#
     def add_object(self, obj:object, priority:int=0):
         #--------------------------------#  
