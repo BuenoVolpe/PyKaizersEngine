@@ -1,0 +1,6 @@
+{
+    "max_fps": 60,
+    "show_fps_in_title":true,
+    "window_size": [640,360],
+    "full_screen":false
+}

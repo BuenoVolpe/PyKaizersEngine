@@ -13,9 +13,9 @@ class Game(ConfigsBase):
         #--------------------------------#
         self.version = getattr(self,"version", "0.0.0.0")
         #--------------------------------#
-        self.window_size = getattr(self,"window_size", [640,360])
-        self.window_width, self.window_height = self.window_size
-        self.window_center = self.window_width//2, self.window_height//2
+        # self.window_size = getattr(self,"window_size", [640,360])
+        # self.window_width, self.window_height = self.window_size
+        # self.window_center = self.window_width//2, self.window_height//2
         #--------------------------------#
         self.base_window_size = getattr(self,"base_window_size", [320,180])
         self.base_window_width, self.base_window_height = self.base_window_size

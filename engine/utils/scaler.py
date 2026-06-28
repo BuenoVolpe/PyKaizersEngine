@@ -15,10 +15,11 @@ class Scaler:
     #------------------------------#
     def update(self):
         game = configs.game
+        settings = configs.settings
         #------------------------------#
         # Ratio between current window size and base window size
-        self.W_RATIO = game.window_width / game.base_window_width
-        self.H_RATIO = game.window_height / game.base_window_height
+        self.W_RATIO = settings.window_size[0] / game.base_window_width
+        self.H_RATIO = settings.window_size[1] / game.base_window_height
     #------------------------------#
     def constant(self, value: float) -> int:
         return int(value * configs.game.get("constant_scale", 1) * min(self.W_RATIO, self.H_RATIO))

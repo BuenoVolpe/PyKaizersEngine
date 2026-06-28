@@ -42,6 +42,9 @@ class ConfigsBase:
                     continue
             #--------------------------------#
             setattr(self, key, value)
+        #--------------------------------#
+        if not hasattr(self, "_data"):
+            self._data = data
 
     #----get method---#
     def get(self, key:str, default=None):
