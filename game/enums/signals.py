@@ -1,0 +1,30 @@
+#=====================================#
+from engine.configs.configs import configs
+#=====================================#
+mark = configs.engine.asset_marks.signal
+pyk = configs.engine.acronym
+pykinst = configs.game.acronym
+#=====================================#
+class Signals:
+    #-------------------------------------#
+    RENDER_ADD_UI_ELEMENT:str = F"{mark}@{pyk}::render.add.ui_element"
+    RENDER_REMOVE_UI_ELEMENT:str = F"{mark}@{pyk}::render.remove.ui_element"
+    RENDER_ADD_OBJ:str = F"{mark}@{pyk}::render.add.object"
+    RENDER_REMOVE_OBJ:str = F"{mark}@{pyk}::render.remove.object"
+    #-------------------------------------#
+    UPDATER_ADD_OBJECT:str = f"{mark}@{pyk}::updater.add.object"
+    UPDATER_REMOVE_OBJECT:str = f"{mark}@{pyk}::updater.remove.object"
+    #-------------------------------------#
+    ENGINE_UPDATE:str = f"{mark}@{pyk}::engine.update"
+    #-------------------------------------#
+    EVENT_HANDLER_ADD_OBJECT:str = f"{mark}@{pyk}::events_handler.add.object"
+    EVENT_HANDLER_REMOVE_OBJECT:str = f"{mark}@{pyk}::events_handler.remove.object"
+    #-------------------------------------#
+    PGEVENT_KEY_DOWN:str = f"{mark}@{pyk}::pgevent.key.down"
+    PGEVENT_KEY_UP:str = f"{mark}@{pyk}::pgevent.key.up"
+    PGEVENT_MOUSE_DOWN:str = f"{mark}@{pyk}::pgevent.mouse.down"
+    PGEVENT_MOUSE_UP:str = f"{mark}@{pyk}::pgevent.mouse.up"
+    #-------------------------------------#
+    DISPLAY_BUILDED_SCREEN:str = f"{mark}@{pyk}::display.builded_screen"
+#=====================================#
+signals = Signals()

@@ -3,6 +3,8 @@ import pygame as pg
 from engine.utils.log import log, log_error
 #--------------------------------#
 from engine.signal_bus import signal_bus
+from game.enums.signals import signals
+from game.enums.signals_prioritys import sig_prio
 #--------------------------------#
 from engine.configs.configs import configs
 #================================#
@@ -14,8 +16,8 @@ class EventsHandler:
     #=====================================#
     def _subscribe_functions(self):
         #-------------------------------------#
-        signal_bus.subscribe("signal@pyk::events_handler.add.object", self.add_object, priority=10)
-        signal_bus.subscribe("signal@pyk::events_handler.remove.object", self.remove_object, priority=10)
+        signal_bus.subscribe(signals.EVENT_HANDLER_ADD_OBJECT, self.add_object, sig_prio.ADD_OBJ)
+        signal_bus.subscribe(signals.EVENT_HANDLER_REMOVE_OBJECT, self.remove_object, sig_prio.REMOVE_OBJ)
     #=====================================#
     def handle_events(self):
         #--------------------------------#
@@ -66,19 +68,19 @@ class EventsHandler:
     #================================#
     def handle_keydown(self, event):
         #------------------------------#
-        signal_bus.emit("signal@pyk::pgevent.key.down", event=event)
+        signal_bus.emit(signals.PGEVENT_KEY_DOWN, event=event)
     #================================#
     def handle_keyup(self, event):
         #------------------------------#
-        signal_bus.emit("signal@pyk::pgevent.key.up", event=event)
+        signal_bus.emit(signals.PGEVENT_KEY_UP, event=event)
     #================================#
     def handle_mousedown(self, event):
         #------------------------------#
-        signal_bus.emit("signal@pyk::pgevent.mouse.down", event=event)
+        signal_bus.emit(signals.PGEVENT_MOUSE_DOWN, event=event)
     #================================#
     def handle_mouseup(self, event):
         #------------------------------#
-        signal_bus.emit("signal@pyk::pgevent.mouse.up", event=event)
+        signal_bus.emit(signals.PGEVENT_MOUSE_UP, event=event)
     #=====================================#
     def add_object(self, obj:object, priority:int=0):
         #--------------------------------#  

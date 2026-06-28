@@ -5,6 +5,8 @@ from sys import exit
 from engine.utils.log import log_error
 #-------------------------------------#
 from engine.signal_bus import signal_bus
+from game.enums.signals import signals
+from game.enums.signals_prioritys import sig_prio
 #=====================================#
 class Render:
     #=====================================#
@@ -23,10 +25,10 @@ class Render:
     #=====================================#
     def _subscribe_functions(self):
         #-------------------------------------#
-        signal_bus.subscribe("signal@pyk::render.add.ui_element", self.add_ui_element, priority=10)
-        signal_bus.subscribe("signal@pyk::render.remove.ui_element", self.remove_ui_element, priority=10)
-        signal_bus.subscribe("signal@pyk::render.add.object", self.add_object, priority=10)
-        signal_bus.subscribe("signal@pyk::render.remove.object", self.remove_object, priority=10)
+        signal_bus.subscribe(signals.RENDER_ADD_UI_ELEMENT, self.add_ui_element, sig_prio.ADD_OBJ)
+        signal_bus.subscribe(signals.RENDER_REMOVE_UI_ELEMENT, self.remove_ui_element, sig_prio.REMOVE_OBJ)
+        signal_bus.subscribe(signals.RENDER_ADD_OBJ, self.add_object, sig_prio.ADD_OBJ)
+        signal_bus.subscribe(signals.RENDER_REMOVE_OBJ, self.remove_object, sig_prio.REMOVE_OBJ)
     #=====================================#
     def add_ui_element(self, element, priority:int=0):
         #-------------------------------------#

@@ -1,7 +1,7 @@
 from engine.configs.base import ConfigsBase
 from engine.configs.paths import Paths
-from engine.configs.game import Game
-from engine.configs.engine import Engine
+from engine.configs.game import Game, game
+from engine.configs.engine import Engine, engine
 # from engine.configs.inputs import inputs
 # from engine.configs.debug import Debug
 #================================#
@@ -11,9 +11,9 @@ class ConfigManager:
     #--------------------------------#
     def __init__(self):
         self.paths = Paths()
-        self.game = Game(self.paths.game_configs)
+        self.game = game #Game(self.paths.game_configs)
         # self.inputs = inputs
-        self.engine = Engine(self.paths.engine_configs)
+        self.engine = engine #Engine(self.paths.engine_configs)
         # self.debug = Debug(self.paths.debug_configs)
         #--------------------------------#
         self.fonts:list = None
@@ -64,4 +64,4 @@ class ConfigManager:
         #--------------------------------#
         return config.get(key, default_value)
 #================================#
-configs = ConfigManager()
+configs = ConfigManager()#

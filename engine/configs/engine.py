@@ -2,6 +2,7 @@ from engine.configs.base import ConfigsBase
 #================================#
 class Engine(ConfigsBase):
     def __init__(self, path:str="assets/configs/engine.json"):
+        self.asset_marks = None
         #--------------------------------#
         super().__init__(path)
     #================================#

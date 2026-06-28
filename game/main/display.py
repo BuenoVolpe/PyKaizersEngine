@@ -6,6 +6,7 @@ from engine.configs.configs import configs
 from engine.utils.scaler import scaler
 #-------------------------------------#
 from engine.signal_bus import signal_bus
+from game.enums.signals import signals
 #=====================================#
 class Display:
     #=====================================#
@@ -41,7 +42,7 @@ class Display:
             configs.settings.window_width, configs.settings.window_height = configs.settings.window_size = RES
             configs.settings.window_center = RES[0]//2, RES[1]//2
             #------------------------------#
-            signal_bus.emit("signal@pyk::display.builded_screen")
+            signal_bus.emit(signals.DISPLAY_BUILDED_SCREEN)
         #------------------------------#
         return RES
     

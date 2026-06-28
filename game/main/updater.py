@@ -4,6 +4,8 @@ import pygame as pg
 from engine.utils.log import log_error
 #--------------------------------#
 from engine.signal_bus import signal_bus
+from game.enums.signals import signals
+from game.enums.signals_prioritys import sig_prio
 #--------------------------------#
 from engine.configs.configs import configs
 #=====================================#
@@ -20,15 +22,15 @@ class Updater:
     #=====================================#
     def _subscribe_functions(self):
         #-------------------------------------#
-        signal_bus.subscribe("signal@pyk::updater.add.object", self.add_object, priority=10)
-        signal_bus.subscribe("signal@pyk::updater.remove.object", self.remove_object, priority=10)
+        signal_bus.subscribe(signals.UPDATER_ADD_OBJECT, self.add_object, sig_prio.ADD_OBJ)
+        signal_bus.subscribe(signals.UPDATER_REMOVE_OBJECT, self.remove_object, sig_prio.REMOVE_OBJ)
     #=====================================#
     def update(self, delta_time:float):
         #--------------------------------#
         if delta_time > configs.engine.max_delta_time_value:
             return
         #--------------------------------#
-        signal_bus.emit("signal@pyk::engine.update", dt=delta_time)
+        signal_bus.emit(signals.ENGINE_UPDATE, dt=delta_time)
         #--------------------------------#
         signal_bus.process()
         #--------------------------------#
