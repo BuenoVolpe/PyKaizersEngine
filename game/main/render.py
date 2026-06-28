@@ -3,6 +3,8 @@ import pygame as pg
 from sys import exit
 #=====================================#
 from engine.utils.log import log_error
+#-------------------------------------#
+from engine.signal_bus import signal_bus
 #=====================================#
 class Render:
     #=====================================#
@@ -16,6 +18,15 @@ class Render:
         self.systems = [
             # RenderSystem(world)
         ]
+        #=====================================#
+        self._subscribe_functions()
+    #=====================================#
+    def _subscribe_functions(self):
+        #-------------------------------------#
+        signal_bus.subscribe("signal@pyk::render.add.ui_element", self.add_ui_element, priority=10)
+        signal_bus.subscribe("signal@pyk::render.remove.ui_element", self.remove_ui_element, priority=10)
+        signal_bus.subscribe("signal@pyk::render.add.object", self.add_object, priority=10)
+        signal_bus.subscribe("signal@pyk::render.remove.object", self.remove_object, priority=10)
     #=====================================#
     def add_ui_element(self, element, priority:int=0):
         #-------------------------------------#

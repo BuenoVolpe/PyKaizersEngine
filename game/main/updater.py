@@ -1,8 +1,10 @@
 #=====================================#
 import pygame as pg
-from sys import exit
 #=====================================#
 from engine.utils.log import log_error
+#--------------------------------#
+from engine.signal_bus import signal_bus
+#--------------------------------#
 from engine.configs.configs import configs
 #=====================================#
 class Updater:
@@ -13,13 +15,22 @@ class Updater:
         #--------------------------------#
         self.systems = [ #[sys1, sys2(value, key), sys3(kwarg="aa")]
         ] 
+        #=====================================#
+        self._subscribe_functions()
+    #=====================================#
+    def _subscribe_functions(self):
+        #-------------------------------------#
+        signal_bus.subscribe("signal@pyk::updater.add.object", self.add_object, priority=10)
+        signal_bus.subscribe("signal@pyk::updater.remove.object", self.remove_object, priority=10)
     #=====================================#
     def update(self, delta_time:float):
-        max_delta_time_value = 1
+        #--------------------------------#
         if delta_time > configs.engine.max_delta_time_value:
             return
         #--------------------------------#
-        # signal_bus.process()
+        signal_bus.emit("signal@pyk::engine.update", dt=delta_time)
+        #--------------------------------#
+        signal_bus.process()
         #--------------------------------#
         for system in self.systems:
             system.update(delta_time)

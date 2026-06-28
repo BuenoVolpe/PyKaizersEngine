@@ -1,5 +1,7 @@
 import pygame as pg
 from engine.configs.configs import configs
+#--------------------------------#
+from engine.signal_bus import signal_bus
 #------------------------------#
 class Scaler:
     """
@@ -12,6 +14,7 @@ class Scaler:
     def __init__(self):
         #------------------------------#
         self.update()
+        signal_bus.subscribe("signal@pyk::display.builded_screen", self.update, priority=5)
     #------------------------------#
     def update(self):
         game = configs.game

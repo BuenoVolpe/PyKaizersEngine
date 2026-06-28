@@ -1,9 +1,11 @@
 #=====================================#
 import pygame as pg
 import os
-#=====================================#
+#-------------------------------------#
 from engine.configs.configs import configs
 from engine.utils.scaler import scaler
+#-------------------------------------#
+from engine.signal_bus import signal_bus
 #=====================================#
 class Display:
     #=====================================#
@@ -12,7 +14,7 @@ class Display:
     #=====================================#
     def _load_screen(self):
         window_title:str = configs.game.window_title
-
+        #=====================================#
         RES = self.get_screen_resolution()
         MIN_RES:list[int, int] = configs.game.base_window_size
         #--------------------------------#
@@ -39,7 +41,7 @@ class Display:
             configs.settings.window_width, configs.settings.window_height = configs.settings.window_size = RES
             configs.settings.window_center = RES[0]//2, RES[1]//2
             #------------------------------#
-            scaler.update()
+            signal_bus.emit("signal@pyk::display.builded_screen")
         #------------------------------#
         return RES
     
