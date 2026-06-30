@@ -2,5 +2,12 @@
     "configs": "assets/configs/",
     "paths": "assets/configs/paths.json",
     "engine_configs":"assets/configs/engine.json",
-    "game_configs":"assets/configs/game.json"
+    "game_configs":"assets/configs/game.json",
+
+    "engine_textures":"assets/engine/textures/",
+    "game_textures":"assets/game/textures/",
+
+    "error_image":"assets/engine/others/error.png",
+    "color_map":"assets/game/others/color_map.png",
+    "color_map_json":"assets/game/others/color_map.json"
 }

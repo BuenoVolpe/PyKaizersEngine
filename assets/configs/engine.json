@@ -1,11 +1,12 @@
 {
-    "version": "0.1.0.0",
+    "version": "0.1.1.0",
     "name": "PyKaizersEngines",
     "acronym": "pyk",
     "max_delta_time_value": 1,
     "asset_marks":{
         "subclass": true,
 
+        "texture": "texture",
         "signal": "signal"
     }
 

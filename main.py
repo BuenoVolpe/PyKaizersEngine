@@ -8,7 +8,13 @@ from game.main.loader import Loader
 from game.main.updater import Updater
 from game.main.render import Render
 #=====================================#
+from engine.handlers.textures import TextureHandler
+#=====================================#
 from engine.configs.configs import configs
+#-------------------------------------#
+from engine.signal_bus import signal_bus
+from game.enums.signals import signals
+from game.enums.signals_prioritys import sig_prio
 #=====================================#
 pg.init()
 #=====================================#
@@ -29,6 +35,9 @@ class Main:
         self.updater:Updater = Updater()
         self.render:Render = Render()
         self.events_handler:EventsHandler = EventsHandler()
+        #=====================================#
+        self.texture_handler = TextureHandler()
+        signal_bus.emit(signals.RENDER_ADD_IMG, image=self.texture_handler.get(f"{configs.engine.asset_marks.texture}@pyk::dave.standart"), pos=[5,5])
         #=====================================#
         self.screen = self.display.screen
         self.main_surface = self.display.main_surface

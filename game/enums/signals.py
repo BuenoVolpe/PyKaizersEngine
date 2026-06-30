@@ -11,6 +11,8 @@ class Signals:
     RENDER_REMOVE_UI_ELEMENT:str = F"{mark}@{pyk}::render.remove.ui_element"
     RENDER_ADD_OBJ:str = F"{mark}@{pyk}::render.add.object"
     RENDER_REMOVE_OBJ:str = F"{mark}@{pyk}::render.remove.object"
+    RENDER_ADD_IMG:str = F"{mark}@{pyk}::render.add.image"
+    RENDER_REMOVE_IMG:str = F"{mark}@{pyk}::render.remove.image"
     #-------------------------------------#
     UPDATER_ADD_OBJECT:str = f"{mark}@{pyk}::updater.add.object"
     UPDATER_REMOVE_OBJECT:str = f"{mark}@{pyk}::updater.remove.object"

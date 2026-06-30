@@ -14,8 +14,7 @@ class Render:
         #=====================================#
         self.ui_elements = {} #priority: [elements]
         self.layers = {} #priority: [elements]
-        #-------------------------------------#
-        self.images = []
+        self.images = {} #priority: [elements]
         #-------------------------------------#
         self.systems = [
             # RenderSystem(world)
@@ -29,6 +28,8 @@ class Render:
         signal_bus.subscribe(signals.RENDER_REMOVE_UI_ELEMENT, self.remove_ui_element, sig_prio.REMOVE_OBJ)
         signal_bus.subscribe(signals.RENDER_ADD_OBJ, self.add_object, sig_prio.ADD_OBJ)
         signal_bus.subscribe(signals.RENDER_REMOVE_OBJ, self.remove_object, sig_prio.REMOVE_OBJ)
+        signal_bus.subscribe(signals.RENDER_ADD_IMG, self.add_image, sig_prio.ADD_OBJ)
+        signal_bus.subscribe(signals.RENDER_REMOVE_IMG, self.remove_image, sig_prio.REMOVE_OBJ)
     #=====================================#
     def add_ui_element(self, element, priority:int=0):
         #-------------------------------------#
@@ -56,10 +57,25 @@ class Render:
                 self.layers[priority].remove(element)
                 return
     #=====================================#
+    def add_image(self, image, pos, priority:int=0):
+        #-------------------------------------#
+        if priority not in self.images:
+            self.images[priority] = []
+        #-------------------------------------#
+        self.images[priority].append([image, pos])
+    #-------------------------------------#
+    def remove_image(self, image, pos):
+        for priority in self.images:
+            if [image, pos] in self.images[priority]:
+                self.images[priority].remove([image, pos])
+                return
+    #=====================================#
     def render(self, surface:pg.Surface):
         #-------------------------------------#
-        for image in self.images:
-            surface.blit(image["texture"], image["pos"])
+        for priority in sorted(self.images.keys()):
+            for (img, pos) in self.images[priority]:
+                #-------------------------------------#
+                surface.blit(img, pos)
         #-------------------------------------#
         for priority in sorted(self.layers.keys()):
             for obj in self.layers[priority]:
