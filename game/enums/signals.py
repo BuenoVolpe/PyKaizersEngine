@@ -28,5 +28,8 @@ class Signals:
     PGEVENT_MOUSE_UP:str = f"{mark}@{pyk}::pgevent.mouse.up"
     #-------------------------------------#
     DISPLAY_BUILDED_SCREEN:str = f"{mark}@{pyk}::display.builded_screen"
+    #-------------------------------------#
+    SOUND_PLAY:str = f"{mark}@{pyk}::sound.play"
+    SOUND_PLAY_GROUP:str = f"{mark}@{pyk}::sound.play.group"
 #=====================================#
 signals = Signals()

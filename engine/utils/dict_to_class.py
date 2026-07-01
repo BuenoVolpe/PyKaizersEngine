@@ -1,4 +1,4 @@
-def dict_to_class(data):
+def dict_to_class(data:dict):
     #--------------------------------#
     obj = GenericClass()
     #--------------------------------#
@@ -15,7 +15,6 @@ def dict_to_class(data):
     obj._data = data
     #--------------------------------#
     return obj
-
 #=====================================#
 class GenericClass:
     ...

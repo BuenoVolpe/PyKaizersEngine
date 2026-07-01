@@ -32,6 +32,7 @@ colors_dict = {
 def log(text:str, color:str=None, styles:list[str|None, str|None]=[], console:object|None=None):
     #--------------------------------#
     #style
+    styles = styles or []
     final_style = ""
     for style in styles:
         final_style += styles_dict.get(style, "")
@@ -59,7 +60,9 @@ def log_error(text:str, console:object|None=None):
     if console:
         if not hasattr(console, "core"):
            # from engine.console import console
-            console.log_error(text)
+            # console.log_error(text)
+            log_error("no console found")
+
             return
         console.log_error(text)
 #================================#
@@ -77,36 +80,28 @@ def log_success(text:str, console:object|None=None):
 def log_list(list:list, color:str=None, styles:list[str|None, str|None]=[], list_name:str=None, console:object|None=None):
     #--------------------------------#
     if list_name:
-        log(list_name, color, styles, console)
+        log(f"#========= {list_name} ==========#", color, styles, console)
     #--------------------------------#
     for item in list:
         log(item, color, styles, console)
 
-# def log_dict(dict:dict,
-#              key_color:str=None, value_color:str=None,
-#              key_styles:list[str|None, str|None]=[], value_styles:list[str|None, str|None]=[],
-#              dict_name=None, name_color:str=None, name_styles:list[str|None, str|None]=None,
-#              console=None):
-#     #----------------------#
-#     if dict_name:
-#         log(dict_name, name_color, name_styles, console)
-#     #----------------------#
-#     for key, value in dict.items():
-#         #----------------------#
-#         final_key_style = ""
-#         for style in key_styles:
-#             final_key_style += styles_dict.get(style, "")
-#         #----------------------#
-#         key_string = key_color + final_key_style + str(key)
-#         #----------------------#
-#         final_value_style = ""
-#         for style in value_styles:
-#             final_value_style += styles_dict.get(style, "")
-#         #----------------------#
-#         value_string = value_color + final_value_style + str(value)
-#         #----------------------#
-#         string = f"key[{key_string}] : {value_string},"
-#         print(string)
+def log_dict(dict:dict,
+             key_color:str=None, value_color:str=None,
+             styles:list[str|None, str|None]=[],
+             dict_name=None, name_color:str=None, name_styles:list[str|None, str|None]=None,
+             console=None):
+    #----------------------#
+    if dict_name:
+        log(f"#========= {dict_name} ==========#", name_color, name_styles, console)
+    #----------------------#
+    key_color = key_color or "BLACK"
+    key_color = colors_dict.get(key_color.upper(), "BLACK")
+    value_color = value_color or "BLACK"
+    value_color = colors_dict.get(value_color.upper(), "BLACK")
+    #----------------------#
+    for key, value in dict.items():
+        line = f"{key_color}> {key} {value_color}: {value},"
+        log(line, None, styles, console)
 #         if console:
 # if not hasattr(console,:
     ## from engine.console import console

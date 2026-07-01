@@ -14,7 +14,7 @@ from engine.handlers.textures.image_loader import ImageLoader
 from engine.handlers.textures.color_map_loader import ColorMapLoader
 #-------------------------------------#
 from engine.utils.scaler import scaler
-from engine.utils.log import log_error
+from engine.utils.log import log_error, log_list
 from engine.utils.dict_to_class import dict_to_class
 from engine.utils.recolor import recolor, darken_color
 #=====================================#

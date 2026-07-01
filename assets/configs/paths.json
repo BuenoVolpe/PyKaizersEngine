@@ -7,6 +7,10 @@
     "engine_textures":"assets/engine/textures/",
     "game_textures":"assets/game/textures/",
 
+    "audio_error":"assets/engine/others/error.wav",
+    "engine_audio":"assets/engine/audio/",
+    "game_audio":"assets/game/audio/",
+
     "error_image":"assets/engine/others/error.png",
     "color_map":"assets/game/others/color_map.png",
     "color_map_json":"assets/game/others/color_map.json"

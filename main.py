@@ -9,6 +9,7 @@ from game.main.updater import Updater
 from game.main.render import Render
 #=====================================#
 from engine.handlers.textures import TextureHandler
+from engine.handlers.audio import AudioHandler
 #=====================================#
 from engine.configs.configs import configs
 #-------------------------------------#
@@ -17,6 +18,7 @@ from game.enums.signals import signals
 from game.enums.signals_prioritys import sig_prio
 #=====================================#
 pg.init()
+pg.mixer.init()
 #=====================================#
 class Main:
     #=====================================#
@@ -37,7 +39,11 @@ class Main:
         self.events_handler:EventsHandler = EventsHandler()
         #=====================================#
         self.texture_handler = TextureHandler()
+        self.audio_handler = AudioHandler()
+        #=====================================#
         signal_bus.emit(signals.RENDER_ADD_IMG, image=self.texture_handler.get(f"{configs.engine.asset_marks.texture}@pyk::dave.standart"), pos=[5,5])
+        # signal_bus.emit(signals.SOUND_PLAY_GROUP, sound=f"audiogroup@pyk::cats")
+        # signal_bus.emit(signals.SOUND_PLAY, sound=f"{configs.engine.asset_marks.audio}@pyk::error")
         #=====================================#
         self.screen = self.display.screen
         self.main_surface = self.display.main_surface

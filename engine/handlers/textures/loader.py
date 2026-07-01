@@ -36,7 +36,7 @@ class Loader:
         game_asset = f"{configs.engine.asset_marks.texture}@{configs.game.acronym}"
         #=====================================#
         for base, path in self.paths.items():
-            for info in scan_folder_with_json(path):
+            for info in scan_folder_with_json(path, extension=f".{configs.engine.extensions.texture}"):
                 #--------------------------------#
                 name = info["name"]
                 image_path = info["file_path"]
@@ -57,7 +57,7 @@ class Loader:
                 )
                 #=====================================#
                 atlas_path = os.path.relpath(image_path, path)
-                atlas_path = atlas_path.replace(".png", "").replace("\\", ".")
+                atlas_path = atlas_path.replace(f".{configs.engine.extensions.texture}", "").replace("\\", ".")
                 #-------------------------------------#
                 if base == configs.engine.acronym:
                     atlas_path = f"{engine_asset}::{atlas_path}"

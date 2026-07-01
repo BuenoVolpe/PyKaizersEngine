@@ -1,5 +1,5 @@
 {
-    "version": "0.1.1.0",
+    "version": "0.1.2.0",
     "name": "PyKaizersEngines",
     "acronym": "pyk",
     "max_delta_time_value": 1,
@@ -7,7 +7,18 @@
         "subclass": true,
 
         "texture": "texture",
+        "audio": "audio",
+        "music": "music",
+        "audiogroup": "audiogroup",
         "signal": "signal"
-    }
+    },
+    
+    "music_folder": "music",
 
+    "extensions":{
+        "subclass": true,
+
+        "texture": "png",
+        "audio": "wav"
+    }
 }
