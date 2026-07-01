@@ -22,6 +22,7 @@ class Signals:
     EVENT_HANDLER_ADD_OBJECT:str = f"{mark}@{pyk}::events_handler.add.object"
     EVENT_HANDLER_REMOVE_OBJECT:str = f"{mark}@{pyk}::events_handler.remove.object"
     #-------------------------------------#
+    PGEVENT:str = f"{mark}@{pyk}::pgevent"
     PGEVENT_KEY_DOWN:str = f"{mark}@{pyk}::pgevent.key.down"
     PGEVENT_KEY_UP:str = f"{mark}@{pyk}::pgevent.key.up"
     PGEVENT_MOUSE_DOWN:str = f"{mark}@{pyk}::pgevent.mouse.down"

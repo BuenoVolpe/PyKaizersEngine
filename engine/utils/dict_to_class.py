@@ -18,4 +18,8 @@ def dict_to_class(data:dict):
 #=====================================#
 class GenericClass:
     ...
+    #--------------------------------#
+    def get(self, key:str, default_value:any=None) -> any:
+        return getattr(key, default_value)
+
 

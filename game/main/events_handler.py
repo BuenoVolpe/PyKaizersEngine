@@ -3,10 +3,13 @@ import pygame as pg
 from engine.utils.log import log, log_error
 #--------------------------------#
 from engine.signal_bus import signal_bus
+#--------------------------------#
+from game.enums.inputs import inputsenum as inp
 from game.enums.signals import signals
 from game.enums.signals_prioritys import sig_prio
 #--------------------------------#
 from engine.configs.configs import configs
+from engine.configs.inputs import inputs
 #================================#
 class EventsHandler:
     #--------------------------------#
@@ -24,8 +27,8 @@ class EventsHandler:
         for event in pg.event.get():
             #--------------------------------#
             if event.type == pg.QUIT or (
-                    (event.type == pg.KEYDOWN and event.key == pg.K_LALT)
-                    # inputs.input_by_event(event, inp.FAST_QUIT, pg.K_LALT, form="down")
+                    # (event.type == pg.KEYDOWN and event.key == pg.K_LALT)
+                    inputs.input_by_event(event, inp.FAST_QUIT, form="down")
                 ):
                 #--------------------------------#
                 return self.quit()
@@ -41,6 +44,8 @@ class EventsHandler:
             #------------------------------#
             self.inputs(event)
             self.handle_object_events(event)
+            #--------------------------------#
+            signal_bus.emit(signals.PGEVENT, event=event)
         return True
     #================================#
     def inputs(self, event):

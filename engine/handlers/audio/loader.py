@@ -59,8 +59,9 @@ class Loader:
                     atlas_path = f"{engine_asset}::{key}"
                     #--------------------------------#
                     if category == configs.engine.music_folder:
+                        data.sound = full_path
                         music_atlas_path = f"{engine_music_asset}::{key.replace(f"{configs.engine.music_folder}.", "", 1)}"
-                        self.atlas.save_as_music(music_atlas_path, data.sound)
+                        self.atlas.save_as_music(music_atlas_path, data)
                     #--------------------------------#
                     elif category != group:
                         group_atlas_path = f"{engine_group}::{group}"
@@ -71,8 +72,9 @@ class Loader:
                     atlas_path = f"{game_asset}::{key}"
                     #--------------------------------#
                     if category == configs.engine.music_folder:
+                        data.sound = full_path
                         music_atlas_path = f"{game_music_asset}::{key.replace(f"{configs.engine.music_folder}.", "", 1)}"
-                        self.atlas.save_as_music(music_atlas_path, data.sound)
+                        self.atlas.save_as_music(music_atlas_path, data)
                     #--------------------------------#
                     elif category != group:
                         group_atlas_path = f"{game_group}::{group}"

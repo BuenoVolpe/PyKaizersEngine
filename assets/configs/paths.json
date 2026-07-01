@@ -9,7 +9,9 @@
 
     "audio_error":"assets/engine/others/error.wav",
     "engine_audio":"assets/engine/audio/",
+    "engine_playlists":"assets/engine/playlists/",
     "game_audio":"assets/game/audio/",
+    "game_playlists":"assets/game/playlists/",
 
     "error_image":"assets/engine/others/error.png",
     "color_map":"assets/game/others/color_map.png",
