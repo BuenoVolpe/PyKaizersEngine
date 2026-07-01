@@ -23,7 +23,7 @@ class AudioHandler:
             configs.game.acronym: configs.paths.game_audio,
         })
         #--------------------------------#
-        self.atlas = Atlas(pg.mixer.Sound(self.paths.error))
+        self.atlas = Atlas(self.paths.error)
         self.player = Player(self.paths, self.atlas)
         self.loader = Loader(self.paths, self.atlas)
         self.loader._load()

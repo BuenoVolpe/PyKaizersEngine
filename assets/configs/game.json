@@ -8,6 +8,15 @@
     "base_window_size": [320,180],
 
     "constant_scale": 1,
-    "resize_main_surface":true
+    "resize_main_surface":true,
+
+    "volume":{
+        "subclass": true,
+
+        "master": 1,
+        "music": 1,
+        "sfx": 1
+    }
+    
 }
 

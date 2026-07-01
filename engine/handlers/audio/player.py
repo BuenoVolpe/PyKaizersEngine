@@ -18,51 +18,96 @@ class Player:
         self.atlas = atlas
     #================================#
     def play(
-        self, name:str, source_pos:tuple|None=None, listener_pos:tuple|None=None, max_distance:float=None, min_distance:float=None,
+        self,
+        name: str,
+        source_pos: tuple | None = None,
+        listener_pos: tuple | None = None,
+        listener_forward: tuple | None = None,
+        max_distance: float | None = None,
+        min_distance: float | None = None,
     ):
         #--------------------------------#
-        sound = self.atlas.get(name)
-        #--------------------------------#
-        channel = sound.play()
-        #--------------------------------#
+        audio = self.atlas.get(name)
+
+        channel = audio.sound.play()
+
+        category = audio.category
+
+        category_volume = getattr(configs.settings.volume, category, 1.0)
+        master_volume = configs.settings.volume.master
+
         if channel is None:
             return None
+
         #--------------------------------#
-        #normal sound
         if source_pos is None or listener_pos is None:
-            channel.set_volume(1.0, 1.0)
+            volume = master_volume * category_volume
+            channel.set_volume(volume, volume)
             return channel
+
         #--------------------------------#
         sx, sy = source_pos
         lx, ly = listener_pos
-        #--------------------------------#
+
         dx = sx - lx
         dy = sy - ly
-        #--------------------------------#
+
         distance = math.hypot(dx, dy)
-        #--------------------------------#
-        pan = max(-1.0, min(1.0, dx / max_distance))
-        left = (1 - pan) / 2
-        right = (1 + pan) / 2
         #--------------------------------#
         min_distance = min_distance or 0
         max_distance = max_distance or 0
+
         volume = 1.0
-        #--------------------------------#
+
         if min_distance and max_distance:
-            #--------------------------------#
+
             if distance <= min_distance:
                 volume = 1.0
-            #--------------------------------#
+
             elif distance >= max_distance:
                 volume = 0.0
-            #--------------------------------#
+
             else:
                 t = (distance - min_distance) / (max_distance - min_distance)
                 volume = (1 - t) ** 2
-            #--------------------------------#
-        channel.set_volume(left * volume, right * volume)
+
         #--------------------------------#
+        if listener_forward is None or distance == 0:
+            pan = max(-1.0, min(1.0, dx / (max_distance if max_distance else 1)))
+
+        else:
+            fx, fy = listener_forward
+
+            length = math.hypot(fx, fy)
+
+            if length != 0:
+                fx /= length
+                fy /= length
+
+            right_x = fy
+            right_y = -fx
+
+            sound_x = dx / distance
+            sound_y = dy / distance
+
+            pan = (
+                sound_x * right_x +
+                sound_y * right_y
+            )
+
+            pan = max(-1.0, min(1.0, pan))
+
+        #--------------------------------#
+        left = (1 - pan) / 2
+        right = (1 + pan) / 2
+
+        final_volume = volume * category_volume * master_volume
+
+        channel.set_volume(
+            left * final_volume,
+            right * final_volume,
+        )
+
         return channel
     #================================#
     def play_group(self, group:str, source_pos:tuple|None=None, listener_pos:tuple|None=None, max_distance:float=None,min_distance:float=None,):

@@ -42,7 +42,7 @@ class Main:
         self.audio_handler = AudioHandler()
         #=====================================#
         signal_bus.emit(signals.RENDER_ADD_IMG, image=self.texture_handler.get(f"{configs.engine.asset_marks.texture}@pyk::dave.standart"), pos=[5,5])
-        # signal_bus.emit(signals.SOUND_PLAY_GROUP, sound=f"audiogroup@pyk::cats")
+        signal_bus.emit(signals.SOUND_PLAY_GROUP, sound=f"audiogroup@pyk::cats")
         # signal_bus.emit(signals.SOUND_PLAY, sound=f"{configs.engine.asset_marks.audio}@pyk::error")
         #=====================================#
         self.screen = self.display.screen

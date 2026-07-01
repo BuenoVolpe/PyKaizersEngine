@@ -78,4 +78,4 @@ class Loader:
                         group_atlas_path = f"{game_group}::{group}"
                         self.atlas.save_in_group(group_atlas_path, atlas_path)
                 #--------------------------------#
-                self.atlas.save(atlas_path, data.sound)
+                self.atlas.save(atlas_path, data)

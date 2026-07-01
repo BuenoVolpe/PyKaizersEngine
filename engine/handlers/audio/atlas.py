@@ -3,10 +3,12 @@ import pygame as pg
 from random import choice
 #================================#
 from engine.configs.configs import configs
+#================================#
 from engine.utils.log import log_error
+from engine.utils.dict_to_class import dict_to_class
 #================================#
 class Atlas:
-    def __init__(self, error_audio:pg.Surface):
+    def __init__(self, error_audio):
         self.error_audio_path = error_audio
         #--------------------------------#
         self.data = {}
@@ -14,9 +16,12 @@ class Atlas:
         self.music_data = {}
         #--------------------------------#
         self.error_already_happen = False
-        self.error_audio = pg.mixer.Sound(error_audio)
+        self.error_audio = dict_to_class({
+            "sound": pg.mixer.Sound(error_audio),
+            "category": "sfx"
+            })
         #--------------------------------#
-        self.save(f"{configs.engine.asset_marks.audio}@{configs.engine.acronym}::error", error_audio)
+        self.save(f"{configs.engine.asset_marks.audio}@{configs.engine.acronym}::error", self.error_audio)
 
     #================================#
     def save_in_group(self, group:str, name:str):
