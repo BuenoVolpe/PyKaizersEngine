@@ -4,6 +4,7 @@ import pygame as pg
 from engine.signal_bus import signal_bus
 from game.enums.signals import signals
 from game.enums.signals_prioritys import signals_prioritys
+from game.enums.assets_marks import assetsmarks
 #--------------------------------#
 from engine.configs.configs import configs
 #--------------------------------#
@@ -30,13 +31,13 @@ class Loader:
     #=====================================#
     def _load(self):
         #-------------------------------------#
-        engine_asset = f"{configs.engine.asset_marks.audio}@{configs.engine.acronym}"
-        engine_music_asset = f"{configs.engine.asset_marks.music}@{configs.engine.acronym}"
-        engine_group = f"{configs.engine.asset_marks.audiogroup}@{configs.engine.acronym}"
+        engine_asset = assetsmarks.engine.audio
+        engine_music_asset = assetsmarks.engine.music
+        engine_group = assetsmarks.engine.audiogroup
         #-------------------------------------#
-        game_asset = f"{configs.engine.asset_marks.audio}@{configs.game.acronym}"
-        game_music_asset = f"{configs.engine.asset_marks.music}@{configs.game.acronym}"
-        game_group = f"{configs.engine.asset_marks.audiogroup}@{configs.game.acronym}"
+        game_asset = assetsmarks.game.audio
+        game_music_asset = assetsmarks.game.music
+        game_group = assetsmarks.game.audiogroup
         #=====================================#
         for base, path in self.paths.items():
             for (full_path, name) in scan_folder(path, extension=f".{configs.engine.extensions.audio}"):

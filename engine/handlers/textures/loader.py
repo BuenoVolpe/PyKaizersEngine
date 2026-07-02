@@ -8,6 +8,8 @@ from engine.utils.log import log_list, log_error
 #=====================================#
 from engine.configs.configs import configs
 #=====================================#
+from game.enums.assets_marks import assetsmarks
+#=====================================#
 pg.init()
 #=====================================#
 class Loader:
@@ -32,8 +34,8 @@ class Loader:
     #=====================================#
     def _load(self):
         #-------------------------------------#
-        engine_asset = f"{configs.engine.asset_marks.texture}@{configs.engine.acronym}"
-        game_asset = f"{configs.engine.asset_marks.texture}@{configs.game.acronym}"
+        engine_asset = assetsmarks.engine.texture
+        game_asset = assetsmarks.game.texture
         #=====================================#
         for base, path in self.paths.items():
             for info in scan_folder_with_json(path, extension=f".{configs.engine.extensions.texture}"):

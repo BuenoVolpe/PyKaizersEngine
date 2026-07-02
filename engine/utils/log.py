@@ -77,10 +77,10 @@ def log_success(text:str, console:object|None=None):
             return
         console.log_success(text)
 #================================#
-def log_list(list:list, color:str=None, styles:list[str|None, str|None]=[], list_name:str=None, console:object|None=None):
+def log_list(list:list, color:str=None, styles:list[str|None, str|None]=[], list_name:str=None, list_color:str=None, list_styles:list[str|None, str|None]=[], console:object|None=None):
     #--------------------------------#
     if list_name:
-        log(f"#========= {list_name} ==========#", color, styles, console)
+        log(f"#========= {list_name} ==========#", list_color, list_styles, console)
     #--------------------------------#
     for item in list:
         log(item, color, styles, console)

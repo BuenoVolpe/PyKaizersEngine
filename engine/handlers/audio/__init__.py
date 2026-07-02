@@ -3,9 +3,12 @@ import pygame as pg
 from engine.signal_bus import signal_bus
 from game.enums.signals import signals
 from game.enums.signals_prioritys import signals_prioritys
+from game.enums.assets_marks import assetsmarks
 #--------------------------------#
 from engine.configs.configs import configs
 #--------------------------------#
+#--------------------------------#
+from engine.utils.debug_log import debug_log
 from engine.utils.log import log, log_list, log_dict
 from engine.utils.dict_to_class import dict_to_class
 #================================#
@@ -31,9 +34,14 @@ class AudioHandler:
         signal_bus.subscribe(signals.SOUND_PLAY, self.play, priority=signals_prioritys.SOUND)
         signal_bus.subscribe(signals.SOUND_PLAY_GROUP, self.play_group, priority=signals_prioritys.SOUND)
         #================================#
-        # log_list(list(self.atlas.data.keys()))
-        # log_dict(self.atlas.groups_data, key_color="WHITE", dict_name="Audio Groups")
-        # log_list(list(self.atlas.music_data.keys()), list_name="Music")
+        debug_log(f"{assetsmarks.engine.debug}::audio.show_atlas_keys", 
+                  value=list(self.atlas.data.keys())
+                  )
+        debug_log(f"{assetsmarks.engine.debug}::audio.show_groups_dict", 
+                  value=self.atlas.groups_data)
+        debug_log(f"{assetsmarks.engine.debug}::audio.show_music_atlas_keys", 
+                  value=list(self.atlas.music_data.keys())
+                  )
     #================================#
     def play(self, sound:str, **kwargs):    
         #--------------------------------#

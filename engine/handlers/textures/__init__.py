@@ -6,6 +6,8 @@ import os
 #=====================================#
 from engine.configs.configs import configs
 #-------------------------------------#
+from game.enums.assets_marks import assetsmarks
+#-------------------------------------#
 from engine.utils.json import scan_folder_with_json
 #-------------------------------------#
 from engine.handlers.textures.atlas import Atlas
@@ -13,8 +15,10 @@ from engine.handlers.textures.loader import Loader
 from engine.handlers.textures.image_loader import ImageLoader
 from engine.handlers.textures.color_map_loader import ColorMapLoader
 #-------------------------------------#
-from engine.utils.scaler import scaler
 from engine.utils.log import log_error, log_list
+from engine.utils.debug_log import debug_log
+#-------------------------------------#
+from engine.utils.scaler import scaler
 from engine.utils.dict_to_class import dict_to_class
 from engine.utils.recolor import recolor, darken_color
 #=====================================#
@@ -39,6 +43,11 @@ class TextureHandler:
         )
         #-------------------------------------#
         self.loader = Loader(self.atlas, self.image_loader, self.paths, self.color_maps)
+        #-------------------------------------#
+        debug_log(f"{assetsmarks.engine.debug}::textures.show_atlas_keys", 
+                  value=list(self.atlas.data.keys())
+                  )
+
     #================================#
     def get(self, name: str):
         """

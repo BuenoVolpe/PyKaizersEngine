@@ -112,7 +112,7 @@ class Render:
             if getattr(system, "on_screen", False):
                 system.update(screen)
         #-------------------------------------#
-        fonts.atarismall.render(screen, [5, 50], "hello, world", size=10, color=(255,255,255), aligment="topleft", wrap_width=250)
+        # fonts.atarismall.render(screen, [5, 50], "hello, world", size=10, color=(255,255,255), aligment="topleft", wrap_width=250)
     #=====================================#
     def draw(self, screen, surface, dt):
         #-------------------------------------#

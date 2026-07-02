@@ -1,0 +1,87 @@
+{
+    "textures":{
+        "subclass": true,
+        
+        "show_atlas_keys":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"list",
+            "log_color":"black",
+            
+            "list_name": "textures",
+            "list_color":"white"
+        }
+    },
+    "audio":{
+        "subclass": true,
+        
+        "show_atlas_keys":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"list",
+            "log_color":"black",
+            
+            "list_name": "audio",
+            "list_color":"white"
+        },
+        "show_groups_dict":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"dict",
+            "log_color":"black",
+
+            "dict_name":"audio groups",
+            "name_color":"white"
+        },
+        "show_music_atlas_keys":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"list",
+            "log_color":"black",
+
+            "list_name": "music",
+            "list_color":"white"
+        }
+        
+    },
+    "fonts":{
+        "subclass": true, 
+        "being_created":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"log",
+            "log_color":"black"
+        }
+    },
+    "signal_bus":{
+        "subclass": true 
+    },
+    "overlay":{
+        "subclass": true,
+
+        "fps": {
+            "subclass": true,
+            
+            "do_debug":true,
+            "show_on_console":true,
+            "show_on_overlay":false,
+            "log_type":"overlay",
+            "log_color":"white"
+        }
+    }
+}

@@ -20,6 +20,6 @@ class GenericClass:
     ...
     #--------------------------------#
     def get(self, key:str, default_value:any=None) -> any:
-        return getattr(key, default_value)
+        return getattr(self, key, default_value)
 
 

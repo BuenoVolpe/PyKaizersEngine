@@ -14,9 +14,9 @@
     "game": {
         "subclass": true,
         
-        "textures":"assets/engine/textures/",
-        "audio":"assets/engine/audio/",
-        "fonts":"assets/engine/fonts/",
+        "textures":"assets/game/textures/",
+        "audio":"assets/game/audio/",
+        "fonts":"assets/game/fonts/",
         "configs":"assets/configs/game.json"
     },
     

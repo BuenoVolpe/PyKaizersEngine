@@ -1,5 +1,8 @@
 from engine.configs.configs import configs
 #------------------------------#
+from game.enums.assets_marks import assetsmarks
+from engine.utils.debug_log import debug_log
+#------------------------------#
 import pygame as pg
 #================================#
 from engine.utils.dict_to_class import dict_to_class
@@ -88,6 +91,7 @@ for base in bases:
     for font_path, font_name in scan_folder(base, extension=f".{configs.engine.extensions.font}"):
         #------------------------------#    
         font = Font(font_path)
+        debug_log(f"{assetsmarks.engine.debug}::fonts.being_created", f"name: {font_name}, path: {font_path}")
         #------------------------------#    
         setattr(fonts, font_name, font)
 #================================#
