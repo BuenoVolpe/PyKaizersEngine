@@ -17,5 +17,5 @@ class Engine(ConfigsBase):
         self.texture_size = getattr(self,"texture_size", 32)
         self.show_fps_in_title = getattr(self,"show_fps_in_title", True)
 #================================#
-engine = Engine()
+# engine = Engine()
 #--------------------------------#

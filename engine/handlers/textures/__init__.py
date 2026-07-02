@@ -22,8 +22,8 @@ class TextureHandler:
     def __init__(self):
         #-------------------------------------#
         self.paths = dict_to_class({
-            configs.engine.acronym: configs.paths.engine_textures,
-            configs.game.acronym: configs.paths.game_textures,
+            configs.engine.acronym: configs.paths.engine.textures,
+            configs.game.acronym: configs.paths.game.textures,
             "error": configs.paths.error_image,
             "color_map": configs.paths.color_map,
             "color_map_json": configs.paths.color_map_json,

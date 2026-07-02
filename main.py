@@ -10,6 +10,7 @@ from game.main.render import Render
 #=====================================#
 from engine.handlers.textures import TextureHandler
 from engine.handlers.audio import AudioHandler
+from engine.handlers.fonts import fonts
 #=====================================#
 from engine.configs.configs import configs
 #-------------------------------------#
@@ -40,6 +41,8 @@ class Main:
         #=====================================#
         self.texture_handler = TextureHandler()
         self.audio_handler = AudioHandler()
+        #=====================================#
+        pg.display.set_icon(self.texture_handler.get(configs.game.icon))
         #=====================================#
         signal_bus.emit(signals.RENDER_ADD_IMG, image=self.texture_handler.get(f"{configs.engine.asset_marks.texture}@pyk::dave.standart"), pos=[5,5])
         signal_bus.emit(signals.SOUND_PLAY_GROUP, sound=f"audiogroup@pyk::cats")

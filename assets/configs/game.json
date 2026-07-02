@@ -7,6 +7,8 @@
 
     "base_window_size": [320,180],
 
+    "icon": "texture@pyk::kaizerthrone",
+
     "constant_scale": 1,
     "resize_main_surface":true
     

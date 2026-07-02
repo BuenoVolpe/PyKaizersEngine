@@ -19,8 +19,8 @@ class AudioHandler:
         #--------------------------------#
         self.paths = dict_to_class({
             "error": configs.paths.audio_error,
-            configs.engine.acronym: configs.paths.engine_audio,
-            configs.game.acronym: configs.paths.game_audio,
+            configs.engine.acronym: configs.paths.engine.audio,
+            configs.game.acronym: configs.paths.game.audio,
         })
         #--------------------------------#
         self.atlas = Atlas(self.paths.error)

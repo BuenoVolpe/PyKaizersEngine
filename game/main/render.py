@@ -4,6 +4,8 @@ from sys import exit
 #=====================================#
 from engine.utils.log import log_error
 #-------------------------------------#
+from engine.handlers.fonts import fonts
+#-------------------------------------#
 from engine.signal_bus import signal_bus
 from game.enums.signals import signals
 from game.enums.signals_prioritys import sig_prio
@@ -110,6 +112,7 @@ class Render:
             if getattr(system, "on_screen", False):
                 system.update(screen)
         #-------------------------------------#
+        fonts.atarismall.render(screen, [5, 50], "hello, world", size=10, color=(255,255,255), aligment="topleft", wrap_width=250)
     #=====================================#
     def draw(self, screen, surface, dt):
         #-------------------------------------#

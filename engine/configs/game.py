@@ -21,5 +21,5 @@ class Game(ConfigsBase):
         self.base_window_width, self.base_window_height = self.base_window_size
         self.base_window_center = self.base_window_width//2, self.base_window_height//2
 #================================#
-game = Game()
+# game = Game()
 #--------------------------------#
