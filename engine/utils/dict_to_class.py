@@ -2,6 +2,9 @@ def dict_to_class(data:dict):
     #--------------------------------#
     obj = GenericClass()
     #--------------------------------#
+    if not isinstance(data, dict):
+        return data
+    #--------------------------------#
     for key, value in data.items():
         #--------------------------------#
         if isinstance(value, dict):

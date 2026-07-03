@@ -49,7 +49,9 @@ class EventsHandler:
         return True
     #================================#
     def inputs(self, event):
-        ...
+        #--------------------------------#
+        if inputs.input_by_event(event, inp.ACTIVE_DEBUG_OVERLAY):
+            signal_bus.emit(signals.ACTIVE_DEBUGOVERLAY)
     #================================#
     def handle_object_events(self, event):
         #------------------------------#

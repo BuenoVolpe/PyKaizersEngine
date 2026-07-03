@@ -9,6 +9,7 @@ from game.main.updater import Updater
 from game.main.render import Render
 #=====================================#
 from engine.utils.debug_log import debug_log
+from engine.utils.overlay import debug_overlay
 #=====================================#
 from engine.handlers.textures import TextureHandler
 from engine.handlers.audio import AudioHandler
@@ -55,6 +56,33 @@ class Main:
         self.main_surface = self.display.main_surface
         #=====================================#
         self.running = True
+        self.time = 0
+        self.dt = 0
+        #=====================================#
+        debug_overlay.watch(
+            f"{assetsmarks.engine.debug}::overlay.engine_version",
+            lambda: f"{configs.engine.version}"
+        )
+        debug_overlay.watch(
+            f"{assetsmarks.engine.debug}::overlay.game_version",
+            lambda: f"{configs.game.version}::{configs.engine.acronym}-{configs.engine.version}"
+        )
+        debug_overlay.watch(
+            f"{assetsmarks.engine.debug}::overlay.fps",
+            lambda: f"{self.clock.get_fps():.1f}"
+        )
+        debug_overlay.watch(
+            f"{assetsmarks.engine.debug}::overlay.delta_time",
+            lambda: f"{self.dt*(10**3):.1f}/10"
+        )
+        debug_overlay.watch(
+            f"{assetsmarks.engine.debug}::overlay.game_time",
+            lambda: self.show_time(concatenate=True)
+        )
+        debug_overlay.watch(
+            f"{assetsmarks.engine.debug}::overlay.game_ms",
+            lambda: int(self.show_time(concatenate=False))
+        )
         #-------------------------------------#
     #=====================================#
     def get_delta_time(self) -> float:
@@ -63,22 +91,54 @@ class Main:
         self.prev_time = now
         return dt
     #=====================================#
+    def pass_time(self, dt:float) -> float:
+        self.time += dt * 1000
+        return self.time
+    #=====================================#
+    def show_time(self, concatenate=False):
+        #-------------------------------------#
+        if not concatenate:
+            return self.time
+        #-------------------------------------#
+        total_ms = int(self.time)
+        #-------------------------------------#
+        hours = total_ms // (60 * 60 * 1000)
+        total_ms %= (60 * 60 * 1000)
+        #-------------------------------------#
+        minutes = total_ms // (60 * 1000)
+        minutes = f"0{minutes}" if minutes < 10 else minutes
+        total_ms %= (60 * 1000)
+        #-------------------------------------#
+        seconds = total_ms // 1000
+        seconds = f"0{seconds}" if seconds < 10 else seconds
+        milliseconds = total_ms % 1000
+        #-------------------------------------#
+        return (
+            f"{hours}:"
+            f"{minutes}:"
+            f"{seconds}."
+            f"{milliseconds}"
+        )
+    #=====================================#
     def run(self):
         #=====================================#
         while self.running:
             #-------------------------------------#
-            dt = self.get_delta_time()
+            self.dt = self.get_delta_time()
+            #--------------------------------#
+            if self.dt < configs.engine.max_delta_time_value:
+                self.pass_time(self.dt)
             #-------------------------------------#
             self.running = self.events_handler.handle_events()
             #-------------------------------------#
-            self.updater.update(dt)
-            self.render.draw(self.screen, self.main_surface, dt)
+            self.updater.update(self.dt)
+            self.render.draw(self.screen, self.main_surface, self.dt)
             #-------------------------------------#
             if configs.settings.show_fps_in_title:
                 pg.display.set_caption(f"{configs.game.window_title} | {self.clock.get_fps():.1f}")
             #-------------------------------------#
             # debug_log(f"{assetsmarks.engine.debug}::overlay.fps", 
-            #         value=f"fps: {self.clock.get_fps():.1f}"
+            #         value=f"{self.clock.get_fps():.1f}"
             #         )
             # #-------------------------------------#
             pg.display.update()

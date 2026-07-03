@@ -22,6 +22,9 @@ class Signals:
     EVENT_HANDLER_ADD_OBJECT:str = f"{mark}@{pyk}::events_handler.add.object"
     EVENT_HANDLER_REMOVE_OBJECT:str = f"{mark}@{pyk}::events_handler.remove.object"
     #-------------------------------------#
+    ADD_TO_OVERLAY:str = f"{mark}@{pyk}::debug_overlay.add"
+    ACTIVE_DEBUGOVERLAY:str = f"{mark}@{pyk}::debug_overlay.active"
+    #-------------------------------------#
     PGEVENT:str = f"{mark}@{pyk}::pgevent"
     PGEVENT_KEY_DOWN:str = f"{mark}@{pyk}::pgevent.key.down"
     PGEVENT_KEY_UP:str = f"{mark}@{pyk}::pgevent.key.up"

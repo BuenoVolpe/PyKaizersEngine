@@ -3,6 +3,7 @@ import pygame as pg
 from sys import exit
 #=====================================#
 from engine.utils.log import log_error
+from engine.utils.overlay import debug_overlay
 #-------------------------------------#
 from engine.handlers.fonts import fonts
 #-------------------------------------#
@@ -112,7 +113,7 @@ class Render:
             if getattr(system, "on_screen", False):
                 system.update(screen)
         #-------------------------------------#
-        # fonts.atarismall.render(screen, [5, 50], "hello, world", size=10, color=(255,255,255), aligment="topleft", wrap_width=250)
+        debug_overlay.draw(screen)
     #=====================================#
     def draw(self, screen, surface, dt):
         #-------------------------------------#
