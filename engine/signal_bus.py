@@ -1,5 +1,8 @@
 from engine.configs.configs import configs
 from engine.utils.log import log, log_error, log_list
+from engine.utils.debug_log import debug_log
+#================================#
+from game.enums.assets_marks import assetsmarks
 #================================#
 import inspect
 from collections import deque
@@ -11,12 +14,17 @@ class SignalBus:
         self.listeners = {}  # signal: [(priority, callback, origin)]
         self.queue = deque()
         #--------------------------------#
-
+        # debug_log(f"{assetsmarks.engine.debug}::signal_bus.show_", 
+        #           value=self.atlas.groups_data)
     #================================#
     def clear(self):
         #--------------------------------#
         self.listeners = {}
         self.queue = deque()
+        #--------------------------------#
+        value = f"![ev_bus]: bus cleaned"
+        debug_log(f"{assetsmarks.engine.debug}::signal_bus.show_unsubscribed", 
+                    value=value)
 
     #================================#
     def subscribe(self, signal:str, callback, origin=None, priority:int=0):
@@ -27,6 +35,10 @@ class SignalBus:
         self.listeners.setdefault(signal, []).append(
             (priority, callback, origin)
         )
+        #--------------------------------#
+        value = f"[ev_bus]: subscribed signal:{signal}, callback:{callback}, origin:{origin}, priority:{priority}"
+        debug_log(f"{assetsmarks.engine.debug}::signal_bus.show_subscribed", 
+                  value=value)
     #================================#
     def unsubscribe(self, callback, signal: str):
         #--------------------------------#
@@ -40,7 +52,12 @@ class SignalBus:
             if not self.listeners[signal]:
                 del self.listeners[signal]
             #--------------------------------#
+            value = f"[ev_bus]: unsubscribed callback:{callback} from signal:{signal}"
+            debug_log(f"{assetsmarks.engine.debug}::signal_bus.show_unsubscribed", 
+                    value=value)
+            #--------------------------------#
             return
+            
         log_error(f"signal: {signal} is not subscribbed", True)
     #================================#
     def unsubscribe_func(self, callback):
@@ -54,10 +71,18 @@ class SignalBus:
             #--------------------------------#
             if not self.listeners[signal]:
                 del self.listeners[signal]
+        #--------------------------------#
+        value = f"[ev_bus]: unsubscribed callback:{callback} from all signals"
+        debug_log(f"{assetsmarks.engine.debug}::signal_bus.show_unsubscribed", 
+                    value=value)
 
     #================================#
     def unsubscribe_signal(self, signal: str):
         self.listeners.pop(signal, None)
+        #--------------------------------#
+        value = f"[ev_bus]: unsubscribed signal:{signal} from bus"
+        debug_log(f"{assetsmarks.engine.debug}::signal_bus.show_unsubscribed", 
+                    value=value)
 
     #================================#
     def unsubscribe_origin(self, origin: str):
@@ -72,10 +97,21 @@ class SignalBus:
             #--------------------------------#
             if not self.listeners[signal]:
                 del self.listeners[signal]
+        #--------------------------------#
+        value = f"[ev_bus]: unsubscribed all functions from origin {origin}"
+        debug_log(f"{assetsmarks.engine.debug}::signal_bus.show_unsubscribed", 
+                    value=value)
 
     #================================#
     def emit(self, signal: str, **data):
         self.queue.append((signal, data))
+        #--------------------------------#
+        if signal in configs.debug.signal_bus.emit.ignore_signals:         
+            return
+        #--------------------------------#
+        value = f"[ev_bus]: emited signal:{signal} with data{data}"
+        debug_log(f"{assetsmarks.engine.debug}::signal_bus.emit", 
+                    value=value)
 
     #================================#
     def process(self):
@@ -83,7 +119,7 @@ class SignalBus:
             #--------------------------------#
             signal, data = self.queue.popleft()
             #--------------------------------#
-            for _, callback, _ in self.listeners.get(signal, [])[:]:
+            for _, callback, origin in self.listeners.get(signal, [])[:]:
                 #--------------------------------#
                 self.listeners[signal].sort(
                     key=lambda x: x[0],
@@ -98,6 +134,11 @@ class SignalBus:
                         )
                     else:
                         callback(**data)
+                    #--------------------------------#
+                    if signal not in configs.debug.signal_bus.emit.ignore_signals:         
+                        value = f"[ev_bus]: callback executed:{callback} with origin{origin}"
+                        debug_log(f"{assetsmarks.engine.debug}::signal_bus.callback_executed", 
+                                    value=value)
                 #--------------------------------#
                 except Exception as e:
                     log_error(

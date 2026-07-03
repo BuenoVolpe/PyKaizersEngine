@@ -69,10 +69,61 @@
         }
     },
     "signal_bus":{
-        "subclass": true 
-    },
-    "configs": {
-        "subclass": true 
+        "subclass": true,
+        "show_subscribed":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"log",
+            "log_color":"black"
+        },
+        "show_unsubscribed":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"log",
+            "log_color":"black"
+        },
+        "emit":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"log",
+            "log_color":"black",
+            "ignore_signals": [
+                "signal@pyk::engine.update", "signal@pyk::pgevent"
+            ]
+        },
+        "callback_executed":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"log",
+            "log_color":"black",
+            "ignore_signals": [
+                "signal@pyk::engine.update", "signal@pyk::pgevent"
+            ]
+        },
+        "cleaned":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"log",
+            "log_color":"red",
+            "ignore_signals": [
+                "signal@pyk::engine.update", "signal@pyk::pgevent"
+            ]
+        }
     },
     "overlay":{
         "subclass": true,
