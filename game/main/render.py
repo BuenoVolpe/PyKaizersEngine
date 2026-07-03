@@ -5,6 +5,8 @@ from sys import exit
 from engine.utils.log import log_error
 from engine.utils.overlay import debug_overlay
 #-------------------------------------#
+from engine.ecs.systems.all import RenderSystem
+#-------------------------------------#
 from engine.handlers.fonts import fonts
 #-------------------------------------#
 from engine.signal_bus import signal_bus
@@ -13,14 +15,14 @@ from game.enums.signals_prioritys import sig_prio
 #=====================================#
 class Render:
     #=====================================#
-    def __init__(self):
+    def __init__(self, world):
         #=====================================#
         self.ui_elements = {} #priority: [elements]
         self.layers = {} #priority: [elements]
         self.images = {} #priority: [elements]
         #-------------------------------------#
         self.systems = [
-            # RenderSystem(world)
+            RenderSystem(world)
         ]
         #=====================================#
         self._subscribe_functions()

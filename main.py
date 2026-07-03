@@ -10,8 +10,12 @@ from game.main.render import Render
 #=====================================#
 from engine.utils.debug_log import debug_log
 from engine.utils.overlay import debug_overlay
-#=====================================#
+from engine.utils.globalclasses import globalclasses
 from engine.handlers.textures import TextureHandler
+#=====================================#
+from engine.ecs import World
+from engine.ecs.components.all import Position, Texture
+#=====================================#
 from engine.handlers.audio import AudioHandler
 from engine.handlers.fonts import fonts
 #=====================================#
@@ -37,10 +41,12 @@ class Main:
         #=====================================#
         self.prev_time = 0
         #=====================================#
+        self.world = World(self)
+        #=====================================#
         self.display:Display = Display()
         self.loader:Loader = Loader()
         self.updater:Updater = Updater()
-        self.render:Render = Render()
+        self.render:Render = Render(self.world)
         self.events_handler:EventsHandler = EventsHandler()
         #=====================================#
         self.texture_handler = TextureHandler()
@@ -58,6 +64,16 @@ class Main:
         self.running = True
         self.time = 0
         self.dt = 0
+        #=====================================#
+        globalclasses.TextureHandler = self.texture_handler
+        globalclasses.AudioHandler = self.audio_handler
+        globalclasses.fonts = fonts
+        globalclasses.signal_bus = signal_bus
+        globalclasses.engine = self
+        #=====================================#
+        enty = self.world.create_entity()
+        self.world.add_component(enty, Texture(f"{assetsmarks.engine.texture}::dave.standart"))
+        self.world.add_component(enty, Position(0, 0))
         #=====================================#
         debug_overlay.watch(
             f"{assetsmarks.engine.debug}::overlay.engine_version",
@@ -133,6 +149,7 @@ class Main:
             #-------------------------------------#
             self.updater.update(self.dt)
             self.render.draw(self.screen, self.main_surface, self.dt)
+            self.world.flush()
             #-------------------------------------#
             if configs.settings.show_fps_in_title:
                 pg.display.set_caption(f"{configs.game.window_title} | {self.clock.get_fps():.1f}")

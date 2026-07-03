@@ -35,5 +35,10 @@ class Signals:
     #-------------------------------------#
     SOUND_PLAY:str = f"{mark}@{pyk}::sound.play"
     SOUND_PLAY_GROUP:str = f"{mark}@{pyk}::sound.play.group"
+    #-------------------------------------#
+    KILL_ENTITY:str = f"{mark}@{pyk}::ecs.entity.kill"
+    CREATE_ENTITY:str = f"{mark}@{pyk}::ecs.entity.create"
+    ADD_COMPONENT:str = f"{mark}@{pyk}::ecs.component.add"
+    REMOVE_COMPONENT:str = f"{mark}@{pyk}::ecs.component.remove"
 #=====================================#
 signals = Signals()

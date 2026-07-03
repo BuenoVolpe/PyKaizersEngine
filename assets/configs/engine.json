@@ -1,5 +1,5 @@
 {
-    "version": "0.2.1.1",
+    "version": "0.3.0.0",
     "name": "PyKaizersEngines",
     "acronym": "pyk",
     "max_delta_time_value": 1,
@@ -11,6 +11,7 @@
         "debug": "debug",
         "music": "music",
         "audiogroup": "audiogroup",
+        "components": "component",
         "signal": "signal"
     },
     

@@ -68,6 +68,60 @@
             "log_color":"black"
         }
     },
+    "ecs":{
+        "subclass": true,
+
+        "clear":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"log",
+            "log_color":"black"
+            
+        },
+        "add_component":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"log",
+            "log_color":"black"
+            
+        },
+        "remove_component":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"log",
+            "log_color":"black"
+            
+        },
+        "create_entity":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"log",
+            "log_color":"black"
+            
+        },
+        "remove_entity":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"log",
+            "log_color":"black"
+            
+        }
+    },
     "signal_bus":{
         "subclass": true,
         "show_subscribed":{
@@ -150,8 +204,13 @@
                 "order": 2,
                 "do_show": true
             },
-            "Player": {
+            "Entitie": {
+                "subclass": true,
                 "order": 3,
+                "do_show": true
+            },
+            "Player": {
+                "order": 4,
                 "do_show": false
             },
             "Others": {
@@ -225,6 +284,17 @@
             "category":"GameInfo",
             "color":[255,255,255],
             "order": 4
+        },
+        "entities_amount": {
+            "subclass": true,
+            
+            "do_debug":true,
+            "log_type":"overlay",
+    
+            "name_in_overlay":"entities amount",
+            "category":"Entities",
+            "color":[255,255,255],
+            "order": 1
         }
     }
 }
