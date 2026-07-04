@@ -12,7 +12,7 @@ def recolor (image:pg.Surface, color_map:dict, use_colorkey_on_color_map:bool=Fa
             if list(src) in [engine.get("color_key1", [255, 0, 255]), engine.get("color_key2", [175, 0, 175])]:
                 # px.replace(src, (0,0,0,0))
                 continue
-        px.replace(src, dst[:3])
+        px.replace(src, dst[:4])
 
     del px
     return img
@@ -24,17 +24,18 @@ def darken_color(color:list, factor:float=0.7) -> tuple:
     b = min(max(int(b * factor), 0), 255)
     return (r, g, b)
 
-def apply_multi_colorkey(surface:pg.Surface, colors:list) -> pg.Surface:
+def apply_multi_colorkey(surface, colors):
     surface = surface.convert_alpha()
-    width, height = surface.get_size()
 
-    for x in range(width):
-        for y in range(height):
-            color = surface.get_at((x, y))[:3]
-            if color in colors:
+    colors = {tuple(c) for c in colors}
+
+    w, h = surface.get_size()
+
+    for x in range(w):
+        for y in range(h):
+            if surface.get_at((x, y))[:3] in colors:
                 surface.set_at((x, y), (0, 0, 0, 0))
 
     return surface
-
 
 

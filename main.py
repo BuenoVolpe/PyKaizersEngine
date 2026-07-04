@@ -95,7 +95,7 @@ class Main:
         )
         debug_overlay.watch(
             f"{assetsmarks.engine.debug}::overlay.delta_time",
-            lambda: f"{self.dt*(10**3):.1f}/10"
+            lambda: f"{self.dt*(10**3):.1f}/1000"
         )
         debug_overlay.watch(
             f"{assetsmarks.engine.debug}::overlay.game_time",

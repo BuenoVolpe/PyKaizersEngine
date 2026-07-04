@@ -66,7 +66,6 @@ class Loader:
                 elif base == configs.game.acronym:
                     atlas_path = f"{game_asset}::{atlas_path}"
                 #=====================================#
-
                 if type == "sheet":
                     self._load_sheet(sprite, meta, self.color_map, atlas_path)
                     continue
@@ -103,8 +102,7 @@ class Loader:
                 sprite_atlas_path = f"{atlas_path}::{sprite_name}"
                 #--------------------------------#
                 if colors:
-                    self.recolor_sprite(image, colors, atlas_path, color_maps, sprite)
-                    continue
+                    self.recolor_sprite(image, colors, sprite_atlas_path, color_maps, sprite)
                 #--------------------------------#
                 if scale:
                     image = scaler.surface(image, scale, use_constant)

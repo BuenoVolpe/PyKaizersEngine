@@ -20,7 +20,7 @@ class Display:
         MIN_RES:list[int, int] = configs.game.base_window_size
         #--------------------------------#
         self.screen = pg.display.set_mode(RES)
-        self.main_surface = pg.Surface(MIN_RES)
+        self.main_surface = pg.Surface(MIN_RES, pg.SRCALPHA)
         #--------------------------------#
         pg.display.set_caption(window_title)
         pg.scrap.init()

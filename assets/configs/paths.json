@@ -9,7 +9,7 @@
         "textures":"assets/engine/textures/",
         "audio":"assets/engine/audio/",
         "fonts":"assets/engine/fonts/",
-        "enities":"assets/engine/enities/",
+        "entities":"assets/engine/entities/",
         "configs":"assets/configs/engine.json"
     },
     "game": {
@@ -18,7 +18,7 @@
         "textures":"assets/game/textures/",
         "audio":"assets/game/audio/",
         "fonts":"assets/game/fonts/",
-        "enities":"assets/game/enities/",
+        "entities":"assets/game/entities/",
         "configs":"assets/configs/game.json"
     },
     

@@ -23,8 +23,8 @@ class EntityFactory:
     def __init__(self, world):
         #-------------------------------------#
         self.paths = {
-            configs.engine.acronym: configs.paths.engine.enities,
-            configs.game.acronym: configs.paths.game.enities,
+            configs.engine.acronym: configs.paths.engine.entities,
+            configs.game.acronym: configs.paths.game.entities,
         }
         #-------------------------------------#
         self.entity_registry = {}

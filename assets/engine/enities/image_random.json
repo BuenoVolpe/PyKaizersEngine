@@ -1,6 +1,0 @@
-{
-    "components": {
-        "component@pyk::Texture": {"texture":{"choice":["texture@pyk::dave.standart", "texture@pyk::dave.green", "texture@pyk::dave.blue"]}},
-        "component@pyk::Position": {"x":{"random":[50,250]}, "y":{"random_float":[50,250]}}
-    }
-}

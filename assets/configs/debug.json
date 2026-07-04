@@ -5,7 +5,7 @@
         "show_atlas_keys":{
             "subclass": true,
             
-            "do_debug":true,
+            "do_debug":false,
             "show_on_console":false,
             "show_on_overlay":false,
             "log_type":"list",

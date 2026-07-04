@@ -25,7 +25,7 @@ class Atlas:
         image = self.data.get(name)
         #--------------------------------#
         if not image:
-            log_error(f"Sprite '{name}' not found in atlas. Returning error sprite.", True)
+            log_error(f"Sprite '{name}' not found in atlas. Returning error sprite.")#, True)
             return self.error_image
         #--------------------------------#
         return image
