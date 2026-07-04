@@ -1,0 +1,20 @@
+{
+    "entities":[
+        {
+            "prefab": "entity@pyk::image"
+        },
+        {
+            "prefab": "entity@pyk::image_random"
+        },
+        {
+            "prefab": "entity@pyk::image_move"
+        },
+        {
+            "prefab": "entity@pyk::image_move",
+            "positions": [[0, 40]],
+            "overrides": {
+                "component@pyk::Texture": {"texture":"texture@pyk::kaizer"}
+            }
+        }
+    ]
+}

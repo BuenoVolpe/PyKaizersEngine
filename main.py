@@ -15,6 +15,7 @@ from engine.handlers.textures import TextureHandler
 #=====================================#
 from engine.ecs import World
 from engine.ecs.entity_factory import EntityFactory
+from engine.ecs.world_factory import WorldFactory
 from engine.ecs.components.all import Position, Texture
 #=====================================#
 from engine.handlers.audio import AudioHandler
@@ -44,6 +45,7 @@ class Main:
         #=====================================#
         self.world = World(self)
         self.entity_factory = EntityFactory(self.world)
+        self.world_factory = WorldFactory(self.world, self.entity_factory)
         #=====================================#
         self.display:Display = Display()
         self.loader:Loader = Loader()
@@ -69,17 +71,19 @@ class Main:
         #=====================================#
         globalclasses.TextureHandler = self.texture_handler
         globalclasses.EntityFactory = self.entity_factory
+        globalclasses.WorldFactory = self.world_factory
         globalclasses.World = self.world
         globalclasses.AudioHandler = self.audio_handler
         globalclasses.fonts = fonts
         globalclasses.signal_bus = signal_bus
         globalclasses.engine = self
         #=====================================#
-        self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image")
-        self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_random")
-        self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_move")
-        self.entity_factory.spawn_entity(f"{assetsmarks.engine.entity}::image_move", [0, 40], 
-                                         {f"{assetsmarks.engine.components}::Texture": {"texture":f"{assetsmarks.engine.texture}::kaizer"}})
+        self.world_factory.load_world(f"{assetsmarks.engine.world}::test")
+        # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image")
+        # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_random")
+        # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_move")
+        # self.entity_factory.spawn_entity(f"{assetsmarks.engine.entity}::image_move", [0, 40], 
+        #                                  {f"{assetsmarks.engine.components}::Texture": {"texture":f"{assetsmarks.engine.texture}::kaizer"}})
         # enty = self.world.create_entity()
         # self.world.add_component(enty, Texture(f"{assetsmarks.engine.texture}::dave.standart"))
         # self.world.add_component(enty, Position(0, 0))

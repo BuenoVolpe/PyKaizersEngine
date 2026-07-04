@@ -37,7 +37,10 @@ class EntityFactory:
         self.world = world
         #-------------------------------------#
         self.component_map = COMPONENT_REGISTRY
-        #-------------------------------------#
+        #--------------------------------z-----#
+        signal_bus.subscribe(signals.SPAWN_ENTITY, self.spawn_entity, priority=signals_prioritys.ADD_OBJ)
+        signal_bus.subscribe(signals.APPLY_OVERRIDES, self.apply_overrides, priority=signals_prioritys.ADD_OBJ)
+        #--------------------------------z-----#
         # self.entity_templates = {}
         # self.load_entity_templates()
     #=====================================#
@@ -144,7 +147,7 @@ class EntityFactory:
             log_error(f"[ent_factory]: find {errors} errors, while creating entity")
         return entity
     #=====================================#
-    def spawn_entity(self, name: str, pos:list=None, overrides:dict={}):
+    def spawn_entity(self, name: str, pos:list[float, float]=None, overrides:dict={}):
         #-------------------------------------#
         if pos:
             overrides[f"{assetsmarks.engine.components}::Position"] = {"x":pos[0], "y":pos[1]}

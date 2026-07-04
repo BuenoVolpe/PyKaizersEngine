@@ -103,6 +103,27 @@
             "list_name": "ecs components",
             "list_color":"white"
         },
+        "world_keys":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"list",
+            "log_color":"black",
+
+            "list_name": "ecs worlds",
+            "list_color":"white"
+        },
+        "entities_loaded_in_world":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"log",
+            "log_color":"black"
+        },
         "entities_keys":{
             "subclass": true,
             
@@ -228,7 +249,7 @@
                 "order": 2,
                 "do_show": true
             },
-            "Entitie": {
+            "World": {
                 "subclass": true,
                 "order": 3,
                 "do_show": true
@@ -309,6 +330,17 @@
             "color":[255,255,255],
             "order": 4
         },
+        "world_name": {
+            "subclass": true,
+            
+            "do_debug":true,
+            "log_type":"overlay",
+    
+            "name_in_overlay":"world",
+            "category":"World",
+            "color":[255,255,255],
+            "order": 0
+        },
         "entities_amount": {
             "subclass": true,
             
@@ -316,7 +348,7 @@
             "log_type":"overlay",
     
             "name_in_overlay":"entities amount",
-            "category":"Entities",
+            "category":"World",
             "color":[255,255,255],
             "order": 1
         }
