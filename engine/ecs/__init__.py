@@ -39,6 +39,9 @@ class World:
             f"{assetsmarks.engine.debug}::overlay.entities_amount",
             lambda: self.entities_amount
         )
+        debug_log(
+            f"{assetsmarks.engine.debug}::ecs.components_keys", value=list(COMPONENT_REGISTRY.keys())
+        )
     #================================#
     def get_component(self, entity:int, comp_type:object):
         #--------------------------------------#

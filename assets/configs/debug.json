@@ -5,7 +5,7 @@
         "show_atlas_keys":{
             "subclass": true,
             
-            "do_debug":false,
+            "do_debug":true,
             "show_on_console":false,
             "show_on_overlay":false,
             "log_type":"list",
@@ -90,6 +90,30 @@
             "log_type":"log",
             "log_color":"black"
             
+        },
+        "components_keys":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"list",
+            "log_color":"black",
+
+            "list_name": "ecs components",
+            "list_color":"white"
+        },
+        "entities_keys":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"list",
+            "log_color":"black",
+
+            "list_name": "ecs entities",
+            "list_color":"white"
         },
         "remove_component":{
             "subclass": true,

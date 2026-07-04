@@ -15,6 +15,7 @@ class AssetsMarks:
         music:str = f"{configs.engine.asset_marks.music}@{configs.engine.acronym}"
         audiogroup:str = f"{configs.engine.asset_marks.audiogroup}@{configs.engine.acronym}"
         signal:str = f"{configs.engine.asset_marks.signal}@{configs.engine.acronym}"
+        entity:str = f"{configs.engine.asset_marks.entity}@{configs.engine.acronym}"
     #=====================================#
     class Game:
         #-------------------------------------#
@@ -25,5 +26,6 @@ class AssetsMarks:
         music:str = f"{configs.engine.asset_marks.music}@{configs.game.acronym}"
         audiogroup:str = f"{configs.engine.asset_marks.audiogroup}@{configs.game.acronym}"
         signal:str = f"{configs.engine.asset_marks.signal}@{configs.game.acronym}"
+        entity:str = f"{configs.engine.asset_marks.entity}@{configs.game.acronym}"
 #=====================================#
 assetsmarks = AssetsMarks()

@@ -9,7 +9,7 @@ def register_game_component(cls):
     return cls
 def register_engine_component(cls):
     #--------------------------------#
-    COMPONENT_REGISTRY[f"{assetsmarks.game.components}::{cls.__name__}"] = cls
+    COMPONENT_REGISTRY[f"{assetsmarks.engine.components}::{cls.__name__}"] = cls
     return cls
 #================================#
 class ComponentStorage:

@@ -14,6 +14,7 @@ from engine.utils.globalclasses import globalclasses
 from engine.handlers.textures import TextureHandler
 #=====================================#
 from engine.ecs import World
+from engine.ecs.entity_factory import EntityFactory
 from engine.ecs.components.all import Position, Texture
 #=====================================#
 from engine.handlers.audio import AudioHandler
@@ -42,6 +43,7 @@ class Main:
         self.prev_time = 0
         #=====================================#
         self.world = World(self)
+        self.entity_factory = EntityFactory(self.world)
         #=====================================#
         self.display:Display = Display()
         self.loader:Loader = Loader()
@@ -66,14 +68,18 @@ class Main:
         self.dt = 0
         #=====================================#
         globalclasses.TextureHandler = self.texture_handler
+        globalclasses.EntityFactory = self.entity_factory
+        globalclasses.World = self.world
         globalclasses.AudioHandler = self.audio_handler
         globalclasses.fonts = fonts
         globalclasses.signal_bus = signal_bus
         globalclasses.engine = self
         #=====================================#
-        enty = self.world.create_entity()
-        self.world.add_component(enty, Texture(f"{assetsmarks.engine.texture}::dave.standart"))
-        self.world.add_component(enty, Position(0, 0))
+        self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image")
+        self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_random")
+        # enty = self.world.create_entity()
+        # self.world.add_component(enty, Texture(f"{assetsmarks.engine.texture}::dave.standart"))
+        # self.world.add_component(enty, Position(0, 0))
         #=====================================#
         debug_overlay.watch(
             f"{assetsmarks.engine.debug}::overlay.engine_version",
