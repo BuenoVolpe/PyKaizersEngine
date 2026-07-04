@@ -8,6 +8,9 @@ from game.main.loader import Loader
 from game.main.updater import Updater
 from game.main.render import Render
 #=====================================#
+from engine.comands.all import *
+from engine.console import console
+#=====================================#
 from engine.utils.debug_log import debug_log
 from engine.utils.overlay import debug_overlay
 from engine.utils.globalclasses import globalclasses

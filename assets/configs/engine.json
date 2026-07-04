@@ -1,5 +1,5 @@
 {
-    "version": "0.3.3.0",
+    "version": "0.4.0.0",
     "name": "PyKaizersEngines",
     "acronym": "pyk",
     "max_delta_time_value": 1,
@@ -14,6 +14,7 @@
         "components": "component",
         "entity": "entity",
         "world": "world",
+        "command": "command",
         "signal": "signal"
     },
     

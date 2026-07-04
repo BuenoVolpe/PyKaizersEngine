@@ -52,6 +52,11 @@ class EventsHandler:
         #--------------------------------#
         if inputs.input_by_event(event, inp.ACTIVE_DEBUG_OVERLAY):
             signal_bus.emit(signals.ACTIVE_DEBUGOVERLAY)
+        #--------------------------------#
+        elif inputs.input_by_event(event, inp.ACTIVE_CONSOLE): 
+            if configs.console.can_active and configs.console.can_active_by_hotkey:
+                cmd_string = inputs.pyinput("> ") 
+                signal_bus.emit(signals.EXECUTE_COMMAND, string=cmd_string)
     #================================#
     def handle_object_events(self, event):
         #------------------------------#

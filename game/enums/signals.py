@@ -46,5 +46,6 @@ class Signals:
     #-------------------------------------#
     LOAD_COMPLETE_WORLD:str = f"{mark}@{pyk}::load.world"
     #-------------------------------------#
+    EXECUTE_COMMAND:str = f"{mark}@{pyk}::console.execute"
 #=====================================#
 signals = Signals()
