@@ -47,7 +47,7 @@ class Main:
         #=====================================#
         self.display:Display = Display()
         self.loader:Loader = Loader()
-        self.updater:Updater = Updater()
+        self.updater:Updater = Updater(self.world)
         self.render:Render = Render(self.world)
         self.events_handler:EventsHandler = EventsHandler()
         #=====================================#
@@ -77,6 +77,9 @@ class Main:
         #=====================================#
         self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image")
         self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_random")
+        self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_move")
+        self.entity_factory.spawn_entity(f"{assetsmarks.engine.entity}::image_move", [0, 40], 
+                                         {f"{assetsmarks.engine.components}::Texture": {"texture":f"{assetsmarks.engine.texture}::kaizer"}})
         # enty = self.world.create_entity()
         # self.world.add_component(enty, Texture(f"{assetsmarks.engine.texture}::dave.standart"))
         # self.world.add_component(enty, Position(0, 0))

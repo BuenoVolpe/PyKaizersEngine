@@ -3,6 +3,8 @@ import pygame as pg
 #=====================================#
 from engine.utils.log import log_error
 #--------------------------------#
+from engine.ecs.systems.movement import MovementSystem
+#--------------------------------#
 from engine.signal_bus import signal_bus
 from game.enums.signals import signals
 from game.enums.signals_prioritys import sig_prio
@@ -11,11 +13,13 @@ from engine.configs.configs import configs
 #=====================================#
 class Updater:
     #=====================================#
-    def __init__(self):
+    def __init__(self, world):
+        self.world = world
         #--------------------------------#
         self.objects = {} #priority: [elements]
         #--------------------------------#
         self.systems = [ #[sys1, sys2(value, key), sys3(kwarg="aa")]
+            MovementSystem(self.world)
         ] 
         #=====================================#
         self._subscribe_functions()

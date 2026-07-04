@@ -15,7 +15,7 @@ class RenderSystem:
         for entity, (render, position) in self.world.query(Texture, Position):
             #--------------------------------#
             if isinstance(render.texture, str):
-                render.texture = self.world.game.TextureHandler.get(render.texture)
+                render.texture = self.world.game.texture_handler.get(render.texture)
             #--------------------------------#
             if render.scale:
                 render.texture = scaler.surface(render.texture, render.scale)

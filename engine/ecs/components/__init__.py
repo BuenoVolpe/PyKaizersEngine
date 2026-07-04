@@ -24,4 +24,14 @@ class Position:
         #--------------------------------#
         self.pos = pg.Vector2(x,y)
 #================================#
+@register_engine_component
+class Velocity:
+    #--------------------------------#
+    def __init__(self, x:float, y:float):
+        #--------------------------------#
+        self.x = x
+        self.y = y
+        #--------------------------------#
+        self.vel = pg.Vector2(x,y)
+#================================#
 

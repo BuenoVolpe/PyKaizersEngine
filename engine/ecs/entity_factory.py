@@ -70,11 +70,39 @@ class EntityFactory:
         #-------------------------------------#
         return self.build_entity_from_data(json_data)
     #=====================================#
+    def resolve_extends(self, data):
+        #-------------------------------------#
+        parent_name = data.get("extends")
+        #-------------------------------------#
+        if not parent_name:
+            return data
+        #-------------------------------------#
+        parent_path = self.entity_registry.get(parent_name)
+        #-------------------------------------#
+        if not parent_path:
+            #-------------------------------------#
+            log_error(f"Parent entity {parent_name} not found")#, console)
+            return data
+        #-------------------------------------#
+        parent_data = json_reader(parent_path)
+        #-------------------------------------#
+        parent_data = self.resolve_extends(parent_data)
+        #-------------------------------------#
+        merged = deep_merge(parent_data, data)
+        #-------------------------------------#
+        merged.pop("extends", None)
+        #-------------------------------------#
+        return merged
+    #=====================================#
     def build_entity_from_data(self, data, do_log_errors:bool=True):
         #-------------------------------------#
         entity = self.world.create_entity()
         #-------------------------------------#
+        data = self.resolve_extends(data)
+        #-------------------------------------#
         components = copy.deepcopy(data.get("components", {}))
+        extends = copy.deepcopy(data.get("extends"))
+        #-------------------------------------#
         errors = 0
         #-------------------------------------#
         for comp_name, comp_values in components.items():
@@ -115,6 +143,50 @@ class EntityFactory:
         if do_log_errors and errors:
             log_error(f"[ent_factory]: find {errors} errors, while creating entity")
         return entity
+    #=====================================#
+    def spawn_entity(self, name: str, pos:list=None, overrides:dict={}):
+        #-------------------------------------#
+        if pos:
+            overrides[f"{assetsmarks.engine.components}::Position"] = {"x":pos[0], "y":pos[1]}
+        #-------------------------------------#
+        entity = self.create_entity(name)
+        #-------------------------------------#
+        if overrides:
+            self.apply_overrides(entity, overrides)
+        #-------------------------------------#
+        return entity
+    #=====================================#
+    def apply_overrides(self, entity, overrides: dict):
+        """
+        overrides format:
+        {
+            "component@pyk::Transform": {"x": 10, "y": 20},
+            "component@pyk::Health": {"value": 999}
+        }
+        """
+        #-------------------------------------#
+        for comp_name, values in overrides.items():
+            #-------------------------------------#
+            comp_class = self.component_map.get(comp_name)
+            #-------------------------------------#
+            if not comp_class:
+                log_error(f"Override component not found: {comp_name}")#, console)
+                continue
+            #-------------------------------------#
+            storage = self.world.get_storage(comp_class)
+            component = storage.get(entity) if storage else None
+            #-------------------------------------#
+            if component:
+                #-------------------------------------#
+                if isinstance(values, list):
+                    log_error("list are not acepted")#, console) 
+                for k, v in values.items():
+                    setattr(component, k, v)
+            #-------------------------------------#
+            else:
+                #-------------------------------------#
+                component = comp_class(**values)
+                self.world.add_component(entity, component)
 
 #=====================================#
 def validate_component(comp_class, data):
@@ -129,3 +201,25 @@ def validate_component(comp_class, data):
         return False
     #-------------------------------------#
     return True
+#=====================================#
+def deep_merge(base: dict, override: dict):
+    #-------------------------------------#
+    result = copy.deepcopy(base)
+    #-------------------------------------#
+    for key, value in override.items():
+        #-------------------------------------#
+        if (
+            key in result
+            and isinstance(result[key], dict)
+            and isinstance(value, dict)
+        ):
+        #-------------------------------------#
+            result[key] = deep_merge(result[key], value)
+        #-------------------------------------#
+        else:
+            result[key] = copy.deepcopy(value)
+        #-------------------------------------#
+    return result
+        
+
+
