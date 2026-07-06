@@ -9,6 +9,8 @@ from engine.ecs.systems.all import RenderSystem
 #-------------------------------------#
 from engine.handlers.fonts import fonts
 #-------------------------------------#
+from engine.console import console
+#-------------------------------------#
 from engine.signal_bus import signal_bus
 from game.enums.signals import signals
 from game.enums.signals_prioritys import sig_prio
@@ -116,6 +118,8 @@ class Render:
                 system.update(screen)
         #-------------------------------------#
         debug_overlay.draw(screen)
+        #-------------------------------------#
+        console.draw(screen)
     #=====================================#
     def draw(self, screen, surface, dt):
         #-------------------------------------#

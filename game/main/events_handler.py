@@ -8,6 +8,8 @@ from game.enums.inputs import inputsenum as inp
 from game.enums.signals import signals
 from game.enums.signals_prioritys import sig_prio
 #--------------------------------#
+from engine.console import console
+#--------------------------------#
 from engine.configs.configs import configs
 from engine.configs.inputs import inputs
 #================================#
@@ -55,6 +57,10 @@ class EventsHandler:
         #--------------------------------#
         elif inputs.input_by_event(event, inp.ACTIVE_CONSOLE): 
             if configs.console.can_active and configs.console.can_active_by_hotkey:
+                #--------------------------------#
+                # console.visible = not console.visible
+                console.visible = True
+                #--------------------------------#
                 cmd_string = inputs.pyinput("> ") 
                 signal_bus.emit(signals.EXECUTE_COMMAND, string=cmd_string)
     #================================#

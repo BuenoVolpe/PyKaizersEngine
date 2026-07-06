@@ -85,7 +85,15 @@ bases = [
     configs.paths.game.fonts
 ]
 #------------------------------#
+def get_font(font_name):
+    if font := getattr(fonts, font_name):
+        if isinstance(font, pg.font.Font):
+            return font
+    else:
+        return fonts.engine_default
+#------------------------------#
 fonts.engine_default = Font(configs.paths.default_font)
+fonts.get_font = get_font
 #------------------------------#
 for base in bases:
     for font_path, font_name in scan_folder(base, extension=f".{configs.engine.extensions.font}"):
