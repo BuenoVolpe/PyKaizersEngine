@@ -32,6 +32,7 @@ from game.enums.signals_prioritys import sig_prio
 from game.enums.assets_marks import assetsmarks
 #=====================================#
 pg.init()
+pg.key.set_repeat(400, 40)
 pg.mixer.init()
 #=====================================#
 class Main:

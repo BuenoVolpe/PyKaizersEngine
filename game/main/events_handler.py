@@ -58,11 +58,12 @@ class EventsHandler:
         elif inputs.input_by_event(event, inp.ACTIVE_CONSOLE): 
             if configs.console.can_active and configs.console.can_active_by_hotkey:
                 #--------------------------------#
-                # console.visible = not console.visible
-                console.visible = True
+                console.visible = not console.visible
                 #--------------------------------#
-                cmd_string = inputs.pyinput("> ") 
-                signal_bus.emit(signals.EXECUTE_COMMAND, string=cmd_string)
+                # cmd_string = inputs.pyinput("> ") 
+                # signal_bus.emit(signals.EXECUTE_COMMAND, string=cmd_string)
+        elif inputs.input_by_event(event, inp.MENU): 
+            console.visible = False
     #================================#
     def handle_object_events(self, event):
         #------------------------------#
@@ -83,6 +84,7 @@ class EventsHandler:
                 #------------------------------#
                 log_error(f"Object {obj.__class__.__name__} does not have handle_event or handle_events or events method.")
         #------------------------------#
+        console.handle_event(event)
     #================================#
     def handle_keydown(self, event):
         #------------------------------#

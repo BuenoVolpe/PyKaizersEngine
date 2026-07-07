@@ -77,7 +77,7 @@ class Render:
                 self.images[priority].remove([image, pos])
                 return
     #=====================================#
-    def render(self, surface:pg.Surface):
+    def render(self, surface:pg.Surface, dt):
         #-------------------------------------#
         for priority in sorted(self.images.keys()):
             for (img, pos) in self.images[priority]:
@@ -100,7 +100,7 @@ class Render:
             if not getattr(system, "on_screen", True):
                 system.update(surface)
     #=====================================#
-    def render_on_screen(self, screen:pg.Surface):
+    def render_on_screen(self, screen:pg.Surface, dt):
         for priority in sorted(self.ui_elements.keys()):
             for obj in self.ui_elements[priority]:
                 #-------------------------------------#
@@ -117,21 +117,21 @@ class Render:
             if getattr(system, "on_screen", False):
                 system.update(screen)
         #-------------------------------------#
-        debug_overlay.draw(screen)
+        console.draw(screen, dt)
         #-------------------------------------#
-        console.draw(screen)
+        debug_overlay.draw(screen)
     #=====================================#
     def draw(self, screen, surface, dt):
         #-------------------------------------#
         screen.fill((30,30,30))
         surface.fill((30,30,30))
         #-------------------------------------#
-        self.render(surface)
+        self.render(surface, dt)
         #-------------------------------------#
         scaled_surface = surface
         scaled_surface = pg.transform.scale(surface, screen.get_size())
         #-------------------------------------#
         screen.blit(scaled_surface, (0, 0))
         #-------------------------------------#
-        self.render_on_screen(screen)
+        self.render_on_screen(screen, dt)
     #=====================================#
