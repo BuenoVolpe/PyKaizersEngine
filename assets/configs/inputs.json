@@ -16,6 +16,9 @@
     "fast_quit": "Lalt",
     "active_debug_overlay": "F3",
     "active_console": "F2",
-    "restart": "F5"
+    "restart": "F5",
+
+    "console_pgup": "PAGEUP",
+    "console_pgdown": "PAGEDOWN"
 }
 

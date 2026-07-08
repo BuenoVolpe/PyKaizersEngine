@@ -8,6 +8,7 @@
     "outline_color":[0,0,0],
     "font": "engine_default",
     "font_size": 8,
+    "scrollbar_width":8,
     "cursor_width":1,
     "use_constant_scale":true,
     "max_log_lines":300,

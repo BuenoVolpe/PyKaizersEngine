@@ -20,7 +20,9 @@ class Console:
         #-------------------------------------#
         self.visible = False
         self.cursor_timer = 0
-        self.scroll_offset = 0 #px
+        #-------------------------------------#
+        self.scroll_offset = 0
+        self.scrollbar_width = scaler.constant(configs.console.scrollbar_width) if configs.console.use_constant_scale else configs.console.scrollbar_width
         #-------------------------------------#
         self.commands = {}
         self.input = TextInput()
@@ -31,7 +33,20 @@ class Console:
         #-------------------------------------#
         self.protection_level = configs.console.level
         signal_bus.subscribe(signals.EXECUTE_COMMAND, self.execute_command, priority=signals_prioritys.PRE_LAST)
+        signal_bus.subscribe(signals.CONSOLE_PGUP, self.scroll_up, priority=signals_prioritys.UPDATE_UI)
+        signal_bus.subscribe(signals.CONSOLE_PGDOW, self.scroll_down, priority=signals_prioritys.UPDATE_UI)
         #-------------------------------------#
+    #=====================================#
+    def scroll_up(self):
+        self.scroll_offset = min(
+            self.scroll_offset + 1,
+            self._get_max_scroll()
+        )
+    def scroll_down(self):
+        self.scroll_offset = max(
+            self.scroll_offset - 1,
+            0
+        )
     #=====================================#
     def draw(self, screen:pg.Surface, dt:float):
         #-------------------------------------#
@@ -70,7 +85,16 @@ class Console:
             )
 
         #-------------------------------------#
-        for line in self.console_log.lines[-configs.console.visible_lines:]:
+        visible_lines = self._get_visible_log_count()
+        start = max(
+            0,
+            len(self.console_log.lines)
+            - visible_lines
+            - self.scroll_offset
+        )
+        #-------------------------------------#
+        end = start + visible_lines
+        for line in self.console_log.lines[start:end]:
             #-------------------------------------#
             img = self.font.render(
                 line.text,
@@ -82,6 +106,12 @@ class Console:
             #-------------------------------------#
             y += self.font.get_height() + configs.console.line_spacing
         #-------------------------------------#
+        self._draw_scrollbar(
+            self.surface,
+            padding_x,
+            padding_y
+        )
+        #-------------------------------------#
         self._draw_input(
             self.surface,
             padding_x,
@@ -90,9 +120,78 @@ class Console:
         #-------------------------------------#
         screen.blit(self.surface, self.pos)
     #=====================================#
+    def _draw_scrollbar(self, surface, padding_x, padding_y):
+        #-------------------------------------#
+        total = len(self.console_log.lines)
+        #-------------------------------------#
+        visible = self._get_visible_log_count()
+        #-------------------------------------#
+        if total <= visible:
+            return
+        #-------------------------------------#
+        area = self._get_log_area(
+            padding_x,
+            padding_y
+        )
+        #-------------------------------------#
+        track = pg.Rect(
+            self.RES.x - padding_x,
+            area.y,
+            self.scrollbar_width,
+            area.height
+        )
+        #-------------------------------------#
+        pg.draw.rect(
+            surface,
+            (40,40,40),
+            track
+        )
+        #-------------------------------------#
+        ratio = visible / total
+        bar_height = max(
+            self.font.get_height(),
+            track.height * ratio
+        )
+        #-------------------------------------#
+        max_scroll = total - visible
+        #-------------------------------------#
+        scroll_ratio = (
+            1
+            -
+            self.scroll_offset
+            / max_scroll
+        )
+        #-------------------------------------#
+        bar_y = (
+            track.y
+            +
+            (
+                track.height
+                - bar_height
+            )
+            *
+            scroll_ratio
+        )
+        #-------------------------------------#
+        bar = pg.Rect(
+            track.x,
+            bar_y,
+            track.width,
+            bar_height
+        )
+        #-------------------------------------#
+        pg.draw.rect(
+            surface,
+            (150,150,150),
+            bar
+        )
+    #=====================================#
     def handle_event(self, event):
         if not self.visible:
             return
+        #-------------------------------------#
+        if event.type == pg.MOUSEWHEEL:
+            self.mouse_scroll(event.y)
         #-------------------------------------#
         result = self.input.handle_event(event)
         #-------------------------------------#
@@ -103,6 +202,14 @@ class Console:
             return
         #-------------------------------------#
         self.execute_command(result)
+        #-------------------------------------#
+    #=====================================#
+    def mouse_scroll(self, y):
+        if y > 0:
+            self.scroll_up()
+        elif y < 0:
+            self.scroll_down()
+
     #=====================================#
     def _load_surface(self):
         #-------------------------------------#
@@ -221,6 +328,51 @@ class Console:
                     (padding_x + cursor_x, base_y + self.font.get_height()),
                     cursor_width
                 )
+    #=====================================#
+    def _get_max_scroll(self):
+        return max(
+            0,
+            len(self.console_log.lines)
+            - self._get_visible_log_count()
+        )
+    #=====================================#
+    def _get_log_area(self, padding_x, padding_y):
+        input_height = self.font.get_height()
+
+        return pg.Rect(
+            padding_x,
+            padding_y,
+            self.RES.x - padding_x * 2,
+            self.RES.y
+            - padding_y * 2
+            - input_height
+        )
+    #=====================================#
+    def _get_visible_log_count(self) -> int:
+        line_height = (
+            self.font.get_height()
+            + configs.console.line_spacing
+        )
+
+        area = self.RES.y
+
+        padding_y = (
+            scaler.constant(configs.console.padding_y)
+            if configs.console.use_constant_scale
+            else configs.console.padding_y
+        )
+
+        return max(
+            1,
+            int(
+                (
+                    area
+                    - padding_y * 2
+                    - self.font.get_height()
+                )
+                / line_height
+            )
+        )
     #=====================================#
     def _update_input_scroll(self, padding_x: int, prefix: str):
         prefix_width = self.font.size(prefix)[0]

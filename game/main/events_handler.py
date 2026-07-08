@@ -43,6 +43,8 @@ class EventsHandler:
                 self.handle_mousedown(event)
             elif event.type == pg.MOUSEBUTTONUP:
                 self.handle_mouseup(event)
+            elif event.type == pg.MOUSEWHEEL:
+                self.handle_mousewheel(event)
             #------------------------------#
             self.inputs(event)
             self.handle_object_events(event)
@@ -54,6 +56,11 @@ class EventsHandler:
         #--------------------------------#
         if inputs.input_by_event(event, inp.ACTIVE_DEBUG_OVERLAY):
             signal_bus.emit(signals.ACTIVE_DEBUGOVERLAY)
+        #--------------------------------#
+        elif inputs.input_by_event(event, inp.CONSOLE_PGDOWN): 
+            signal_bus.emit(signals.CONSOLE_PGDOW)
+        elif inputs.input_by_event(event, inp.CONSOLE_PGUP): 
+            signal_bus.emit(signals.CONSOLE_PGUP)
         #--------------------------------#
         elif inputs.input_by_event(event, inp.ACTIVE_CONSOLE): 
             if configs.console.can_active and configs.console.can_active_by_hotkey:
@@ -101,6 +108,12 @@ class EventsHandler:
     def handle_mouseup(self, event):
         #------------------------------#
         signal_bus.emit(signals.PGEVENT_MOUSE_UP, event=event)
+    #=====================================#
+    def handle_mousewheel(self, event):
+        if console.visible:
+            return
+        #------------------------------#
+        signal_bus.emit(signals.PGEVENT_MOUSE_WHEEL, event=event)
     #=====================================#
     def add_object(self, obj:object, priority:int=0):
         #--------------------------------#  
