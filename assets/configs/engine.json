@@ -1,6 +1,6 @@
 {
-    "version": "0.4.4.0",
-    "name": "PyKaizersEngines",
+    "version": "0.4.4.1",
+    "name": "PyKaizersEngine",
     "acronym": "pyk",
     "max_delta_time_value": 1,
     "asset_marks":{

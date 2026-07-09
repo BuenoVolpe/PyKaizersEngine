@@ -143,9 +143,9 @@ class SignalBus:
                 except Exception as e:
                     log_error(
                         f"Error on callback {callback}, "
-                        f"with data {data}"
+                        f"with data {data}", console=True
                     )
-                    log_error(e)
+                    log_error(e, console=True)
 
 #--------------------------------#
 # decorator
