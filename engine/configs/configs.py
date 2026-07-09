@@ -55,6 +55,14 @@ class ConfigManager:
         if config:
             config.reload()
     #================================#
+    def get_data(self, config:str) -> dict:
+        config = getattr(self, config.lower())
+        #--------------------------------#
+        if not config:
+            return {}
+        #--------------------------------#
+        return config._data
+    #================================#
     def get(self, config:str, key:str, default_value:any=None) -> any:
         #--------------------------------#
         config = getattr(self, config.lower())

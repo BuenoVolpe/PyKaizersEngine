@@ -5,6 +5,8 @@ from engine.configs.configs import configs
 #=====================================#
 from engine.console.utils import parse_args, parse_value, split_command
 #=====================================#
+from engine.handlers.fonts import fonts
+from engine.utils.wrap_text import wrap_text
 from engine.utils.debug_log import log_error, log_success
 #=====================================#
 from engine.signal_bus import signal_bus
@@ -14,19 +16,28 @@ from game.enums.signals_prioritys import signals_prioritys
 from dataclasses import dataclass
 #=====================================#
 class ConsoleLog:
-    def __init__(self):
+    def __init__(self, width):
+        self.width = width
+        self.font = fonts.get(configs.console.font).get_size(configs.console.font_size)
         #-------------------------------------#        
         self.lines = []
         self.max_lines = configs.console.max_log_lines
 
     #=====================================#
     def _add(self, text, color="white", styles=None):
-        #-------------------------------------#        
-        self.lines.append(
-            LogLine(text, color, styles or [])
+
+        wrapped_lines = wrap_text(
+            str(text),
+            self.font,
+            self.width
         )
-        #-------------------------------------#        
-        if len(self.lines) > self.max_lines:
+
+        for line in wrapped_lines:
+            self.lines.append(
+                LogLine(line, color, styles or [])
+            )
+
+        while len(self.lines) > self.max_lines:
             self.lines.pop(0)
     #=====================================#
     def log(self, text, color="white", styles=None):

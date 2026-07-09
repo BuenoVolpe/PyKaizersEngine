@@ -4,6 +4,7 @@ from engine.configs.configs import configs
 #=====================================#
 from engine.console.utils import parse_args, parse_value, split_command
 from engine.console.console_log import ConsoleLog
+from engine.console.sintex import highlight_command
 #=====================================#
 from engine.utils.debug_log import log_error, log_success, log, log_dict, log_list
 from engine.utils.scaler import scaler
@@ -24,12 +25,13 @@ class Console:
         self.scroll_offset = 0
         self.scrollbar_width = scaler.constant(configs.console.scrollbar_width) if configs.console.use_constant_scale else configs.console.scrollbar_width
         #-------------------------------------#
+        self._load_surface()
+        #-------------------------------------#
         self.commands = {}
         self.input = TextInput()
-        self.console_log = ConsoleLog()
+        self.console_log = ConsoleLog(self.RES.x - configs.console.padding_x * 2)
         self.font = fonts.get(configs.console.font).get_size(configs.console.font_size)
         #-------------------------------------#
-        self._load_surface()
         #-------------------------------------#
         self.protection_level = configs.console.level
         signal_bus.subscribe(signals.EXECUTE_COMMAND, self.execute_command, priority=signals_prioritys.PRE_LAST)
@@ -119,6 +121,52 @@ class Console:
         )
         #-------------------------------------#
         screen.blit(self.surface, self.pos)
+    #=====================================#
+    def draw_colored_text(self, surface, text:str, pos):
+        #-------------------------------------#
+        x, y = pos
+        #-------------------------------------#
+        cmd, args = split_command(text, do_strip=False)
+        tokens = highlight_command(args)
+        #-------------------------------------#
+        cmd = self.font.render(
+                cmd,
+                True,
+                configs.console.input_colors.cmd
+            )
+        #-------------------------------------#
+        surface.blit(
+                cmd,
+                (x, y)
+            )
+        x += cmd.get_width()
+        #-------------------------------------#
+        if ":" in text:
+            separator = self.font.render(
+                    ":",
+                    True,
+                    configs.console.input_colors.separator
+                )
+            #-------------------------------------#
+            surface.blit(
+                    separator,
+                    (x, y)
+                )
+            x += separator.get_width()
+        #-------------------------------------#
+        for value, color in tokens:
+            img = self.font.render(
+                value,
+                True,
+                self.parse_color(color)
+            )
+            #-------------------------------------#
+            surface.blit(
+                img,
+                (x, y)
+            )
+            #-------------------------------------#
+            x += img.get_width()
     #=====================================#
     def _draw_scrollbar(self, surface, padding_x, padding_y):
         #-------------------------------------#
@@ -249,10 +297,18 @@ class Console:
             - padding_y
         )
         #-------------------------------------#
-        text_surface = self.font.render(
+        text_surface = pg.Surface(
+            (
+                self.RES.x * 2,
+                self.font.get_height()
+            ),
+            pg.SRCALPHA
+        )
+
+        self.draw_colored_text(
+            text_surface,
             self.input.text,
-            True,
-            (255, 255, 255)
+            (0, 0)
         )
         #-------------------------------------#
         clip = pg.Rect(
@@ -304,30 +360,36 @@ class Console:
             before = "> " + self.input.text[:self.input.cursor_pos]
             #-------------------------------------#
             cursor_x = self.font.size(before)[0]
+            cursor_x_diagonal = self.font.size(" ")[0]
             #-------------------------------------#
             cursor_y = self.RES.y - self.font.get_height() - padding_y
             #if cursor is at the end of the text, draw a vertical line
             #-------------------------------------#
-            if self.input.cursor_pos == len(self.input.text):
-                #-------------------------------------#
-                pg.draw.line(
-                    self.surface,
-                    (255,255,255),
-                    (padding_x + cursor_x*1.05, cursor_y),
-                    (padding_x + cursor_x*1.1,
-                    cursor_y + self.font.get_height()),
-                    cursor_width
-                )
-                #-------------------------------------#
-            else:
-                #-------------------------------------#
-                pg.draw.line(
-                    self.surface,
-                    (255,255,255),
-                    (padding_x + cursor_x, base_y),
-                    (padding_x + cursor_x, base_y + self.font.get_height()),
-                    cursor_width
-                )
+            if self.input.cursor_pos > len(self.input.text):
+                self.input.cursor_pos = len(self.input.text)
+            elif self.input.cursor_pos < 0:
+                self.input.cursor_pos = 0
+
+            # if self.input.cursor_pos == len(self.input.text):
+            #     #-------------------------------------#
+            #     pg.draw.line(
+            #         self.surface,
+            #         (255,255,255),
+            #         (padding_x + cursor_x + cursor_x_diagonal*.1, cursor_y),
+            #         (padding_x + cursor_x + cursor_x_diagonal*.5,
+            #         cursor_y + self.font.get_height()),
+            #         cursor_width
+            #     )
+            #     #-------------------------------------#
+            # else:
+            #-------------------------------------#
+            pg.draw.line(
+                self.surface,
+                (255,255,255),
+                (padding_x + cursor_x, base_y),
+                (padding_x + cursor_x, base_y + self.font.get_height()),
+                cursor_width
+            )
     #=====================================#
     def _get_max_scroll(self):
         return max(
@@ -443,25 +505,29 @@ class Console:
         return color
     #=====================================#
     def execute_command(self, string:str):
-        #-------------------------------------#
-        cmd_name, args_text = split_command(string)
-        #-------------------------------------#
-        self.log_command(f"{string}")
-        #-------------------------------------#
-        if cmd_name not in self.commands:
-            log_error(f"command '{cmd_name}' is unknown")
-            self.log_error(f"command '{cmd_name}' is unknown")
-            return
-        #-------------------------------------#
-        cmd = self.commands[cmd_name]
-        #-------------------------------------#
-        args, kwargs = parse_args(args_text)
-        #-------------------------------------#
         try:
-            result = cmd["func"](*args, **kwargs)
             #-------------------------------------#
-            if result is not None:
-                log_success(result, self)
+            cmd_name, args_text = split_command(string)
+            #-------------------------------------#
+            self.log_command(f"{string}")
+            #-------------------------------------#
+            if cmd_name not in self.commands:
+                log_error(f"command '{cmd_name}' is unknown")
+                self.log_error(f"command '{cmd_name}' is unknown")
+                return
+            #-------------------------------------#
+            cmd = self.commands[cmd_name]
+            #-------------------------------------#
+            args, kwargs = parse_args(args_text)
+            #-------------------------------------#
+            try:
+                result = cmd["func"](*args, **kwargs)
+                #-------------------------------------#
+                if result is not None:
+                    log_success(result, self)
+            except Exception as e:
+                self.log_error(e)
+                log_error(e)
         except Exception as e:
             self.log_error(e)
             log_error(e)
@@ -472,11 +538,14 @@ class Console:
         node = self.commands
         key = name.replace(".", " ")
         #--------------------------------#
-        node[key] = {
+        cmd = {
             "func": func,
             "help": func.__doc__ or "No description",
             "protection":protection_level
         }
+        #--------------------------------#
+        node[key] = cmd
+        node[name] = cmd
 #================================#
 console = Console()
 #================================#

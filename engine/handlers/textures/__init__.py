@@ -6,9 +6,14 @@ import os
 #=====================================#
 from engine.configs.configs import configs
 #-------------------------------------#
+from engine.signal_bus import signal_bus
+#-------------------------------------#
+from game.enums.signals_prioritys import signals_prioritys
+from game.enums.signals import signals
 from game.enums.assets_marks import assetsmarks
 #-------------------------------------#
 from engine.utils.json import scan_folder_with_json
+from engine.utils.log import log_dict
 #-------------------------------------#
 from engine.handlers.textures.atlas import Atlas
 from engine.handlers.textures.loader import Loader
@@ -47,6 +52,8 @@ class TextureHandler:
         debug_log(f"{assetsmarks.engine.debug}::textures.show_atlas_keys", 
                   value=list(self.atlas.data.keys())
                   )
+        #-------------------------------------#
+        signal_bus.subscribe(signals.TEXTURE_LOG_ATLAS_DATA, lambda: log_list(list(self.atlas.data.keys()), list_name="texture atlas data",console=True), priority=signals_prioritys.FIRST)
 
     #================================#
     def get(self, name: str):

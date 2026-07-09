@@ -34,6 +34,10 @@ class AudioHandler:
         signal_bus.subscribe(signals.SOUND_PLAY, self.play, priority=signals_prioritys.SOUND)
         signal_bus.subscribe(signals.SOUND_PLAY_GROUP, self.play_group, priority=signals_prioritys.SOUND)
         #================================#
+        signal_bus.subscribe(signals.AUDIO_LOG_ATLAS_DATA, lambda: log_list(list(self.atlas.data.keys()), list_name="sound atlas data",console=True), priority=signals_prioritys.SOUND)
+        signal_bus.subscribe(signals.AUDIO_LOG_GROUPS_DATA, lambda: log_dict(self.atlas.groups_data, dict_name="sound atlas groups data",console=True), priority=signals_prioritys.SOUND)
+        signal_bus.subscribe(signals.AUDIO_LOG_MUSIC_DATA, lambda: log_list(list(self.atlas.music_data.keys()), list_name="sound atlas music data",console=True), priority=signals_prioritys.SOUND)
+        #================================#
         debug_log(f"{assetsmarks.engine.debug}::audio.show_atlas_keys", 
                   value=list(self.atlas.data.keys())
                   )

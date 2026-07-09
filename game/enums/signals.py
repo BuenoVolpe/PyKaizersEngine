@@ -35,12 +35,18 @@ class Signals:
     #-------------------------------------#
     SOUND_PLAY:str = f"{mark}@{pyk}::sound.play"
     SOUND_PLAY_GROUP:str = f"{mark}@{pyk}::sound.play.group"
+    AUDIO_LOG_ATLAS_DATA:str = f"{mark}@{pyk}::sound.log.atlas_data"
+    AUDIO_LOG_GROUPS_DATA:str = f"{mark}@{pyk}::sound.log.groups_data"
+    AUDIO_LOG_MUSIC_DATA:str = f"{mark}@{pyk}::sound.log.music_data"
+    #=====================================#
+    TEXTURE_LOG_ATLAS_DATA:str = f"{mark}@{pyk}::textures.log.atlas_data"
     #=====================================#
     KILL_ENTITY:str = f"{mark}@{pyk}::ecs.entity.kill"
     CREATE_ENTITY:str = f"{mark}@{pyk}::ecs.entity.create"
     ADD_COMPONENT:str = f"{mark}@{pyk}::ecs.component.add"
     REMOVE_COMPONENT:str = f"{mark}@{pyk}::ecs.component.remove"
     SPAWN_ENTITY:str = f"{mark}@{pyk}::ecs.entity.spawn"
+    CREATE_ENTITY_BY_DATA:str = f"{mark}@{pyk}::ecs.entity.spawn.by_data"
     LOAD_WORLD:str = f"{mark}@{pyk}::ecs.world.load"
     APPLY_OVERRIDES:str = f"{mark}@{pyk}::ecs.entity.overrides"
     #-------------------------------------#
@@ -49,5 +55,8 @@ class Signals:
     EXECUTE_COMMAND:str = f"{mark}@{pyk}::console.execute"
     CONSOLE_PGUP:str = f"{mark}@{pyk}::console.pgup"
     CONSOLE_PGDOW:str = f"{mark}@{pyk}::console.pgdn"
+    #-------------------------------------#
+
+
 #=====================================#
 signals = Signals()

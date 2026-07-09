@@ -48,7 +48,7 @@ class World:
         storage = self.get_storage(comp_type)
         return storage.get(entity)
     #================================#
-    def create_entity(self):
+    def create_entity(self, log_id=False):
         #--------------------------------------#
         eid = self.next_entity
         self.next_entity += 1
@@ -57,6 +57,9 @@ class World:
         debug_log(f"{assetsmarks.engine.debug}::ecs.create_entity", 
                 value=f"[ecs_world]: created entity with id: {eid}"
                 )
+        #--------------------------------------#
+        if log_id:
+            log_success(f"created entity with id:{eid}", True)
         #--------------------------------------#
         return eid
     #================================#

@@ -36,12 +36,14 @@ def parse_value(value):
 
     return value
 
-def split_command(text: str):
+def split_command(text: str, do_strip=True):
     if ":" in text:
         cmd, args = text.split(":", 1)
     else:
         cmd = text
         args = ""
-
-    return cmd.strip(), args.strip()
+    if do_strip:
+        return cmd.strip(), args.strip()
+    else:
+        return cmd, args
 

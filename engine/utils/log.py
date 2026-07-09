@@ -1,5 +1,4 @@
 from colorama import Fore, Style, init
-# from engine.console import console
 #================================#
 init(autoreset=True)
 #================================#
@@ -48,7 +47,7 @@ def log(text:str, color:str=None, styles:list[str|None, str|None]=[], console:ob
     #--------------------------------#
     if console:
         if not hasattr(console, "core"):
-           # from engine.console import console
+            from engine.console import console
             console.log(text, color, styles)
             return
         console.log(text, color, styles)
@@ -59,7 +58,7 @@ def log_error(text:str, console:object|None=None):
     #--------------------------------#
     if console:
         if not hasattr(console, "core"):
-           # from engine.console import console
+            from engine.console import console
             # console.log_error(text)
             log_error("no console found")
 
@@ -72,7 +71,7 @@ def log_success(text:str, console:object|None=None):
     #--------------------------------#
     if console:
         if not hasattr(console, "core"):
-           # from engine.console import console
+            from engine.console import console
             console.log_success(text)
             return
         console.log_success(text)
@@ -104,7 +103,7 @@ def log_dict(dict:dict,
         log(line, None, styles, console)
 #         if console:
 # if not hasattr(console,:
-    ## from engine.console import console
+    #   from engine.console import console
 #     console.#()
 #     return "core")
 #             console.log(string, ...)

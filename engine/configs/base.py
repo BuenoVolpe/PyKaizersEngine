@@ -26,6 +26,17 @@ class ConfigsBase:
         """set default values for essential configs if they are not provided in the JSON"""
         ...
     #--------------------------------#
+    def get_path(self, path:str):
+        node = self
+
+        for key in path.split("."):
+            if not hasattr(node, key):
+                return None
+
+            node = getattr(node, key)
+
+        return node
+    #--------------------------------#
     def create_subclass(self, data:dict, name:str):
         #--------------------------------#
         subclass = ConfigsBase(data)

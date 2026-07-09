@@ -5,7 +5,7 @@ import copy
 from engine.utils.json import json_reader, scan_folder_for_json
 from engine.utils.debug_log import debug_log
 from engine.utils.overlay import debug_overlay
-from engine.utils.log import log_error
+from engine.utils.log import log_error, log_success
 from engine.utils.dict_to_class import dict_to_class
 #-------------------------------------#
 from engine.configs.configs import configs
@@ -39,6 +39,7 @@ class EntityFactory:
         self.component_map = COMPONENT_REGISTRY
         #--------------------------------z-----#
         signal_bus.subscribe(signals.SPAWN_ENTITY, self.spawn_entity, priority=signals_prioritys.ADD_OBJ)
+        signal_bus.subscribe(signals.CREATE_ENTITY_BY_DATA, self.build_entity_from_data, priority=signals_prioritys.ADD_OBJ)
         signal_bus.subscribe(signals.APPLY_OVERRIDES, self.apply_overrides, priority=signals_prioritys.ADD_OBJ)
         #--------------------------------z-----#
         # self.entity_templates = {}
@@ -97,7 +98,7 @@ class EntityFactory:
         #-------------------------------------#
         return merged
     #=====================================#
-    def build_entity_from_data(self, data, do_log_errors:bool=True):
+    def build_entity_from_data(self, data, do_log_errors:bool=True, do_log_id:bool=False):
         #-------------------------------------#
         entity = self.world.create_entity()
         #-------------------------------------#
@@ -144,7 +145,11 @@ class EntityFactory:
                 log_error(f"[ent_factory]: can't find Component: {comp_name}")
         #-------------------------------------#
         if do_log_errors and errors:
-            log_error(f"[ent_factory]: find {errors} errors, while creating entity")
+            log_error(f"[ent_factory]: find {errors} errors, while creating entity", True)
+        #-------------------------------------#
+        if do_log_id:
+            log_success(f"entity:{entity} was created with data:{data}", True)
+        #-------------------------------------#
         return entity
     #=====================================#
     def spawn_entity(self, name: str, pos:list[float, float]=None, overrides:dict={}):

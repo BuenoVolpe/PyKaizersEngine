@@ -5,7 +5,7 @@ import copy
 from engine.utils.json import json_reader, scan_folder_for_json
 from engine.utils.debug_log import debug_log
 from engine.utils.overlay import debug_overlay
-from engine.utils.log import log_error
+from engine.utils.log import log_error, log_success
 from engine.utils.dict_to_class import dict_to_class
 #-------------------------------------#
 from engine.configs.configs import configs
@@ -41,14 +41,14 @@ class WorldFactory:
         self.entity_factory = entity_factory
         self.world = world
         #-------------------------------------#
-        signal_bus.subscribe(signals.LOAD_WORLD, self.world, priority=signals_prioritys.LOAD)
+        signal_bus.subscribe(signals.LOAD_WORLD, self.load_world, priority=signals_prioritys.LOAD)
         #-------------------------------------#
     #=====================================#
     def load_world(self, world_id:str):
         #-------------------------------------#
         world_path = self.world_registry.get(world_id)
         if world_path is None:
-            log_error(f"world {world_id} not found")
+            log_error(f"world {world_id} not found", True)
             return
         #-------------------------------------#
         self.world.clear()
@@ -87,9 +87,10 @@ class WorldFactory:
                 #-------------------------------------#
             #-------------------------------------#
             signal_bus.emit(signals.LOAD_COMPLETE_WORLD, name=world_id, data=world_data)
+            log_success(f"world {world_id} loaded with {len(entities)} entities", True)
         #-------------------------------------#
         else:
-            log_error(f"world {world_id} has no entities")
+            log_error(f"world {world_id} has no entities", True)
     #=====================================#
     def _load_registry(self):
         for origin, path in self.paths.items():
