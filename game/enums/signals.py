@@ -43,6 +43,7 @@ class Signals:
     AUDIO_LOG_MUSIC_DATA:str = f"{mark}@{pyk}::sound.log.music_data"
     #=====================================#
     TEXTURE_LOG_ATLAS_DATA:str = f"{mark}@{pyk}::textures.log.atlas_data"
+    TEXTURE_LOG_RAYTEXTURES_ID:str = f"{mark}@{pyk}::textures.log.raytextures_id"
     #=====================================#
     KILL_ENTITY:str = f"{mark}@{pyk}::ecs.entity.kill"
     CREATE_ENTITY:str = f"{mark}@{pyk}::ecs.entity.create"

@@ -22,7 +22,7 @@
     "scrollbar_width":8,
     "cursor_width":1,
     "use_constant_scale":true,
-    "max_log_lines":300,
+    "max_log_lines":99999,
     "padding_y": 5,
     "visible_lines": 20,
     "padding_x": 5,

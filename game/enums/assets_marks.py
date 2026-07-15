@@ -9,6 +9,7 @@ class AssetsMarks:
     class Engine:
         #-------------------------------------#
         texture:str = f"{configs.engine.asset_marks.texture}@{configs.engine.acronym}"
+        raycast_texture:str = f"{configs.engine.asset_marks.raycast_texture}@{configs.engine.acronym}"
         audio:str = f"{configs.engine.asset_marks.audio}@{configs.engine.acronym}"
         debug:str = f"{configs.engine.asset_marks.debug}@{configs.engine.acronym}"
         components:str = f"{configs.engine.asset_marks.components}@{configs.engine.acronym}"
@@ -23,6 +24,7 @@ class AssetsMarks:
     class Game:
         #-------------------------------------#
         texture:str = f"{configs.engine.asset_marks.texture}@{configs.game.acronym}"
+        raycast_texture:str = f"{configs.engine.asset_marks.raycast_texture}@{configs.game.acronym}"
         audio:str = f"{configs.engine.asset_marks.audio}@{configs.game.acronym}"
         debug:str = f"{configs.engine.asset_marks.debug}@{configs.game.acronym}"
         components:str = f"{configs.engine.asset_marks.components}@{configs.game.acronym}"

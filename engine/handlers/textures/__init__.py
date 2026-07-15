@@ -52,8 +52,12 @@ class TextureHandler:
         debug_log(f"{assetsmarks.engine.debug}::textures.show_atlas_keys", 
                   value=list(self.atlas.data.keys())
                   )
+        debug_log(f"{assetsmarks.engine.debug}::textures.show_raytextures_ids", 
+                  value=(self.atlas.raycaster_textures_ids)
+                  )
         #-------------------------------------#
-        signal_bus.subscribe(signals.TEXTURE_LOG_ATLAS_DATA, lambda: log_list(list(self.atlas.data.keys()), list_name="texture atlas data",console=True), priority=signals_prioritys.FIRST)
+        signal_bus.subscribe(signals.TEXTURE_LOG_ATLAS_DATA, callback=lambda: log_list(list(self.atlas.data.keys()), list_name="texture atlas data",console=True), priority=signals_prioritys.FIRST)
+        signal_bus.subscribe(signals.TEXTURE_LOG_RAYTEXTURES_ID, callback=lambda: log_dict(self.atlas.raycaster_textures_ids, dict_name="texture atlas data", console=True), priority=signals_prioritys.FIRST)
 
     #================================#
     def get(self, name: str):

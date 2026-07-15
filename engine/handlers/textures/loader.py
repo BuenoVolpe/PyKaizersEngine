@@ -1,5 +1,6 @@
 import os
 import pygame as pg
+import numpy as np
 #=====================================#
 from engine.utils.recolor import recolor
 from engine.utils.json import scan_folder_with_json
@@ -35,7 +36,9 @@ class Loader:
     def _load(self):
         #-------------------------------------#
         engine_asset = assetsmarks.engine.texture
+        ray_engine_asset = assetsmarks.engine.raycast_texture
         game_asset = assetsmarks.game.texture
+        ray_game_asset = assetsmarks.game.raycast_texture
         #=====================================#
         for base, path in self.paths.items():
             for info in scan_folder_with_json(path, extension=f".{configs.engine.extensions.texture}"):
@@ -47,6 +50,7 @@ class Loader:
                 #--------------------------------#
                 convert_alpha = meta.get("convert_alpha", True)
                 use_colorkey = meta.get("use_colorkey", False)
+                is_raycaster = meta.get("is_raycaster")
                 type = meta.get("type")
                 colors = meta.get("colors")
                 scale = meta.get("scale")
@@ -62,23 +66,28 @@ class Loader:
                 atlas_path = atlas_path.replace(f".{configs.engine.extensions.texture}", "").replace("\\", ".")
                 #-------------------------------------#
                 if base == configs.engine.acronym:
-                    atlas_path = f"{engine_asset}::{atlas_path}"
+                    mark=engine_asset
                 elif base == configs.game.acronym:
-                    atlas_path = f"{game_asset}::{atlas_path}"
+                    mark=game_asset
+                if configs.game.use_raycaster and (atlas_path.startswith(configs.engine.raytexture_folder) or is_raycaster): 
+                    is_raycaster = True
+                    mark = ray_engine_asset if mark == engine_asset else ray_game_asset
+                #-------------------------------------#
+                atlas_path = f"{mark}::{atlas_path}"
                 #=====================================#
                 if type == "sheet":
-                    self._load_sheet(sprite, meta, self.color_map, atlas_path)
+                    self._load_sheet(sprite, meta, self.color_map, atlas_path, is_raycaster)
                     continue
                 if colors:
-                    self.recolor_sprite(sprite, colors, atlas_path, self.color_map, meta)
+                    self.recolor_sprite(sprite, colors, atlas_path, self.color_map, meta, is_raycaster)
                     continue
                 if scale:
                     sprite = scaler.surface(sprite, scale, use_constant)
                 #-------------------------------------#
-                self.atlas.save(atlas_path, sprite)
+                self.atlas.save(atlas_path, sprite, is_raycaster)
 
     #=====================================#
-    def _load_sheet(self, sheet: pg.Surface, meta: dict, color_maps: dict, atlas_path: str):
+    def _load_sheet(self, sheet: pg.Surface, meta: dict, color_maps: dict, atlas_path: str, is_raycaster=False):
         #-------------------------------------#
         self.atlas.save(atlas_path, sheet)
         #=====================================#
@@ -107,20 +116,20 @@ class Loader:
                 if scale:
                     image = scaler.surface(image, scale, use_constant)
                 #--------------------------------#
-                self.atlas.save(sprite_atlas_path, image)
+                self.atlas.save(sprite_atlas_path, image, is_raycaster)
 
         #-------------------------------------#
         if sprites is None:
-            log_error(f"no sprites found in sheet {atlas_path}")#, True)
+            log_error(f"no sprites found in sheet {atlas_path}", True)
 
-    def recolor_sprite(self, sprite:pg.Surface, colors:list, atlas_path:str, color_maps:dict, meta:dict={}):
+    def recolor_sprite(self, sprite:pg.Surface, colors:list, atlas_path:str, color_maps:dict, meta:dict={}, is_raycaster=False):
         #--------------------------------#
         sprite_ = sprite
         if scale := meta.get("scale"):
             sprite_ = scaler.surface(sprite, scale, meta.get("use_constant", False))
         #--------------------------------#
-        self.atlas.save(atlas_path, sprite_)
-        self.atlas.save(f"{atlas_path}.standart", sprite_)
+        self.atlas.save(atlas_path, sprite_, is_raycaster)
+        self.atlas.save(f"{atlas_path}.standart", sprite_, is_raycaster)
         #--------------------------------#
         for color in colors:
             #--------------------------------#
@@ -135,6 +144,15 @@ class Loader:
             if scale := meta.get("scale"):
                 sprite_copy = scaler.surface(sprite_copy, scale, meta.get("use_constant", False))
             #--------------------------------#
-            self.atlas.save(f"{atlas_path}.{color}", sprite_copy)
+            self.atlas.save(f"{atlas_path}.{color}", sprite_copy, is_raycaster)
 
-
+    #=====================================#
+    def set_texture_to_correct_size(self, sprite):
+        #--------------------------------#
+        texture = self.get(sprite)
+        texture_size = configs.engine.raytexture_size
+        #--------------------------------#
+        resized_sprite = pg.transform.scale(texture, [texture_size, texture_size])
+        self.atlas.save(sprite, resized_sprite)
+        return resized_sprite
+    

@@ -13,6 +13,18 @@
             
             "list_name": "textures",
             "list_color":"white"
+        },
+        "show_raytextures_ids":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"dict",
+            "log_color":"black",
+            
+            "dict_name": "textures",
+            "dict_color":"white"
         }
     },
     "audio":{

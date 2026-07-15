@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0.0",
+    "version": "1.0.1.0",
     "name": "PyKaizersEngines",
     "acronym": "pyk",
     "max_delta_time_value": 1,
@@ -7,6 +7,7 @@
         "subclass": true,
 
         "texture": "texture",
+        "raycast_texture": "raytexture",
         "audio": "audio",
         "debug": "debug",
         "music": "music",
@@ -21,6 +22,8 @@
     },
     
     "music_folder": "music",
+    "raytexture_folder": "raycaster",
+    "raytexture_size":32,
 
     "extensions":{
         "subclass": true,
