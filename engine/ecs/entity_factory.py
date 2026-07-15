@@ -71,6 +71,7 @@ class EntityFactory:
         json_path = self.entity_registry.get(entity_name)
         #-------------------------------------#
         json_data = json_reader(json_path)
+        json_data["entity_name"] = entity_name if not json_data.get("type") else json_data.get("type")
         #-------------------------------------#
         return self.build_entity_from_data(json_data)
     #=====================================#
@@ -103,6 +104,14 @@ class EntityFactory:
         entity = self.world.create_entity()
         #-------------------------------------#
         data = self.resolve_extends(data)
+        #-------------------------------------#
+        entity_type = data.get("entity_name") or data.get("type")
+        #-------------------------------------#
+        if entity_type:
+            self.world.add_component(
+                entity,
+                EntityType(entity_type)
+            )
         #-------------------------------------#
         components = copy.deepcopy(data.get("components", {}))
         extends = copy.deepcopy(data.get("extends"))
@@ -153,6 +162,7 @@ class EntityFactory:
         return entity
     #=====================================#
     def spawn_entity(self, name: str, pos:list[float, float]=None, overrides:dict={}):
+        overrides = overrides or {}
         #-------------------------------------#
         if pos:
             overrides[f"{assetsmarks.engine.components}::Position"] = {"x":pos[0], "y":pos[1]}
@@ -194,6 +204,7 @@ class EntityFactory:
             else:
                 #-------------------------------------#
                 component = comp_class(**values)
+                print(component, comp_name,entity)
                 self.world.add_component(entity, component)
 
 #=====================================#

@@ -3,7 +3,7 @@ import pygame as pg
 #=====================================#
 from engine.utils.log import log_error
 #--------------------------------#
-from engine.ecs.systems.movement import MovementSystem
+from game.ecs.systems.all import *
 #--------------------------------#
 from engine.signal_bus import signal_bus
 from game.enums.signals import signals
@@ -19,7 +19,14 @@ class Updater:
         self.objects = {} #priority: [elements]
         #--------------------------------#
         self.systems = [ #[sys1, sys2(value, key), sys3(kwarg="aa")]
-            MovementSystem(self.world)
+            SimpleAnimationSystem(self.world),
+            StateAnimationSystem(self.world),
+            InputSystem(self.world),
+            PlayerSignals(self.world),
+            LookAtSystem(self.world),
+            VisualRotationSystem(self.world),
+            MovementSystem(self.world),
+            AngularMovementSystem(self.world),
         ] 
         #=====================================#
         self._subscribe_functions()

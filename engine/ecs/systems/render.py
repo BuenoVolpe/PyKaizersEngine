@@ -1,6 +1,6 @@
-from engine.ecs.components.all import Texture, Position
+from engine.ecs.components.all import Texture, Position, CameraFocusTag
 from engine.utils.scaler import scaler
-
+from engine.utils.globalclasses import globalclasses
 #================================#
 class RenderSystem:
     #--------------------------------#
@@ -25,5 +25,40 @@ class RenderSystem:
             scale = render.scale
             pos = x, y = position.x, position.y
             #--------------------------------#
-            surface.blit(texture, pos)
+            camera = globalclasses.Camera
+
+            x, y = camera.world_to_screen(
+                position.x,
+                position.y
+            )
+
+            surface.blit(texture, (x,y))
             #--------------------------------#
+#================================#
+#--------------------------------#
+class CameraSystem:
+    #--------------------------------#
+    def __init__(self, world):
+        self.on_screen=False
+        self.world = world
+    #--------------------------------#
+    def update(self, surface):
+        #--------------------------------#
+        for entity, (position, tag) in self.world.query(Position, CameraFocusTag):
+            camera = globalclasses.Camera
+            #--------------------------------#
+            if camera.target is None:
+                camera.target = entity
+            #--------------------------------#
+            if tag.IS_ON_SCREEN_CENTER:
+                tex = self.world.get_component(
+                    camera.target,
+                    Texture
+                )
+                w,h = 0,0
+                if hasattr(tex.texture, "get_size"):
+                    w,h = tex.texture.get_size()
+            #--------------------------------#
+            camera.follow([position.x+w, position.y+h//2], surface)
+            
+

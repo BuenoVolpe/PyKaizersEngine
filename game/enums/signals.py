@@ -25,6 +25,9 @@ class Signals:
     ADD_TO_OVERLAY:str = f"{mark}@{pyk}::debug_overlay.add"
     ACTIVE_DEBUGOVERLAY:str = f"{mark}@{pyk}::debug_overlay.active"
     #-------------------------------------#
+    INPUT:str = f"{mark}@{pyk}::input"
+    NO_INPUT:str = f"{mark}@{pyk}::no_input"
+    #-------------------------------------#
     PGEVENT:str = f"{mark}@{pyk}::pgevent"
     PGEVENT_KEY_DOWN:str = f"{mark}@{pyk}::pgevent.key.down"
     PGEVENT_KEY_UP:str = f"{mark}@{pyk}::pgevent.key.up"

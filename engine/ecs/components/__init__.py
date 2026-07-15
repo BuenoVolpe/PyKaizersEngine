@@ -12,26 +12,67 @@ class Texture:
     def __init__(self, texture:str, scale:tuple=None):
         #--------------------------------#
         self.texture = globalclasses.TextureHandler.get(texture)
+        self.original_texture = self.texture
         self.scale = scale
 #================================#
 @register_engine_component
 class Position:
-    #--------------------------------#
-    def __init__(self, x:float, y:float):
-        #--------------------------------#
-        self.x = x
-        self.y = y
+    def __init__(self,x,y):
         #--------------------------------#
         self.pos = pg.Vector2(x,y)
+    #--------------------------------#
+    @property
+    def x(self):
+        return self.pos.x
+    #--------------------------------#
+    @x.setter
+    def x(self,value):
+        self.pos.x = value
+    #--------------------------------#
+    @property
+    def y(self):
+        return self.pos.y
+    #--------------------------------#
+    @y.setter
+    def y(self,value):
+        self.pos.y = value
 #================================#
+inf = float("inf")
 @register_engine_component
 class Velocity:
     #--------------------------------#
-    def __init__(self, x:float, y:float):
+    def __init__(self, x:float, y:float, max_speed=[inf, inf]):
         #--------------------------------#
-        self.x = x
-        self.y = y
-        #--------------------------------#
+        self.max = pg.Vector2(*max_speed)
         self.vel = pg.Vector2(x,y)
+    #--------------------------------#
+    @property
+    def x(self):
+        return self.vel.x
+    #--------------------------------#
+    @x.setter
+    def x(self,value):
+        self.vel.x = value
+    #--------------------------------#
+    @property
+    def y(self):
+        return self.vel.y
+    #--------------------------------#
+    @y.setter
+    def y(self,value):
+        self.vel.y = value
 #================================#
-
+@register_engine_component
+class States:
+    #--------------------------------#
+    def __init__(self, initial:str, states:list[str]):
+        #--------------------------------#
+        self.initial = initial
+        self.current = initial
+        self.states = states
+#================================#
+@register_engine_component
+class EntityType:
+    def __init__(self, name: str):
+        self.name = name
+#================================#

@@ -4,8 +4,9 @@ from sys import exit
 #=====================================#
 from engine.utils.log import log_error
 from engine.utils.overlay import debug_overlay
+from engine.utils.globalclasses import globalclasses
 #-------------------------------------#
-from engine.ecs.systems.all import RenderSystem
+from engine.ecs.systems.all import RenderSystem, CameraSystem
 #-------------------------------------#
 from engine.handlers.fonts import fonts
 #-------------------------------------#
@@ -24,7 +25,8 @@ class Render:
         self.images = {} #priority: [elements]
         #-------------------------------------#
         self.systems = [
-            RenderSystem(world)
+            CameraSystem(world),
+            RenderSystem(world),
         ]
         #=====================================#
         self._subscribe_functions()
@@ -81,6 +83,13 @@ class Render:
         #-------------------------------------#
         for priority in sorted(self.images.keys()):
             for (img, pos) in self.images[priority]:
+                #-------------------------------------#
+                camera = globalclasses.Camera
+
+                pos = camera.world_to_screen(
+                    pos[0],
+                    pos[1]
+                )
                 #-------------------------------------#
                 surface.blit(img, pos)
         #-------------------------------------#

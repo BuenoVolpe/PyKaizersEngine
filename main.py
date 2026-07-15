@@ -26,6 +26,8 @@ from engine.handlers.fonts import fonts
 #=====================================#
 from engine.configs.configs import configs
 #-------------------------------------#
+from engine.camera import Camera
+#-------------------------------------#
 from engine.signal_bus import signal_bus
 from game.enums.signals import signals
 from game.enums.signals_prioritys import sig_prio
@@ -50,6 +52,9 @@ class Main:
         self.world = World(self)
         self.entity_factory = EntityFactory(self.world)
         self.world_factory = WorldFactory(self.world, self.entity_factory)
+        #=====================================#
+        self.camera = Camera()
+        globalclasses.Camera = self.camera
         #=====================================#
         self.display:Display = Display()
         self.loader:Loader = Loader()

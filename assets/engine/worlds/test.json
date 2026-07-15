@@ -4,10 +4,14 @@
             "prefab": "entity@pyk::image"
         },
         {
-            "prefab": "entity@pyk::image_random"
+            "prefab": "entity@pyk::state_animated"
         },
         {
             "prefab": "entity@pyk::image_move"
+        },
+        {
+            "prefab": "entity@pyk::players.topdown",
+            "positions": [[0, 0]]
         },
         {
             "prefab": "entity@pyk::image_move",

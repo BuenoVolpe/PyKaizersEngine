@@ -59,8 +59,7 @@ def log_error(text:str, console:object|None=None):
     if console:
         if not hasattr(console, "core"):
             from engine.console import console
-            # console.log_error(text)
-            log_error("no console found")
+            console.log_error(text)
 
             return
         console.log_error(text)

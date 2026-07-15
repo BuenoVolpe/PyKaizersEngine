@@ -7,6 +7,7 @@ from game.enums.assets_marks import assetsmarks
 from engine.signal_bus import signal_bus
 #--------------------------------#
 from engine.ecs.component_storage import ComponentStorage, COMPONENT_REGISTRY 
+from engine.ecs.components.all import EntityType 
 #--------------------------------#
 from game.ecs.hooks import HOOK_REGISTRY 
 #--------------------------------#
@@ -202,5 +203,10 @@ class World:
                 #--------------------------------------#
                 else:
                     yield entity, tuple(components)
-
+    #================================#
+    def get_entities_with_type(self, *types):
+        storage = self.get_storage(EntityType)
+        for entity, component in storage.data.items():
+            if component.name in types:
+                yield entity, component
 

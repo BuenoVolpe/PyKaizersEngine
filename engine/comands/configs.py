@@ -19,9 +19,4 @@ def data(config:str):
     data = configs.get_data(config)
     console.log_dict(data, "black", dict_name=f"{config} data", name_color="white")
 #-----------------------#
-@command("configs.save", protection_level=2)
-def data(config:str):
-    """logs and prints a text at the console"""
-    configs.save(config)
-    
 

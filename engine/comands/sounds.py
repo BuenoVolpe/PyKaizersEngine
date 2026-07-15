@@ -23,10 +23,10 @@ def SOUND_PLAY(        name: str,
         max_distance: float | None = None,
         min_distance: float | None = None,):
     signal_bus.emit(signals.SOUND_PLAY, 
-                    sound=name, source_pos=source_pos, listener_pos=listener_pos, 
+                    name=name, source_pos=source_pos, listener_pos=listener_pos, 
                     listener_forward=listener_forward, max_distance=max_distance, min_distance=min_distance)
 #-----------------------#
-@command("sounds.play.group")
+@command("sounds.play3d")
 def SOUND_PLAY_GROUP(group:str, source_pos:tuple|None=None, listener_pos:tuple|None=None, max_distance:float=None,min_distance:float=None):
-    signal_bus.emit(signals.SOUND_PLAY_GROUP, sound=group,source_pos=source_pos,listener_pos=listener_pos,max_distance=max_distance,min_distance=min_distance)
+    signal_bus.emit(signals.SOUND_PLAY_GROUP, group=group,source_pos=source_pos,listener_pos=listener_pos,max_distance=max_distance,min_distance=min_distance)
 #-----------------------#
