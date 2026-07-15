@@ -13,18 +13,22 @@ from engine.configs.configs import configs
 #=====================================#
 class Updater:
     #=====================================#
-    def __init__(self, world):
+    def __init__(self, world, grid):
         self.world = world
+        self.grid = grid
         #--------------------------------#
         self.objects = {} #priority: [elements]
         #--------------------------------#
         self.systems = [ #[sys1, sys2(value, key), sys3(kwarg="aa")]
             SimpleAnimationSystem(self.world),
             StateAnimationSystem(self.world),
+            MouseLookSystem(self.world),
+            Raycaster3DCameraSystem(self.world),
             InputSystem(self.world),
             PlayerSignals(self.world),
             LookAtSystem(self.world),
             VisualRotationSystem(self.world),
+            GridCollisionSystem(self.world, grid),
             MovementSystem(self.world),
             AngularMovementSystem(self.world),
         ] 

@@ -6,11 +6,10 @@ from engine.utils.log import log_error
 from engine.utils.overlay import debug_overlay
 from engine.utils.globalclasses import globalclasses
 #-------------------------------------#
-from engine.ecs.systems.all import RenderSystem, CameraSystem
+from engine.ecs.systems.all import RenderSystem, CameraSystem, Raycast3DSystem
 #-------------------------------------#
 from engine.raycaster3D.renderer import RaycasterRenderer
 from engine.raycaster3D.constants import *
-from engine.raycaster3D.auxiliar_functions import *
 #-------------------------------------#
 from engine.handlers.fonts import fonts
 #-------------------------------------#
@@ -28,11 +27,13 @@ class Render:
         self.layers = {} #priority: [elements]
         self.images = {} #priority: [elements]
         #-------------------------------------#
+        self.raycast_renderer = RaycasterRenderer()
+        #-------------------------------------#
         self.systems = [
             CameraSystem(world),
+            Raycast3DSystem(world, self.raycast_renderer),
             RenderSystem(world),
         ]
-        self.raycast_renderer = RaycasterRenderer()
         #=====================================#
         self._subscribe_functions()
     #=====================================#
@@ -86,10 +87,9 @@ class Render:
     #=====================================#
     def render(self, surface:pg.Surface, dt):
         #-------------------------------------#
-        if configs.game.use_raycaster:
-            frame = self.raycast_renderer.render(globalclasses.TextureHandler.atlas.raycaster_texture_array)
-            frame_surface = buffer_to_surface(frame)
-            surface.blit(frame_surface, configs.game.raysurf_pos)
+        for system in self.systems:
+            if not getattr(system, "on_screen", True):
+                system.update(surface)
         #-------------------------------------#
         for priority in sorted(self.images.keys()):
             for (img, pos) in self.images[priority]:
@@ -114,10 +114,6 @@ class Render:
                     continue
                 #-------------------------------------#
                 log_error(f"Object {obj} has no 'render' or 'draw' method.")
-        #-------------------------------------#
-        for system in self.systems:
-            if not getattr(system, "on_screen", True):
-                system.update(surface)
         #-------------------------------------#
     #=====================================#
     def render_on_screen(self, screen:pg.Surface, dt):

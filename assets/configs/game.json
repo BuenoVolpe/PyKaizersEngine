@@ -9,6 +9,8 @@
     "raysurface_size": [320,180],
     
     "use_raycaster":false,
+    "lock_mouse":false,
+    "visible_mouse":true,
     "raytexture_size":16,
     "raysurf_pos":[0,0],
 

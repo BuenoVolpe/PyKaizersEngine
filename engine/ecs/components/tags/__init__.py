@@ -34,10 +34,26 @@ class PlayerTag(Tag):
         super().__init__(**tags)
 #================================#
 @register_engine_component
+class NoClipTag(Tag):
+    #--------------------------------#
+    def __init__(self, **tags):
+        self.NOCLIP = True
+        #--------------------------------#
+        super().__init__(**tags)
+#================================#
+@register_engine_component
 class AngularMovementTag(Tag):
     #--------------------------------#
     def __init__(self, **tags):
         self.DO_ANGULAR_MOVEMENT = True
+        #--------------------------------#
+        super().__init__(**tags)
+#================================#
+@register_engine_component
+class CollisionTag(Tag):
+    #--------------------------------#
+    def __init__(self, **tags):
+        self.DO_COLLISION = True
         #--------------------------------#
         super().__init__(**tags)
 #================================#

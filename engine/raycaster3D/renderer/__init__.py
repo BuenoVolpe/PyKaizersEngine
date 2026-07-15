@@ -31,22 +31,16 @@ class RaycasterRenderer:
         self.floorDefaultTex2 = 57
         self.ceilDefaultTex = 58
         #--------------------------------#
-        self.camera = dict_to_class({
-            "pos": [posX, posY],
-            "dir": [dirX, dirY],
-            "plane": [planeX, planeY],
-        })
-        self.set_fov(90)
     #--------------------------------#
-    def render(self, textures:array_surf):
+    def render(self, textures:array_surf, pos, dir, plane):
         #---------cleans buff---------#
         self.buffer[:] = 0
         self.ZBuffer[:] = 1e30  # infinito'
         #---------floor and ceiling render---------#camera:object, world:object, textures:array_surf, sprites:array
         render_floor_ceiling(
-            self.camera.pos[0], self.camera.pos[1],
-            self.camera.dir[0], self.camera.dir[1],
-            self.camera.plane[0], self.camera.plane[1],
+            pos.x, pos.y,
+            dir.x, dir.y,
+            plane.x, plane.y,
             textures, 
             self.buffer,
             self.ZBuffer,
@@ -57,9 +51,9 @@ class RaycasterRenderer:
         )
         #---------walls render---------#
         render_walls(
-            self.camera.pos[0], self.camera.pos[1],
-            self.camera.dir[0], self.camera.dir[1],
-            self.camera.plane[0], self.camera.plane[1],
+            pos.x, pos.y,
+            dir.x, dir.y,
+            plane.x, plane.y,
             self.grid,
             textures,
             self.buffer,
@@ -70,9 +64,9 @@ class RaycasterRenderer:
         )
         #---------sprites render---------#
         render_sprites(
-            self.camera.pos[0], self.camera.pos[1],
-            self.camera.dir[0], self.camera.dir[1],
-            self.camera.plane[0], self.camera.plane[1],
+            pos.x, pos.y,
+            dir.x, dir.y,
+            plane.x, plane.y,
             self.sprites,#.get(),
             textures,
             self.buffer,
@@ -82,21 +76,5 @@ class RaycasterRenderer:
         #---------returns buffer---------#
         return self.buffer
     #--------------------------------#
-    def set_view_angle(self, angle_deg: float):
-        angle = math.radians(angle_deg)
-        #--------------------------------#
-        self.camera.dir[0] = math.cos(angle)
-        self.camera.dir[1] = math.sin(angle)
-    #--------------------------------#
-    def set_fov(self, fov_deg: float):
-        angle = math.atan(math.tan(math.radians(fov_deg) / 2))
-
-        plane_length = math.tan(math.radians(fov_deg) / 2)
-
-        dx, dy = self.camera.dir
-
-        # perpendicular ao vetor direção
-        self.camera.plane[0] = -dy * plane_length
-        self.camera.plane[1] = dx * plane_length
 
         

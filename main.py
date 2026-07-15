@@ -8,6 +8,8 @@ from game.main.loader import Loader
 from game.main.updater import Updater
 from game.main.render import Render
 #=====================================#
+from engine.raycaster3D.constants import worldMap
+#=====================================#
 from engine.comands.all import *
 from engine.console import console
 #=====================================#
@@ -58,7 +60,7 @@ class Main:
         #=====================================#
         self.display:Display = Display()
         self.loader:Loader = Loader()
-        self.updater:Updater = Updater(self.world)
+        self.updater:Updater = Updater(self.world, worldMap)
         self.render:Render = Render(self.world)
         self.events_handler:EventsHandler = EventsHandler()
         #=====================================#
@@ -88,7 +90,7 @@ class Main:
         globalclasses.engine = self
         #=====================================#
         # self.world_factory.load_world(f"{assetsmarks.engine.world}::test")
-        # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image")
+        self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::raycaster3D.camera")
         # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_random")
         # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_move")
         # self.entity_factory.spawn_entity(f"{assetsmarks.engine.entity}::image_move", [0, 40], 
@@ -122,6 +124,8 @@ class Main:
             lambda: int(self.show_time(concatenate=False))
         )
         #-------------------------------------#
+        pg.event.set_grab(configs.game.lock_mouse)
+        pg.mouse.set_visible(configs.game.visible_mouse)
     #=====================================#
     def get_delta_time(self) -> float:
         now = time.time()
@@ -158,6 +162,16 @@ class Main:
             f"{milliseconds}"
         )
     #=====================================#
+    def lock_mouse(self):
+        #-------------------------------------#
+        if not configs.game.lock_mouse:
+            return
+        #-------------------------------------#
+        x,y = pg.mouse.get_pos()
+        #-------------------------------------#
+        if x < configs.settings.window_size[0] * .3 or x > configs.settings.window_size[0] * .7:# or y > configs.settings.window_size[1]//2 or y < configs.settings.window_size[1]//2:
+            pg.mouse.set_pos(configs.settings.window_size[0]//2, configs.settings.window_size[1]//2)
+    #=====================================#
     def run(self):
         #=====================================#
         while self.running:
@@ -172,6 +186,8 @@ class Main:
             self.updater.update(self.dt)
             self.render.draw(self.screen, self.main_surface, self.dt)
             self.world.flush()
+            #-------------------------------------#
+            self.lock_mouse()
             #-------------------------------------#
             if configs.settings.show_fps_in_title:
                 pg.display.set_caption(f"{configs.game.window_title} | {self.clock.get_fps():.1f}")

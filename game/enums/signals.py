@@ -61,7 +61,7 @@ class Signals:
     CONSOLE_PGUP:str = f"{mark}@{pyk}::console.pgup"
     CONSOLE_PGDOW:str = f"{mark}@{pyk}::console.pgdn"
     #-------------------------------------#
-
+    GRID_COLLISION_CHANGE_GRID:str = f"{mark}@{pyk}::grid_collision.change_grid"
 
 #=====================================#
 signals = Signals()
