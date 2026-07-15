@@ -8,7 +8,7 @@ from engine.utils.globalclasses import globalclasses
 #-------------------------------------#
 from engine.ecs.systems.all import RenderSystem, CameraSystem
 #-------------------------------------#
-from engine.raycaster3D.render import render_frame
+from engine.raycaster3D.renderer import RaycasterRenderer
 from engine.raycaster3D.constants import *
 from engine.raycaster3D.auxiliar_functions import *
 #-------------------------------------#
@@ -32,6 +32,7 @@ class Render:
             CameraSystem(world),
             RenderSystem(world),
         ]
+        self.raycast_renderer = RaycasterRenderer()
         #=====================================#
         self._subscribe_functions()
     #=====================================#
@@ -85,13 +86,10 @@ class Render:
     #=====================================#
     def render(self, surface:pg.Surface, dt):
         #-------------------------------------#
-        render_frame(posX, posY, dirX, dirY, planeX, planeY,
-                     worldMap, globalclasses.TextureHandler.atlas.raycaster_texture_array, 0,
-                     sprites, NUM_SPRITES, buffer, ZBuffer)
-
-        #-------------------------------------#
-        surf = buffer_to_surface(buffer)
-        surface.blit(surf, [0,0])
+        if configs.game.use_raycaster:
+            frame = self.raycast_renderer.render(globalclasses.TextureHandler.atlas.raycaster_texture_array)
+            frame_surface = buffer_to_surface(frame)
+            surface.blit(frame_surface, configs.game.raysurf_pos)
         #-------------------------------------#
         for priority in sorted(self.images.keys()):
             for (img, pos) in self.images[priority]:

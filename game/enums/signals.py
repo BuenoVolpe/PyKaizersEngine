@@ -33,6 +33,7 @@ class Signals:
     PGEVENT_KEY_UP:str = f"{mark}@{pyk}::pgevent.key.up"
     PGEVENT_MOUSE_DOWN:str = f"{mark}@{pyk}::pgevent.mouse.down"
     PGEVENT_MOUSE_UP:str = f"{mark}@{pyk}::pgevent.mouse.up"
+    PGEVENT_MOUSE_WHEEL:str = f"{mark}@{pyk}::pgevent.mouse.wheel"
     #-------------------------------------#
     DISPLAY_BUILDED_SCREEN:str = f"{mark}@{pyk}::display.builded_screen"
     #-------------------------------------#
