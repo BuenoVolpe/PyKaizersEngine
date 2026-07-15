@@ -87,7 +87,7 @@ class Main:
         globalclasses.signal_bus = signal_bus
         globalclasses.engine = self
         #=====================================#
-        self.world_factory.load_world(f"{assetsmarks.engine.world}::test")
+        # self.world_factory.load_world(f"{assetsmarks.engine.world}::test")
         # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image")
         # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_random")
         # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_move")

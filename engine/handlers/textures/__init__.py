@@ -66,6 +66,13 @@ class TextureHandler:
         Retrieves any sprite from the atlas.
         """
         return self.atlas.get(name)
+    
+    def get_raytexture_id(self, name:str):
+        return self.atlas.get_raytexture_id(name)
+    def get_raytexture(self, id:int):
+        return self.atlas.get_raytexture(id)
+    def get_raytexture_by_name(self, name:str):
+        return self.atlas.get_raytexture_by_name(name)
     #================================#
     def random(self):
         return self.atlas.random()

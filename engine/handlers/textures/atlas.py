@@ -28,7 +28,7 @@ class Atlas:
         self.data[name] = image
         #--------------------------------#
         if is_raycaster:
-            image = pg.transform.scale(image, (configs.engine.raytexture_size, configs.engine.raytexture_size))
+            image = pg.transform.scale(image, (configs.game.raytexture_size, configs.game.raytexture_size))
             self.save_raycast(name, image)
     #================================#
     def save_raycast(self, name, surface):

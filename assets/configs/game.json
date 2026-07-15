@@ -5,8 +5,10 @@
     
     "version": "0.0.0.0",
     
-    "use_raycaster":true,
     "base_window_size": [320,180],
+    
+    "use_raycaster":false,
+    "raytexture_size":32,
 
     "icon": "texture@pyk::kaizerthrone",
 
