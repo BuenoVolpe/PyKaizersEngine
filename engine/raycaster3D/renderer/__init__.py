@@ -6,10 +6,11 @@ from engine.utils.globalclasses import globalclasses
 #--------------------------------#
 from engine.configs.configs import configs
 from engine.raycaster3D.sprites import SpriteManager
+from engine.raycaster3D.doors import DoorManager
 from engine.utils.dict_to_class import dict_to_class
 from engine.utils.overlay import debug_overlay
 #--------------------------------#
-from engine.raycaster3D.constants import worldMap, default_sprites_data, default_thin_walls, default_doors, default_sprites_list
+from engine.raycaster3D.constants import worldMap, default_thin_walls_data, default_doors, default_sprites_list
 #--------------------------------#
 from engine.raycaster3D.renderer.renderer_sprites import render_sprites
 from engine.raycaster3D.renderer.walls_renderer import render_walls
@@ -28,11 +29,14 @@ class RaycasterRenderer:
         self.sprite_manager = SpriteManager(
             default_sprites_list
         )
+        self.door_manager = DoorManager(
+            default_doors
+        )
         #--------------------------------#
         globalclasses.SpriteManager = self.sprite_manager
+        globalclasses.DoorManager = self.door_manager
         #--------------------------------#
-        self.thin_walls = default_thin_walls
-        self.doorsMap = default_doors
+        self.thin_walls = default_thin_walls_data
         self.grid = worldMap
         self.ceil_grid = worldMap
         self.floor_grid = worldMap
@@ -70,7 +74,7 @@ class RaycasterRenderer:
             self.buffer,
             self.ZBuffer,
             self.thin_walls,
-            self.doorsMap,
+            self.door_manager.get_array(),
             TEX_W=TEX_W,TEX_H=TEX_H
         )
         #---------sprites render---------#

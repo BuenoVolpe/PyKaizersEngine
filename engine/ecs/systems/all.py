@@ -2,6 +2,7 @@ from game.ecs.signals.all import PlayerSignals
 #-------------------------------------#
 from engine.ecs.systems.raycaster3D import Raycast3DSystem
 from engine.ecs.systems.raycaster3D.camera import Raycaster3DCameraSystem, MouseLookSystem
+from engine.ecs.systems.raycaster3D.doors import Ray3DDoorSystem
 from engine.ecs.systems.raycaster3D.sprites import Ray3DSpriteSystem
 #-------------------------------------#
 from engine.ecs.systems.visual.animation import SimpleAnimationSystem, StateAnimationSystem

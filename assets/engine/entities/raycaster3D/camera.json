@@ -3,7 +3,7 @@
 
     "components":
     {
-        "component@pyk::Position":{"x":22,"y":12},
+        "component@pyk::Position":{"x":21.5,"y":12.5},
         "component@pyk::Angle":{"angle":180},
         "component@pyk::Direction":{},
         "component@pyk::Camera3D":{"fov":90},

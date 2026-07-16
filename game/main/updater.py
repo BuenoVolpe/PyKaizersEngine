@@ -13,7 +13,7 @@ from engine.configs.configs import configs
 #=====================================#
 class Updater:
     #=====================================#
-    def __init__(self, world, grid):
+    def __init__(self, world, grid, thin_walls, doors):
         self.world = world
         self.grid = grid
         #--------------------------------#
@@ -25,11 +25,12 @@ class Updater:
             MouseLookSystem(self.world),
             Raycaster3DCameraSystem(self.world),
             Ray3DSpriteSystem(self.world),
+            Ray3DDoorSystem(self.world),
             InputSystem(self.world),
             PlayerSignals(self.world),
             LookAtSystem(self.world),
             VisualRotationSystem(self.world),
-            GridCollisionSystem(self.world, grid),
+            GridCollisionSystem(self.world, grid, thin_walls, doors),
             MovementSystem(self.world),
             AngularMovementSystem(self.world),
         ] 

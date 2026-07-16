@@ -67,12 +67,18 @@ NUM_SPRITES = sprites.shape[0]
 #* x, y, tipo[0v, 1h], espessura, textura, colisão?
 # default_thin_walls = np.array([
 # ], dtype=np.float64)
-default_thin_walls = np.empty((0, 6), dtype=np.float64)
+default_thin_walls_data = np.empty((0, 6), dtype=np.float64)
+default_thin_walls_list = [
+    [5.0, 7.0, 0, 1, 8, 1],
+    # [20.0, 5.0, 1, 1, 8, 1],
+]
+default_thin_walls_data = np.array(default_thin_walls_list, dtype=np.float64)
 
 # default_doors = np.array([
 # ], dtype=np.float64)
-#* x, y, tipo, largura, tex, offset(qnt abriu), speed, open_state, H?, H_texture
-default_doors = np.empty((0, 10), dtype=np.float64)
+#* x, y, tipo, largura, tex, offset(qnt abriu), speed, open_state, H?, H_texture, did, eid
+default_doors = np.empty((0, 12), dtype=np.float64)
+default_doors = [[20.5, 5.0, 1, 1, 8, 0, 1, 0, 0, 0, 1,1]]
 
 # --- sprites ---
 # default_sprites_data = np.array([

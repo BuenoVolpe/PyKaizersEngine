@@ -8,7 +8,7 @@ from game.main.loader import Loader
 from game.main.updater import Updater
 from game.main.render import Render
 #=====================================#
-from engine.raycaster3D.constants import worldMap
+from engine.raycaster3D.constants import worldMap, default_thin_walls_data, default_doors
 #=====================================#
 from engine.comands.all import *
 from engine.console import console
@@ -63,7 +63,7 @@ class Main:
         #=====================================#
         self.display:Display = Display()
         self.loader:Loader = Loader()
-        self.updater:Updater = Updater(self.world, worldMap)
+        self.updater:Updater = Updater(self.world, worldMap, default_thin_walls_data, default_doors)
         self.render:Render = Render(self.world)
         self.events_handler:EventsHandler = EventsHandler()
         #=====================================#
@@ -94,7 +94,6 @@ class Main:
         #=====================================#
         # self.world_factory.load_world(f"{assetsmarks.engine.world}::test")
         self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::raycaster3D.camera")
-        # self.entity_factory.spawn_entity(f"{assetsmarks.engine.entity}::raycaster3D.simple_animated", [18.5,12.5])
         self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::raycaster3D.simple_animated")
         # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_random")
         # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_move")
