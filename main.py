@@ -54,9 +54,24 @@ class Main:
         #=====================================#
         self.prev_time = 0
         #=====================================#
+        self.display:Display = Display()
+        #=====================================#
+        self.texture_handler = TextureHandler()
+        self.audio_handler = AudioHandler()
+        #=====================================#
+        globalclasses.TextureHandler = self.texture_handler
+        globalclasses.AudioHandler = self.audio_handler
+        globalclasses.fonts = fonts
+        globalclasses.signal_bus = signal_bus
+        globalclasses.engine = self
+        #=====================================#
         self.world = World(self)
         self.entity_factory = EntityFactory(self.world)
         self.world_factory = WorldFactory(self.world, self.entity_factory)
+        #=====================================#
+        globalclasses.EntityFactory = self.entity_factory
+        globalclasses.WorldFactory = self.world_factory
+        globalclasses.World = self.world
         #=====================================#
         self.camera = Camera()
         globalclasses.Camera = self.camera
@@ -67,8 +82,7 @@ class Main:
         self.render:Render = Render(self.world)
         self.events_handler:EventsHandler = EventsHandler()
         #=====================================#
-        self.texture_handler = TextureHandler()
-        self.audio_handler = AudioHandler()
+
         #=====================================#
         pg.display.set_icon(self.texture_handler.get(configs.game.icon))
         #=====================================#
@@ -82,15 +96,6 @@ class Main:
         self.running = True
         self.time = 0
         self.dt = 0
-        #=====================================#
-        globalclasses.TextureHandler = self.texture_handler
-        globalclasses.EntityFactory = self.entity_factory
-        globalclasses.WorldFactory = self.world_factory
-        globalclasses.World = self.world
-        globalclasses.AudioHandler = self.audio_handler
-        globalclasses.fonts = fonts
-        globalclasses.signal_bus = signal_bus
-        globalclasses.engine = self
         #=====================================#
         # self.world_factory.load_world(f"{assetsmarks.engine.world}::test")
         self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::raycaster3D.camera")

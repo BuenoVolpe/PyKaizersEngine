@@ -66,10 +66,16 @@ class Signals:
     RAYSPRITE_ADD:str =  f"{mark}@{pyk}::raysprite.add"
     RAYSPRITE_REMOVE:str =  f"{mark}@{pyk}::raysprite.remove"
     RAYSPRITEENT_REMOVE:str =  f"{mark}@{pyk}::raysprite.ent.remove"
+    RAYSPRITEENT_UPDATE:str =  f"{mark}@{pyk}::raysprite.ent.update"
     #-------------------------------------#
     RAYDOOR_ADD:str =  f"{mark}@{pyk}::raydoor.add"
     RAYDOOR_REMOVE:str =  f"{mark}@{pyk}::raydoor.remove"
     RAYDOORENT_REMOVE:str =  f"{mark}@{pyk}::raydoor.ent.remove"
+    RAYDOORENT_UPDATE:str =  f"{mark}@{pyk}::raydoor.ent.update"
+    #-------------------------------------#
+    RAYTW_ADD:str =  f"{mark}@{pyk}::raydoor.add"
+    RAYTW_REMOVE:str =  f"{mark}@{pyk}::raydoor.remove"
+    RAYTW_UPDATE:str =  f"{mark}@{pyk}::raydoor.ent.remove"
     #-------------------------------------#
     RAYENT_UPDATE:str =  f"{mark}@{pyk}::rayent.update"
     #-------------------------------------#

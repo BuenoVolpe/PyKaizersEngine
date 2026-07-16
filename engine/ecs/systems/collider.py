@@ -78,16 +78,16 @@ class GridCollisionSystem:
         #--------------------------------#
         for wall in self.thin_walls:
             #--------------------------------#
-            if wall[5] == 0:
+            if not wall["colision"]:
                 continue
             #--------------------------------#
-            wx = wall[0] + .5
-            wy = wall[1] + .5
+            wx = wall["pos"][0] + .5
+            wy = wall["pos"][1] + .5
             #--------------------------------#
-            wall_type = int(wall[2])
-            length = wall[3]
+            wall_orientation = int(wall["orientation"])
+            length = wall["width"]
             #--------------------------------#
-            if wall_type == 0:
+            if wall_orientation == 0:
                 #--------------------------------#
                 if abs(px - wx) < 0.1+radius:
                     #--------------------------------#
@@ -109,19 +109,19 @@ class GridCollisionSystem:
         #--------------------------------#
         for door in self.doors:
             #--------------------------------#
-            if door[7]:
+            if door["open_state"]:
                 return
             #--------------------------------#
-            x = door[0]
-            y = door[1]
+            x = door["pos"][0]
+            y = door["pos"][1]
             #--------------------------------#
-            wall_type = int(door[2])
+            wall_orientation = int(door["orientation"])
             #--------------------------------#
-            width = door[3]
+            width = door["width"]
             #--------------------------------#
-            offset = door[5]
+            offset = door["open_porc"]
             #--------------------------------#
-            if wall_type == 0:
+            if wall_orientation == 0:
                 #--------------------------------#
                 door_x = x + offset
                 #--------------------------------#

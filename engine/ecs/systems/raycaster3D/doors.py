@@ -2,69 +2,39 @@ from engine.ecs.components.all import Position, Texture, Ray3DDoor
 from engine.utils.globalclasses import globalclasses
 from engine.signal_bus import signal_bus
 from game.enums.signals import signals
-
+import numpy as np
+#================================#
 class Ray3DDoorSystem:
     def __init__(self, world):
+        #--------------------------------#
         self.world = world
-
-        signal_bus.subscribe(
-            signals.ENTITY_REMOVED,
-            self.remove_entity
+    #================================#
+    def update(self,dt):
+        #--------------------------------#
+        arr = []
+        #--------------------------------#
+        for eid,(pos,tex,door) in self.world.query(Position, Texture, Ray3DDoor):
+            #--------------------------------#
+            texture_id = globalclasses.TextureHandler.get_raytexture_id(tex.texture_name)
+            #--------------------------------#
+            arr.append([
+                pos.x,
+                pos.y,
+                door.orientation,
+                door.width,
+                texture_id,
+                door.open_porc,
+                door.speed,
+                door.open_state,
+                door.jamb,
+                door.jamb_texture,
+                door.index,
+                eid
+            ])
+            #--------------------------------#
+        globalclasses.DoorManager.set_data(
+            np.asarray(arr,dtype=np.float64)
         )
-
-    def remove_entity(self, entity):
-        globalclasses.DoorManager.remove_by_eid(entity)
-
-    def update(self, dt):
-
-        for entity, (position, texture, door) in self.world.query(
-            Position,
-            Texture,
-            Ray3DDoor
-        ):
-
-            tex = globalclasses.TextureHandler.get_raytexture_id(
-                texture.original_texture
-            )
-
-            if door.jamb_texture:
-                jamb_tex = globalclasses.TextureHandler.get_raytexture_id(
-                    door.jamb_texture
-                )
-            else:
-                jamb_tex = tex
-
-            if door.index is None:
-
-                did = globalclasses.DoorManager.add(
-                    position.x,
-                    position.y,
-                    type=door.type,
-                    width=door.width,
-                    open_state=door.open_state,
-                    tex=tex,
-                    open_porc=door.open_porc,
-                    speed=door.speed,
-                    jamb=door.jamb,
-                    jamb_texture=jamb_tex,
-                    eid=entity
-                )
-
-                door.index = did
-
-            else:
-
-                globalclasses.DoorManager.update_door(
-                    door.index,
-                    position.x,
-                    position.y,
-                    type=door.type,
-                    width=door.width,
-                    tex=tex,
-                    open_porc=door.open_porc,
-                    speed=door.speed,
-                    jamb=door.jamb,
-                    jamb_texture=jamb_tex
-                )
+#================================#
 
                 

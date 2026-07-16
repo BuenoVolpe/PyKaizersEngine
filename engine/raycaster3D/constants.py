@@ -64,31 +64,57 @@ sprites = np.array([ #(x, y, texture)
 
 NUM_SPRITES = sprites.shape[0]
 
-#* x, y, tipo[0v, 1h], espessura, textura, colisão?
+#* x, y, tipo[0v, 1h], espessura, textura, colisão?, twid
 # default_thin_walls = np.array([
 # ], dtype=np.float64)
-default_thin_walls_data = np.empty((0, 6), dtype=np.float64)
-default_thin_walls_list = [
-    [5.0, 7.0, 0, 1, 8, 1],
+# default_thin_walls_data = np.empty((0, 6), dtype=np.float64)
+default_thin_walls_data = [
+    {
+        "pos":[5.0, 7.0],
+        "orientation":0,
+        "width":1,
+        "texture":"raytexture@pyk::raycaster.mine::bricks",
+        "colision":True
+    }
+    # [5.0, 7.0, 0, 1, 8, 1],
     # [20.0, 5.0, 1, 1, 8, 1],
 ]
-default_thin_walls_data = np.array(default_thin_walls_list, dtype=np.float64)
+# default_thin_walls_data = np.array(default_thin_walls_list, dtype=np.float64)
 
 # default_doors = np.array([
 # ], dtype=np.float64)
 #* x, y, tipo, largura, tex, offset(qnt abriu), speed, open_state, H?, H_texture, did, eid
-default_doors = np.empty((0, 12), dtype=np.float64)
-default_doors = [[20.5, 5.0, 1, 1, 8, 0, 1, 0, 0, 0, 1,1]]
+# default_doors = np.empty((0, 12), dtype=np.float64)
+default_doors = [
+    {
+        "pos": [20.5, 5.0],
+        "orientation": 1,
+        "width": 1,
+        "tex": "raytexture@pyk::raycaster.mine::pine_door",
+        "open_porc": 0,
+        "speed": 1,
+        "open_state": False, 
+        "jamb": True,
+        "jamb_texture": "raytexture@pyk::raycaster.mine::pine_planks"
+    }
+    ]
 
 # --- sprites ---
-# default_sprites_data = np.array([
-# ], dtype=np.float64)
 #* x, y, tex, scale, offsetZ, flags, sid, eid
-default_sprites_data = np.empty((0, 8), dtype=np.float64)
-default_sprites_list = [
-    (20.5, 11.5, 10, .5, .5, 0, 0, -1),
-    (18.5, 4.5, 10, 1, 0, 0, 0, -1),
-    (10.0, 4.5, 10, 1, 0, 0, 0, -1),
+# default_sprites_data = np.empty((0, 8), dtype=np.float64)
+default_sprites_data = [
+    {
+        "pos":[20.5, 11.5],
+        "texture": "raytexture@pyk::raycaster.dave",
+        "scale": 0.5,
+        "offsetZ": 0.5,
+        "flags": 0,
+        "sid": -1,
+        "eid": -1
+    }
+    # (20.5, 11.5, 10, .5, .5, 0, 0, -1),
+    # (18.5, 4.5, 10, 1, 0, 0, 0, -1),
+    # (10.0, 4.5, 10, 1, 0, 0, 0, -1),
     # (10.0, 12.5,10, 1, 0, 0, 0),
     # (3.5,  6.5, 10, 1, 0, 0, 0),
     # (3.5,  20.5,10, 1, 0, 0, 0),
@@ -106,6 +132,5 @@ default_sprites_list = [
     # (10.0, 15.1,8, 1, 0, 0, 0),
     # (10.5, 15.8,8, 1, 0, 0, 0),
 ]
-default_sprites_data = np.array(default_sprites_list, dtype=np.float64)
 
 

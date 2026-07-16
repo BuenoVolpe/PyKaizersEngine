@@ -23,7 +23,13 @@ class InputSystem:
             #--------------------------------#
             has_something_pressed = False
             for key in inp.inputs.keys():
-                inp.inputs[key] = bool(inputs.input(key))
+                #--------------------------------#
+                pressed = bool(inputs.input(key))
+                #--------------------------------#
+                if pressed:
+                    pressed = inp.can_press(key)
+                #--------------------------------#
+                inp.inputs[key] = pressed
                 inp._reload()
                 #--------------------------------#
                 if inp.inputs[key]:

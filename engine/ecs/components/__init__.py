@@ -10,6 +10,8 @@ from engine.utils.globalclasses import globalclasses
 class Texture:
     #--------------------------------#
     def __init__(self, texture:str, scale:tuple=None, do_convert_to_surface:bool=True):
+        self.texture_name = texture
+        self.original_name = texture
         #--------------------------------#
         self.texture = globalclasses.TextureHandler.get(texture) if do_convert_to_surface else texture
         #--------------------------------#
@@ -81,3 +83,16 @@ class EntityType:
     def __init__(self, name: str):
         self.name = name
 #================================#
+@register_engine_component
+class AngularInteractable:
+    def __init__(self, radius=2.0, angle=0.5):
+        self.radius = radius
+        self.angle = angle
+#================================#
+@register_engine_component
+class LookTarget:
+    def __init__(self):
+        self.entity = None
+        self.distance = 0
+        self.hit_x = 0
+        self.hit_y = 0

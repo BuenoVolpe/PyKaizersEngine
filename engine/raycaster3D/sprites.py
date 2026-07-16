@@ -2,6 +2,7 @@ import numpy as np
 from dataclasses import dataclass
 #================================#
 from engine.signal_bus import signal_bus
+from engine.utils.globalclasses import globalclasses
 from game.enums.signals import signals
 from game.enums.signals_prioritys import sig_prio
 #================================#
@@ -26,19 +27,12 @@ class SpriteManager:
     # x,y,tex,scale,offsetZ,flags,sid
     SPRITE_SIZE = 8
     #================================#
-    def __init__(self, sprites=None):
+    def __init__(self, sprites:list[dict]=None):
         self.next_sid = 1
+        self.data = np.empty((0, self.SPRITE_SIZE), dtype=np.float64)
         #--------------------------------#
-        if sprites is None:
-            sprites = []
-        #--------------------------------#
-        self.data = np.array(
-            sprites,
-            dtype=np.float64
-        )
-        #--------------------------------#
-        if self.data.size == 0:
-            self.data = np.empty((0, self.SPRITE_SIZE), dtype=np.float64)
+        if sprites:
+            self._load(sprites)
         #--------------------------------#
         signal_bus.subscribe(
             signals.RAYSPRITE_ADD,
@@ -57,8 +51,8 @@ class SpriteManager:
             priority=sig_prio.REMOVE_OBJ
         )
         signal_bus.subscribe(
-            signals.RAYENT_UPDATE,
-            self.remove_entity,
+            signals.RAYSPRITEENT_UPDATE,
+            self.update_entity,
             priority=sig_prio.UPDATE_OBJ
         )
     #================================#
@@ -109,6 +103,32 @@ class SpriteManager:
         #--------------------------------#
         if offsetZ is not None:
             self.data[index,4] = offsetZ
+    #================================#
+    def _load(self, sprites):
+        #--------------------------------#
+        for sprite_data in sprites:
+            #--------------------------------#
+            x,y = sprite_data.get("pos")
+            tex = sprite_data.get("texture")
+            #--------------------------------#
+            if isinstance(tex, str):
+                tex = globalclasses.TextureHandler.get_raytexture_id(tex)
+            #--------------------------------#
+            scale = sprite_data.get("scale", 1.0)
+            offsetZ = sprite_data.get("offsetZ", 0.0)
+            flags = sprite_data.get("flags", 0)
+            eid = sprite_data.get("eid", -1)
+            #--------------------------------#
+            self.add(
+                x,y,
+                tex,
+                scale,
+                offsetZ,
+                flags,
+                eid
+                )
+
+
     #================================#
     def get_sprite(self, sid):
         #--------------------------------#
