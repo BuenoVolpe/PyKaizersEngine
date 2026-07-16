@@ -1,4 +1,4 @@
-from engine.ecs.components.all import Texture, Position, CameraFocusTag
+from engine.ecs.components.all import Texture, Position, CameraFocusTag, Ray3DSprite
 from engine.utils.scaler import scaler
 from engine.utils.globalclasses import globalclasses
 #================================#
@@ -12,7 +12,7 @@ class RenderSystem:
     #================================#
     def update(self, surface):
         #--------------------------------#
-        for entity, (render, position) in self.world.query(Texture, Position):
+        for entity, (render, position) in self.world.query(Texture, Position, exclude=(Ray3DSprite, )):
             #--------------------------------#
             if isinstance(render.texture, str):
                 render.texture = self.world.game.texture_handler.get(render.texture)
@@ -44,7 +44,7 @@ class CameraSystem:
     #--------------------------------#
     def update(self, surface):
         #--------------------------------#
-        for entity, (position, tag) in self.world.query(Position, CameraFocusTag):
+        for entity, (position, tag) in self.world.query(Position, CameraFocusTag, exclude=(Ray3DSprite, )):
             camera = globalclasses.Camera
             #--------------------------------#
             if camera.target is None:

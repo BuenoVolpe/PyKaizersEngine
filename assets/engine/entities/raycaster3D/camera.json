@@ -1,10 +1,10 @@
 {
-    "type":"entype@pyk::camera3D",
+    "type":"entype@pyk::player",
 
     "components":
     {
         "component@pyk::Position":{"x":22,"y":12},
-        "component@pyk::Angle":{"angle":-90},
+        "component@pyk::Angle":{"angle":180},
         "component@pyk::Direction":{},
         "component@pyk::Camera3D":{"fov":90},
         "component@pyk::Velocity": {"x":0, "y":0, "max_speed":[5, 5]},

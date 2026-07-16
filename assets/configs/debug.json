@@ -261,14 +261,14 @@
                 "order": 2,
                 "do_show": true
             },
-            "World": {
-                "subclass": true,
+            "Player": {
                 "order": 3,
                 "do_show": true
             },
-            "Player": {
+            "World": {
+                "subclass": true,
                 "order": 4,
-                "do_show": false
+                "do_show": true
             },
             "Others": {
                 "order": 16,
@@ -358,11 +358,44 @@
             
             "do_debug":true,
             "log_type":"overlay",
-    
+            
             "name_in_overlay":"entities amount",
             "category":"World",
             "color":[255,255,255],
             "order": 1
+        },
+        "player_position": {
+            "subclass": true,
+            
+            "do_debug":true,
+            "log_type":"overlay",
+    
+            "name_in_overlay":"position",
+            "category":"player",
+            "color":[255,255,255],
+            "order": 0
+        },
+        "player_velocity": {
+            "subclass": true,
+            
+            "do_debug":true,
+            "log_type":"overlay",
+    
+            "name_in_overlay":"velocity",
+            "category":"player",
+            "color":[255,255,255],
+            "order": 0
+        },
+        "player_angle": {
+            "subclass": true,
+            
+            "do_debug":true,
+            "log_type":"overlay",
+    
+            "name_in_overlay":"angle",
+            "category":"player",
+            "color":[255,255,255],
+            "order": 0
         }
     }
 }

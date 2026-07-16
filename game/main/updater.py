@@ -24,6 +24,7 @@ class Updater:
             StateAnimationSystem(self.world),
             MouseLookSystem(self.world),
             Raycaster3DCameraSystem(self.world),
+            Ray3DSpriteSystem(self.world),
             InputSystem(self.world),
             PlayerSignals(self.world),
             LookAtSystem(self.world),

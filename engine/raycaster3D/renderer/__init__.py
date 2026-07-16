@@ -2,10 +2,14 @@ import numpy as np
 import math
 import pygame as pg
 #--------------------------------#
-from engine.configs.configs import configs
-from engine.utils.dict_to_class import dict_to_class
+from engine.utils.globalclasses import globalclasses
 #--------------------------------#
-from engine.raycaster3D.constants import posX, posY, dirX, dirY, planeX, planeY, TEX_H, TEX_W, worldMap, default_sprites_data, default_thin_walls, default_doors
+from engine.configs.configs import configs
+from engine.raycaster3D.sprites import SpriteManager
+from engine.utils.dict_to_class import dict_to_class
+from engine.utils.overlay import debug_overlay
+#--------------------------------#
+from engine.raycaster3D.constants import worldMap, default_sprites_data, default_thin_walls, default_doors, default_sprites_list
 #--------------------------------#
 from engine.raycaster3D.renderer.renderer_sprites import render_sprites
 from engine.raycaster3D.renderer.walls_renderer import render_walls
@@ -21,8 +25,13 @@ class RaycasterRenderer:
         self.buffer = np.zeros((configs.game.raysurface_size[1], configs.game.raysurface_size[0]), dtype=np.uint32)  # screen buffer
         self.ZBuffer = np.zeros(configs.game.raysurface_size[0], dtype=np.float64)   # walls distance
         #--------------------------------#
+        self.sprite_manager = SpriteManager(
+            default_sprites_list
+        )
+        #--------------------------------#
+        globalclasses.SpriteManager = self.sprite_manager
+        #--------------------------------#
         self.thin_walls = default_thin_walls
-        self.sprites = default_sprites_data
         self.doorsMap = default_doors
         self.grid = worldMap
         self.ceil_grid = worldMap
@@ -30,9 +39,11 @@ class RaycasterRenderer:
         self.floorDefaultTex1 = 56
         self.floorDefaultTex2 = 57
         self.ceilDefaultTex = 58
-        #--------------------------------#
     #--------------------------------#
     def render(self, textures:array_surf, pos, dir, plane):
+        #--------------------------------#
+        TEX_W = configs.game.raytexture_size      
+        TEX_H = configs.game.raytexture_size   
         #---------cleans buff---------#
         self.buffer[:] = 0
         self.ZBuffer[:] = 1e30  # infinito'
@@ -67,7 +78,7 @@ class RaycasterRenderer:
             pos.x, pos.y,
             dir.x, dir.y,
             plane.x, plane.y,
-            self.sprites,#.get(),
+            self.sprite_manager.get_array(),
             textures,
             self.buffer,
             self.ZBuffer,

@@ -27,6 +27,7 @@ class WorldFactory:
             configs.game.acronym: configs.paths.game.worlds,
         }
         #------------------------+-------------#
+        self.world_name = "NO_NAME"
         self.world_registry = {}
         self._load_registry()
         #-------------------------------------#
@@ -87,10 +88,12 @@ class WorldFactory:
                 #-------------------------------------#
             #-------------------------------------#
             signal_bus.emit(signals.LOAD_COMPLETE_WORLD, name=world_id, data=world_data)
+            signal_bus.emit(signals.WORLD_SAVE_PLAYER)
             log_success(f"world {world_id} loaded with {len(entities)} entities", True)
         #-------------------------------------#
         else:
             log_error(f"world {world_id} has no entities", True)
+        #-------------------------------------#
     #=====================================#
     def _load_registry(self):
         for origin, path in self.paths.items():

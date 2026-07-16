@@ -7,7 +7,7 @@ from game.enums.assets_marks import assetsmarks
 from engine.signal_bus import signal_bus
 #--------------------------------#
 from engine.ecs.component_storage import ComponentStorage, COMPONENT_REGISTRY 
-from engine.ecs.components.all import EntityType 
+from engine.ecs.components.all import *
 #--------------------------------#
 from game.ecs.hooks import HOOK_REGISTRY 
 #--------------------------------#
@@ -43,6 +43,7 @@ class World:
         debug_log(
             f"{assetsmarks.engine.debug}::ecs.components_keys", value=list(COMPONENT_REGISTRY.keys())
         )
+        signal_bus.subscribe(signals.WORLD_SAVE_PLAYER, self.get_player, priority=signals_prioritys.PRE_LAST)
     #================================#
     def get_component(self, entity:int, comp_type:object):
         #--------------------------------------#
@@ -101,6 +102,11 @@ class World:
             debug_log(f"{assetsmarks.engine.debug}::ecs.remove_component", 
                     value=f"[ecs_world]: removed entity with id {entity}"
                     )
+            #--------------------------------------#
+            signal_bus.emit(
+                signals.ENTITY_REMOVED,
+                entity=entity
+            )
         #--------------------------------------#
         self.to_remove.clear()
     #================================#
@@ -209,4 +215,21 @@ class World:
         for entity, component in storage.data.items():
             if component.name in types:
                 yield entity, component
+    #================================#
+    def get_player(self):
+        for entity, (player,) in self.query(PlayerTag):
+            self.player_eid = entity
+            return entity
+        return None
+    #================================#
+    def watch_player_component(self, overlay_name, component, formatter):
+        debug_overlay.watch(
+            overlay_name,
+            lambda: formatter(
+                self.get_component(
+                    self.get_player(),
+                    component
+                )
+            )
+        )
 

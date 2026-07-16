@@ -135,6 +135,7 @@ class Overlay:
                     (x, y),
                     text,
                     color=debug.color,
+                    bgcolor=(0,0,0,30),
                     size=self.cfg.font_size
                 )
                 #--------------------------------#

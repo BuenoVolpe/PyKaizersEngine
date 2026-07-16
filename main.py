@@ -30,6 +30,8 @@ from engine.configs.configs import configs
 #-------------------------------------#
 from engine.camera import Camera
 #-------------------------------------#
+from game.ecs.components.all import *
+#-------------------------------------#
 from engine.signal_bus import signal_bus
 from game.enums.signals import signals
 from game.enums.signals_prioritys import sig_prio
@@ -44,6 +46,7 @@ class Main:
     def __init__(self):
         #-------------------------------------#
         self._load()
+        self._watchers()
     #=====================================#
     def _load(self):
         #-------------------------------------#
@@ -91,6 +94,8 @@ class Main:
         #=====================================#
         # self.world_factory.load_world(f"{assetsmarks.engine.world}::test")
         self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::raycaster3D.camera")
+        # self.entity_factory.spawn_entity(f"{assetsmarks.engine.entity}::raycaster3D.simple_animated", [18.5,12.5])
+        self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::raycaster3D.simple_animated")
         # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_random")
         # self.entity_factory.create_entity(f"{assetsmarks.engine.entity}::image_move")
         # self.entity_factory.spawn_entity(f"{assetsmarks.engine.entity}::image_move", [0, 40], 
@@ -98,7 +103,12 @@ class Main:
         # enty = self.world.create_entity()
         # self.world.add_component(enty, Texture(f"{assetsmarks.engine.texture}::dave.standart"))
         # self.world.add_component(enty, Position(0, 0))
-        #=====================================#
+        #-------------------------------------#
+        pg.event.set_grab(configs.game.lock_mouse)
+        pg.mouse.set_visible(configs.game.visible_mouse)
+    #=====================================#
+    def _watchers(self):
+        #-------------------------------------#
         debug_overlay.watch(
             f"{assetsmarks.engine.debug}::overlay.engine_version",
             lambda: f"{configs.engine.version}"
@@ -124,8 +134,22 @@ class Main:
             lambda: int(self.show_time(concatenate=False))
         )
         #-------------------------------------#
-        pg.event.set_grab(configs.game.lock_mouse)
-        pg.mouse.set_visible(configs.game.visible_mouse)
+        self.world.watch_player_component(
+            f"{assetsmarks.engine.debug}::overlay.player_position",
+            Position,
+            lambda p: "--" if p is None else f"{p.x:.2f}, {p.y:.2f}"
+        )
+        self.world.watch_player_component(
+            f"{assetsmarks.engine.debug}::overlay.player_velocity",
+            Velocity,
+            lambda v: "--" if v is None else f"{v.x:.2f}, {v.y:.2f}"
+        )
+
+        self.world.watch_player_component(
+            f"{assetsmarks.engine.debug}::overlay.player_angle",
+            Angle,
+            lambda a: "--" if a is None else round(a.angle, 2)
+        )
     #=====================================#
     def get_delta_time(self) -> float:
         now = time.time()

@@ -53,13 +53,20 @@ class Signals:
     SPAWN_ENTITY:str = f"{mark}@{pyk}::ecs.entity.spawn"
     CREATE_ENTITY_BY_DATA:str = f"{mark}@{pyk}::ecs.entity.spawn.by_data"
     LOAD_WORLD:str = f"{mark}@{pyk}::ecs.world.load"
+    WORLD_SAVE_PLAYER:str = f"{mark}@{pyk}::ecs.world.save_player"
     APPLY_OVERRIDES:str = f"{mark}@{pyk}::ecs.entity.overrides"
+    ENTITY_REMOVED:str = f"{mark}@{pyk}::ecs.entity.removed"
     #-------------------------------------#
     LOAD_COMPLETE_WORLD:str = f"{mark}@{pyk}::load.world"
     #-------------------------------------#
     EXECUTE_COMMAND:str = f"{mark}@{pyk}::console.execute"
     CONSOLE_PGUP:str = f"{mark}@{pyk}::console.pgup"
     CONSOLE_PGDOW:str = f"{mark}@{pyk}::console.pgdn"
+    #-------------------------------------#
+    RAYSPRITE_ADD:str =  f"{mark}@{pyk}::raysprite.add"
+    RAYSPRITE_REMOVE:str =  f"{mark}@{pyk}::raysprite.remove"
+    RAYSPRITEENT_REMOVE:str =  f"{mark}@{pyk}::raysprite.ent.remove"
+    RAYENT_UPDATE:str =  f"{mark}@{pyk}::raysprite.ent.update"
     #-------------------------------------#
     GRID_COLLISION_CHANGE_GRID:str = f"{mark}@{pyk}::grid_collision.change_grid"
 

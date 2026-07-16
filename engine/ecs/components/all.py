@@ -1,5 +1,6 @@
 from engine.ecs.components import *
 from engine.ecs.components.raycaster3D.camera import *
+from engine.ecs.components.raycaster3D.sprites import *
 from engine.ecs.components.tags import *
 from engine.ecs.components.colliders import *
 from engine.ecs.components.inputs import *

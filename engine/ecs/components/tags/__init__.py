@@ -64,4 +64,4 @@ class RotateTextureTag(Tag):
         self.DO_ROTATE_TEXTURE = True
         #--------------------------------#
         super().__init__(**tags)
-
+#================================#

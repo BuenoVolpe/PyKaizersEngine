@@ -2,18 +2,6 @@
 from dataclasses import dataclass
 import numpy as np
 from engine.configs.configs import configs
-#---settings---#
-SCREEN_W = configs.game.base_window_width
-SCREEN_H = configs.game.base_window_height
-TEX_W = configs.game.raytexture_size      
-TEX_H = configs.game.raytexture_size          
-#---FRAMEBUFFER and ZBUFFER---#
-buffer = np.zeros((SCREEN_H, SCREEN_W), dtype=np.uint32)  # screen buffer
-ZBuffer = np.zeros(SCREEN_W, dtype=np.float64)   # walls distance
-#---initial player positions---#
-posX, posY = 22.0, 11.5
-dirX, dirY = -1.0, 0.0 # initial direction
-planeX, planeY = 0.0, 0.66 # camera plane
 #---world map---#
 worldMap_list = [
   [8,8,8,8,8,8,8,8,8,8,8,4,4,6,4,4,6,4,6,4,4,4,6,4],
@@ -89,7 +77,29 @@ default_doors = np.empty((0, 10), dtype=np.float64)
 # --- sprites ---
 # default_sprites_data = np.array([
 # ], dtype=np.float64)
-#* x, y, tex, scale, offsetZ, flags
-default_sprites_data = np.empty((0, 6), dtype=np.float64)
+#* x, y, tex, scale, offsetZ, flags, sid, eid
+default_sprites_data = np.empty((0, 8), dtype=np.float64)
+default_sprites_list = [
+    (20.5, 11.5, 10, .5, .5, 0, 0, -1),
+    (18.5, 4.5, 10, 1, 0, 0, 0, -1),
+    (10.0, 4.5, 10, 1, 0, 0, 0, -1),
+    # (10.0, 12.5,10, 1, 0, 0, 0),
+    # (3.5,  6.5, 10, 1, 0, 0, 0),
+    # (3.5,  20.5,10, 1, 0, 0, 0),
+    # (3.5,  14.5,10, 1, 0, 0, 0),
+    # (14.5,20.5,10, 1, 0, 0, 0),
+    # (18.5, 10.5, 9, 1, 0, 0, 0),
+    # (18.5, 11.5, 9, 1, 0, 0, 0),
+    # (18.5, 12.5, 9, 1, 0, 0, 0),
+    # (21.5, 1.5, 8, 1, 0, 0, 0),
+    # (15.5, 1.5, 8, 1, 0, 0, 0),
+    # (16.0, 1.8, 8, 1, 0, 0, 0),
+    # (16.2, 1.2, 8, 1, 0, 0, 0),
+    # (3.5,  2.5, 8, 1, 0, 0, 0),
+    # (9.5, 15.5, 8, 1, 0, 0, 0),
+    # (10.0, 15.1,8, 1, 0, 0, 0),
+    # (10.5, 15.8,8, 1, 0, 0, 0),
+]
+default_sprites_data = np.array(default_sprites_list, dtype=np.float64)
 
 

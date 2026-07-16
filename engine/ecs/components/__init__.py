@@ -9,9 +9,10 @@ from engine.utils.globalclasses import globalclasses
 @register_engine_component
 class Texture:
     #--------------------------------#
-    def __init__(self, texture:str, scale:tuple=None):
+    def __init__(self, texture:str, scale:tuple=None, do_convert_to_surface:bool=True):
         #--------------------------------#
-        self.texture = globalclasses.TextureHandler.get(texture)
+        self.texture = globalclasses.TextureHandler.get(texture) if do_convert_to_surface else texture
+        #--------------------------------#
         self.original_texture = self.texture
         self.scale = scale
 #================================#

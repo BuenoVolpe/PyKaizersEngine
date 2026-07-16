@@ -44,15 +44,19 @@ class Atlas:
             dtype=np.uint32
         )
     #================================#
-    def get_raytexture_id(self, name:str):
-        #--------------------------------#
-        id = self.data.get(name)
-        #--------------------------------#
-        if id is None:
-            log_error(f"Texture '{name}' not found as raytexture. Returning error texture id.", True)
-            return self.raycaster_textures_ids[f"{configs.engine.asset_marks.raycast_texture}@{configs.engine.acronym}::error"]
-        #--------------------------------#
-        return id
+    def get_raytexture_id(self, name):
+        tex_id = self.raycaster_textures_ids.get(name)
+
+        if tex_id is None:
+            log_error(
+                f"Ray texture '{name}' not found. Returning error texture.",
+                True
+            )
+            return self.raycaster_textures_ids[
+                f"{configs.engine.asset_marks.raycast_texture}@{configs.engine.acronym}::error"
+            ]
+
+        return tex_id
     #--------------------------------#
     def get_raytexture(self, id:int):
         #--------------------------------#
