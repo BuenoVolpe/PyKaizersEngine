@@ -29,10 +29,6 @@ class World:
         #--------------------------------------#
         self.hooks = HOOK_REGISTRY
         #--------------------------------------#
-        self.look_target = None
-        self.look_distance = None
-        self.look_point = None
-        #--------------------------------------#
         self.to_remove = set()
         #--------------------------------------#
         signal_bus.subscribe(signals.KILL_ENTITY, self.remove_entity, priority=signals_prioritys.ADD_OBJ)

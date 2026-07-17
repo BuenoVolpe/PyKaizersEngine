@@ -71,7 +71,7 @@ class EntityFactory:
         json_path = self.entity_registry.get(entity_name)
         #-------------------------------------#
         json_data = json_reader(json_path)
-        json_data["entity_name"] = entity_name if not json_data.get("orientation") else json_data.get("orientation")
+        json_data["entity_name"] = entity_name if not json_data.get("type") else json_data.get("type")
         #-------------------------------------#
         return self.build_entity_from_data(json_data)
     #=====================================#
@@ -105,12 +105,12 @@ class EntityFactory:
         #-------------------------------------#
         data = self.resolve_extends(data)
         #-------------------------------------#
-        entity_orientation = data.get("entity_name") or data.get("orientation")
+        entity_type = data.get("entity_name") or data.get("type")
         #-------------------------------------#
-        if entity_orientation:
+        if entity_type:
             self.world.add_component(
                 entity,
-                EntityType(entity_orientation)
+                EntityType(entity_type)
             )
         #-------------------------------------#
         components = copy.deepcopy(data.get("components", {}))

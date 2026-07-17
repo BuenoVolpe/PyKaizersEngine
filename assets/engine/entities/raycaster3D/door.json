@@ -1,8 +1,0 @@
-{
-    "components": {
-        "component@pyk::Position": {"x":0, "y":0},
-        "component@pyk::Texture": {"texture": "raytexture@pyk::raycaster.mine::pine_door", "do_convert_to_surface": false},
-        "component@pyk::Ray3DDoor":{"orientation":0, "width":1, "open_porc":0, "speed":1, "open_state":true, "jamb":true, "jamb_texture":"raytexture@pyk::raycaster.mine::pine_planks"},
-        "component@pyk::DoNotRenderTag":{}
-    }
-}

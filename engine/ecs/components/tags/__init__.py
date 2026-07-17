@@ -65,11 +65,3 @@ class RotateTextureTag(Tag):
         #--------------------------------#
         super().__init__(**tags)
 #================================#
-@register_engine_component
-class DoNotRenderTag(Tag):
-    #--------------------------------#
-    def __init__(self, **tags):
-        self.DO_RENDER = False
-        #--------------------------------#
-        super().__init__(**tags)
-

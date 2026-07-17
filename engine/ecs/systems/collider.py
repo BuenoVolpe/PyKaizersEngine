@@ -5,16 +5,13 @@ from game.enums.signals import signals
 from game.enums.signals_prioritys import sig_prio
 #================================#
 class GridCollisionSystem:
-    def __init__(self, world, grid, thin_walls=None, doors=None):
+    def __init__(self, world, grid):
         #--------------------------------#
         self.world = world
         self.grid = grid
         #--------------------------------#
-        self.thin_walls = thin_walls
-        self.doors = doors
-        #--------------------------------#
-        self.map_h = len(grid)
-        self.map_w = len(grid[0])
+        self.map_h = grid
+        self.map_w = grid[0]
         #--------------------------------#
         signal_bus.subscribe(signals.GRID_COLLISION_CHANGE_GRID, self.change_grid, priority=sig_prio.AFTER_LOAD)
     #================================#
@@ -60,94 +57,22 @@ class GridCollisionSystem:
     #================================#
     def is_free(self, x, y, r):
         #--------------------------------#
-        if not self.is_empty(x, y):
-            return False
-        #--------------------------------#
-        if self.check_thin_collision(x, y, r):
-            return False
-        #--------------------------------#
-        if self.check_door_collision(x, y, r):
-            return False
-        #--------------------------------#
-        return True
-    #================================#
-    def check_thin_collision(self, px, py, radius):
-        #--------------------------------#
-        if self.thin_walls is None:
-            return False
-        #--------------------------------#
-        for wall in self.thin_walls:
-            #--------------------------------#
-            if not wall["colision"]:
-                continue
-            #--------------------------------#
-            wx = wall["pos"][0] + .5
-            wy = wall["pos"][1] + .5
-            #--------------------------------#
-            wall_orientation = int(wall["orientation"])
-            length = wall["width"]
-            #--------------------------------#
-            if wall_orientation == 0:
-                #--------------------------------#
-                if abs(px - wx) < 0.1+radius:
-                    #--------------------------------#
-                    if abs(py - wy) < length * 0.5 + radius:
-                        return True
-            #--------------------------------#
-            else:
-                #--------------------------------#
-                if abs(py - wy) < radius:
-                    #--------------------------------#
-                    if abs(px - wx) < length * 0.5 + radius:
-                        return True
-        #--------------------------------#
-        return False
-    def check_door_collision(self, px, py, radius):
-        #--------------------------------#
-        if self.doors is None:
-            return False
-        #--------------------------------#
-        for door in self.doors:
-            #--------------------------------#
-            if door["open_state"]:
-                return
-            #--------------------------------#
-            x = door["pos"][0]
-            y = door["pos"][1]
-            #--------------------------------#
-            wall_orientation = int(door["orientation"])
-            #--------------------------------#
-            width = door["width"]
-            #--------------------------------#
-            offset = door["open_porc"]
-            #--------------------------------#
-            if wall_orientation == 0:
-                #--------------------------------#
-                door_x = x + offset
-                #--------------------------------#
-                if abs(px-door_x) < radius:
-                    #--------------------------------#
-                    if abs(py-y) < width*0.5 + radius:
-                        return True
-            else:
-                #--------------------------------#
-                door_y = y + offset
-                #--------------------------------#
-                if abs(py-door_y) < radius:
-                    #--------------------------------#
-                    if abs(px-x) < width*0.5 + radius:
-                        return True
-        #--------------------------------#
-        return False
+        return self.grid[int(math.floor(x))][int(math.floor(y))] == 0
+        # return (
+        #     self.is_empty(x-r, y-r) and
+        #     self.is_empty(x+r, y-r) and
+        #     self.is_empty(x-r, y+r) and
+        #     self.is_empty(x+r, y+r)
+        # )
     #================================#
     def is_empty(self, x, y):
-        tx = int(x)
-        ty = int(y)
+        tx = int(math.floor(x))
+        ty = int(math.floor(y))
         if tx < 0 or ty < 0:
             return False
         if tx >= self.map_w or ty >= self.map_h:
             return False
-        return self.grid[tx, ty] == 0
+        return self.grid[ty, tx] == 0
     #================================#
     def change_grid(self, new_grid):
         self.grid = new_grid

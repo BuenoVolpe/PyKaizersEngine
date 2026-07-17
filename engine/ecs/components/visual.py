@@ -12,7 +12,6 @@ class SimpleAnimation:
     #--------------------------------#
     def __init__(self, textures:list, fps:float, do_convert_to_surface:bool=True):
         #--------------------------------#
-        self.textures_name = textures
         if do_convert_to_surface:
             self.textures = [globalclasses.TextureHandler.get(tex) for tex in textures]
         else:
