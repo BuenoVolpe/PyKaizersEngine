@@ -2,7 +2,12 @@ import pygame as pg
 import time
 #==============================================#
 from engine.handler.events_handler import EventsHandler
+from engine.utils.log import printlog
+from engine.configs import configs
+#----------------------------------------------#
 from game.main.renderer import Renderer
+from game.main.updater import Updater
+from game.main.displayer import Display
 #==============================================#
 pg.init()
 #==============================================#
@@ -10,15 +15,16 @@ class Main:
     #==============================================#
     def __init__(self):
         #----------------------------------------------#
-        self.screen = pg.display.set_mode((320,180))
+        self.display:Display = Display()
         self.clock = pg.time.Clock()
         #----------------------------------------------#
         self.running:bool = True
-        self.FPS:int = 60
+        self.FPS:int = configs.settings.max_fps
         self.prev_time:int = 0
         #----------------------------------------------#
         self.events_handler:EventsHandler = EventsHandler()
         self.renderer:Renderer = Renderer()
+        self.updater:Updater = Updater()
     #==============================================#
     def get_delta_time(self) -> float:
         #----------------------------------------------#
@@ -38,12 +44,18 @@ class Main:
             events:list = self.events_handler.events(self)
             #==============================================#
             #draws
-            self.renderer.draw(self.screen)
+            self.renderer.draw(self.display.screen, self.dt)
             #==============================================#
             #update
+            self.updater.update(self.dt)
             #==============================================#
             pg.display.flip()
-            self.clock.tick(self.FPS)
+            #----------------------------------------------#
+            if configs.settings.do_limit_fps:
+                self.clock.tick(self.FPS)
+            #----------------------------------------------#
+            else:
+                self.clock.tick()
 
 #==============================================#
 if __name__ == "__main__":

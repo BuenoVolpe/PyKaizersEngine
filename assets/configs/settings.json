@@ -1,0 +1,19 @@
+{
+    "max_fps": 60,
+    "do_limit_fps": false,
+    "show_fps_in_title":true,
+    "window_size": [640,360],
+    "full_screen":false,
+    
+    "camera_smoothing": 0.9,
+
+    "volume":{
+        "subclass": true,
+
+        "master": 1,
+        
+        "music": 1,
+        "sfx": 1,
+        "ui": 1
+    }
+}
