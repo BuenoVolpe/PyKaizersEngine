@@ -10,7 +10,7 @@ class Display:
         self._load_screen()
     #=====================================#
     def _load_screen(self):
-        window_title:str = "PyKaizersEngine"
+        window_title:str = configs.game.window_title
         #=====================================#
         RES = self.get_screen_resolution()
         MIN_RES:list[int, int] = configs.game.base_window_size

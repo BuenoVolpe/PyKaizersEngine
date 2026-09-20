@@ -44,12 +44,15 @@ class Main:
             events:list = self.events_handler.events(self)
             #==============================================#
             #draws
-            self.renderer.draw(self.display.screen, self.dt)
+            self.renderer.draw(self.display.screen, self.display.main_surface, self.dt)
             #==============================================#
             #update
             self.updater.update(self.dt)
             #==============================================#
             pg.display.flip()
+            #----------------------------------------------#
+            if configs.settings.show_fps_in_title:
+                pg.display.set_caption(f"{configs.game.window_title} | {self.clock.get_fps()}")
             #----------------------------------------------#
             if configs.settings.do_limit_fps:
                 self.clock.tick(self.FPS)
