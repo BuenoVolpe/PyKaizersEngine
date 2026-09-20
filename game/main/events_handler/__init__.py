@@ -5,10 +5,13 @@ import time
 #==============================================#
 from engine.utils.order_list import sort_objects
 from engine.utils.dict_to_class import dict_to_class
-#==============================================#
+#----------------------------------------------#
 from engine.utils.log import printlog
+from engine.signal_bus import signal_bus
+from game.enums.signals import signals
+from game.enums.signals_priotity import signals_priority as sigprio
 #==============================================#
-from engine.handler.events_handler.handle_event import (
+from game.main.events_handler.handle_event import (
 handle_event_KEYDOWN,
 handle_event_KEYUP,
 handle_event_MOUSEBUTTONDOWN,
@@ -20,12 +23,18 @@ class EventsHandler:
     def __init__(self):
         #----------------------------------------------#
         self.objects:list[dict] = [] #{"object":object, "name":name, "piority":num}
+        #----------------------------------------------#
+        signal_bus.subscribe(signals.EVENT_HANDLER_ADD_OBJECT, self.add_object, priority=sigprio.ADD_OBJ)
+        signal_bus.subscribe(signals.EVENT_HANDLER_REMOVE_OBJECT, self.remove_object, priority=sigprio.REMOVE_OBJ)
     #==============================================#
     def events(self, engine:object) -> dict[str, list]:
         #----------------------------------------------#
         results:list = []
         #----------------------------------------------#
         for event in pg.event.get():
+            #----------------------------------------------#
+            signal_bus.emit(signals.PGEVENT, event=event)
+            #----------------------------------------------#
             result:Any = None
             #----------------------------------------------#
             if event.type == pg.QUIT:
@@ -77,7 +86,7 @@ class EventsHandler:
             #----------------------------------------------#
             printlog.error(f"object cannot add {name} from event_handler's objects; \n {e}")
     #==============================================#
-    def remove(self, name:str):
+    def remove_object(self, name:str):
         #----------------------------------------------#
         try:
             #----------------------------------------------#

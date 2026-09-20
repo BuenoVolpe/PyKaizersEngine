@@ -1,7 +1,7 @@
 import pygame as pg
 import time
 #==============================================#
-from engine.handler.events_handler import EventsHandler
+from game.main.events_handler import EventsHandler
 from engine.utils.log import printlog
 from engine.configs import configs
 #----------------------------------------------#

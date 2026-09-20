@@ -1,0 +1,6 @@
+from game.main.events_handler.handle_event.keydown import handle_event_KEYDOWN
+from game.main.events_handler.handle_event.keyup import handle_event_KEYUP
+from game.main.events_handler.handle_event.mousebuttondown import handle_event_MOUSEBUTTONDOWN
+from game.main.events_handler.handle_event.mousebuttonup import handle_event_MOUSEBUTTONUP
+from game.main.events_handler.handle_event.mousemotion import handle_event_MOUSEMOTION
+from game.main.events_handler.handle_event.mousewheel import handle_event_MOUSEWHEEL

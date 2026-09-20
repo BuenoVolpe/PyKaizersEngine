@@ -1,6 +1,0 @@
-from engine.handler.events_handler.handle_event.keydown import handle_event_KEYDOWN
-from engine.handler.events_handler.handle_event.keyup import handle_event_KEYUP
-from engine.handler.events_handler.handle_event.mousebuttondown import handle_event_MOUSEBUTTONDOWN
-from engine.handler.events_handler.handle_event.mousebuttonup import handle_event_MOUSEBUTTONUP
-from engine.handler.events_handler.handle_event.mousemotion import handle_event_MOUSEMOTION
-from engine.handler.events_handler.handle_event.mousewheel import handle_event_MOUSEWHEEL

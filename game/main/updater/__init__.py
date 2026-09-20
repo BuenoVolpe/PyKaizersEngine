@@ -7,13 +7,21 @@ from engine.utils.dict_to_class import dict_to_class
 from engine.utils.log import printlog
 from engine.configs import configs
 #==============================================#
+from engine.signal_bus import signal_bus
+from game.enums.signals import signals
+from game.enums.signals_priotity import signals_priority as sigprio
+#==============================================#
 class Updater:
     #==============================================#
     def __init__(self):
-        #----------------------------------------------#
+        #----------z------------------------------------#
         self.objects:list[dict] = [] #{"object":object, "name":name, "piority":num}
+        #----------z------------------------------------#
+        signal_bus.subscribe(signals.UPDATER_ADD_OBJECT, self.add_object, priority=sigprio.ADD_OBJ)
+        signal_bus.subscribe(signals.UPDATER_REMOVE_OBJECT, self.remove_object, priority=sigprio.REMOVE_OBJ)
     #==============================================#
     def update(self, delta_time:float):
+        signal_bus.emit(signals.ENGINE_UPDATE, delta_time=delta_time)
         #----------------------------------------------#
         ...
     #==============================================#
@@ -36,7 +44,7 @@ class Updater:
             #----------------------------------------------#
             printlog.error(f"image cannot add {name} to updater's images; \n {e}")
     #==============================================#
-    def remove(self, name:str):
+    def remove_object(self, name:str):
         #----------------------------------------------#
         try:
             #----------------------------------------------#

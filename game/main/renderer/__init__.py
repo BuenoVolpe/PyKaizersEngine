@@ -9,6 +9,10 @@ from engine.configs import configs
 #----------------------------------------------#
 from game.main.renderer.images import add_image, remove_image, draw_images
 #==============================================#
+from engine.signal_bus import signal_bus
+from game.enums.signals import signals
+from game.enums.signals_priotity import signals_priority as sigprio
+#==============================================#
 class Renderer:
     #==============================================#
     def __init__(self):
@@ -18,6 +22,9 @@ class Renderer:
         self.images:list[dict] = [] #{"image":image, "name":name, "piority":num, "position": [x,y]}
         #----------------------------------------------#
         self.add_image(pg.image.load("assets/engine/important/error/error.png"), name="error", position=[30,30])
+        #----------------------------------------------#
+        signal_bus.subscribe(signals.UPDATER_ADD_OBJECT, self.add_image, priority=sigprio.ADD_OBJ)
+        signal_bus.subscribe(signals.UPDATER_REMOVE_OBJECT, self.remove_image, priority=sigprio.REMOVE_OBJ)
     #==============================================#
     def draw(self, main_surface:pg.Surface, display:pg.Surface, delta_time:float):
         #----------------------------------------------#

@@ -1,5 +1,12 @@
 {
-    "version": "0.0.3.2",
-    "name": "PyKaizersEngines",
-    "acronym": "pyk"
+    "version": "0.0.4.0",
+    "name": "PyKaizersEngine",
+    "acronym": "pyk",
+
+    "asset_marks": {
+        "subclass": true,
+
+        "debug": "debug",
+        "signal": "signal"
+    }
 }
