@@ -1,6 +1,19 @@
 {
     "textures": {
-        "subclass": true
+        "subclass": true,
+        
+        "show_atlas_keys":{
+            "subclass": true,
+            
+            "do_debug":false,
+            "show_on_console":false,
+            "show_on_overlay":false,
+            "log_type":"list",
+            "log_color":"black",
+            
+            "list_name": "textures",
+            "list_color":"white"
+        }
     },
     "audio": {
         "subclass": true

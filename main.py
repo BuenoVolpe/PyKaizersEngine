@@ -5,6 +5,8 @@ from game.main.events_handler import EventsHandler
 from engine.utils.log import printlog
 from engine.configs import configs
 #----------------------------------------------#
+from engine.handlers.textures import TextureHandler
+#----------------------------------------------#
 from game.main.renderer import Renderer
 from game.main.updater import Updater
 from game.main.displayer import Display
@@ -17,6 +19,8 @@ class Main:
         #----------------------------------------------#
         self.display:Display = Display()
         self.clock = pg.time.Clock()
+        #----------------------------------------------#
+        self.textures_handler:TextureHandler = TextureHandler()
         #----------------------------------------------#
         self.running:bool = True
         self.FPS:int = configs.settings.max_fps

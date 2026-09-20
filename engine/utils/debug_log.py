@@ -112,7 +112,7 @@ class DebugLog:
     #==============================================#
     def log(self, debug_string:str, value:Any, **kwargs):
         #----------------------------------------------#
-        kwargs = dict_to_class(kwargs) or dict_to_class({})
+        # kwargs = dict_to_class(kwargs) or dict_to_class({})
         #----------------------------------------------#
         debug_metadata = configs.debug 
         debug_string_info = self.handle_degub_string(debug_string)
@@ -122,7 +122,7 @@ class DebugLog:
         #----------------------------------------------#
         log_data = self.get_log_data(debug_metadata, debug_string_info.full_name, **kwargs)
         #==============================================#
-        match debug_metadata.log_type:
+        match data.log_type:
             #----------------------------------------------#
             case "log":
                 log(value,

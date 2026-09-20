@@ -28,8 +28,12 @@ class Signals:
     PGEVENT_MOUSE_WHEEL_UP:str = f"{engine_signal}::pgevent.mouse.wheel.up"
     PGEVENT_MOUSE_WHEEL_DOWN:str = f"{engine_signal}::pgevent.mouse.wheel.down"
     #----------------------------------------------#
+    TEXTURE_LOG_ATLAS_DATA:str = f"{engine_signal}::textures.log.atlas_data"
+    #----------------------------------------------#
     INPUT:str = f"{engine_signal}::input"
     NO_INPUT:str = f"{engine_signal}::no_input"
+    #----------------------------------------------#
+    DISPLAY_BUILDED_SCREEN:str = f"{engine_signal}::display.builded_screen"
     #==============================================#
     #Game
 #==============================================#

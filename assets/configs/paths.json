@@ -30,7 +30,8 @@
         "configs":"assets/configs/game.json"
     },
     
-    
+    "color_map":"assets/game/important/color_map/color_map.png",
+    "color_map_json":"assets/game/important/color_map/color_map.json",
     "audio_error":"assets/engine/important/error/error.wav",
     "error_image":"assets/engine/important/error/error.png"
 }

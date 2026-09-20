@@ -9,6 +9,7 @@ class Marks:
         #----------------------------------------------#
         self.debug:str = f"{marks.debug}@{acronym}"
         self.signal:str = f"{marks.signal}@{acronym}"
+        self.texture:str = f"{marks.texture}@{acronym}"
 #==============================================#
 class AssetsMarks:
     #----------------------------------------------#
