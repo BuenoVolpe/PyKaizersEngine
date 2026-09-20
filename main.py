@@ -2,6 +2,7 @@ import pygame as pg
 import time
 #==============================================#
 from engine.handler.events_handler import EventsHandler
+from game.main.renderer import Renderer
 #==============================================#
 pg.init()
 #==============================================#
@@ -17,11 +18,14 @@ class Main:
         self.prev_time:int = 0
         #----------------------------------------------#
         self.events_handler:EventsHandler = EventsHandler()
+        self.renderer:Renderer = Renderer()
     #==============================================#
     def get_delta_time(self) -> float:
+        #----------------------------------------------#
         now = time.time()
         dt = now - self.prev_time
         self.prev_time = now
+        #----------------------------------------------#
         return dt
     #==============================================#
     def run(self):
@@ -34,6 +38,7 @@ class Main:
             events:list = self.events_handler.events(self)
             #==============================================#
             #draws
+            self.renderer.draw(self.screen)
             #==============================================#
             #update
             #==============================================#
