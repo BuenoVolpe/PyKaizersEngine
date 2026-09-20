@@ -48,4 +48,4 @@ class Updater:
             printlog.success(f"object {name} was removed fromupdater's objects")
         #----------------------------------------------#
         except Exception as e:
-            printlog.error(f"object cannot remove {name} from updater's bjects; \n {e}")
+            printlog.error(f"object cannot remove {name} from updater's objects; \n {e}")

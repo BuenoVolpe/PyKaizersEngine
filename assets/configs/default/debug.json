@@ -1,0 +1,20 @@
+{
+    "textures": {
+        "subclass": true
+    },
+    "audio": {
+        "subclass": true
+    },
+    "fonts": {
+        "subclass": true
+    },
+    "ecs": {
+        "subclass": true
+    },
+    "signal_bus": {
+        "subclass": true
+    },
+    "overlay": {
+        "subclass": true
+    }
+}

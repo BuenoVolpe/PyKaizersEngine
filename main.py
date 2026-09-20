@@ -52,7 +52,7 @@ class Main:
             pg.display.flip()
             #----------------------------------------------#
             if configs.settings.show_fps_in_title:
-                pg.display.set_caption(f"{configs.game.window_title} | {self.clock.get_fps()}")
+                pg.display.set_caption(f"{configs.game.window_title} | {self.clock.get_fps():.0f}")
             #----------------------------------------------#
             if configs.settings.do_limit_fps:
                 self.clock.tick(self.FPS)
