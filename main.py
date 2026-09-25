@@ -2,25 +2,42 @@ import pygame as pg
 from sys import exit
 import time
 #============================================================#
+from game.main.display import Display
+# from game.main.loader import Loader
+from game.main.pyevents import PyEvents
+from game.main.renderer import Renderer
+from game.main.updater import Updater
+#============================================================#
 pg.init()
 #============================================================#
 class Game:
     #============================================================#
     def __init__(self):
         #------------------------------------------------------------#
-        self.screen = pg.display.set_mode([320,180])
-        self.clock = pg.time.Clock()
-        #------------------------------------------------------------#
         self.running:bool=True
+        #------------------------------------------------------------#
+        self._load()
+        #------------------------------------------------------------#
+    #============================================================#
+    def _load(self):
         #------------------------------------------------------------#
         self.prev_time:int = 0 
         self.time:int = 0 
+        #------------------------------------------------------------#
+        self.display:Display= Display()
+        self.pyevents:PyEvents= PyEvents()
+        # self.loader:Loader= Loader()
+        self.renderer:Renderer= Renderer()
+        self.updater:Updater= Updater()
+        #------------------------------------------------------------#
+        #loader.load()
+        #------------------------------------------------------------#
+        self.screen = self.display.screen
+        self.main_surface = self.display.main_surface
+        #------------------------------------------------------------#
+        self.clock = pg.time.Clock()
+        #------------------------------------------------------------#
     #============================================================#
-    def draw(self):
-        #------------------------------------------------------------#
-        self.screen.fill(30,30,30)
-        #------------------------------------------------------------#
-    #=====================================#
     def update(self):
         #------------------------------------------------------------#
         dt = self.get_delta_time()
@@ -42,16 +59,12 @@ class Game:
         #------------------------------------------------------------#
         while self.running:
             #------------------------------------------------------------#
-            for event in pg.event.get():
-                #------------------------------------------------------------#
-                if event.type == pg.QUIT:
-                    #------------------------------------------------------------#
-                    pg.quit()
-                    self.running:bool = False
-                    exit()
+            delta_time = self.get_delta_time()
+            #------------------------------------------------------------#
+            result:dict = self.pyevents.handle()
             #------------------------------------------------------------#
             #game code
-            self.draw()
+            self.renderer.draw(self.main_surface, self.screen, delta_time)
             self.update()
             #------------------------------------------------------------#
             pg.display.flip()
