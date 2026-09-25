@@ -1,0 +1,16 @@
+{
+    "window_title": "PyKaizersEngine",
+    "name": "PyK_instance",
+    "acronym": "pykinst",
+    
+    "version": "0.0.0.0",
+
+    "base_window_size": [320,180],
+
+    "main_surface_fill_color":[30,30,30],
+    "screen_fill_color":[30,30,30],
+
+    "constant_scale": 1,
+    "resize_main_surface":true
+    
+}

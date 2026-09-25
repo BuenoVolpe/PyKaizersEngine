@@ -2,6 +2,8 @@ import pygame as pg
 from sys import exit
 import time
 #============================================================#
+from engine.configs import configs
+#============================================================#
 from game.main.display import Display
 # from game.main.loader import Loader
 from game.main.pyevents import PyEvents
@@ -37,13 +39,6 @@ class Game:
         #------------------------------------------------------------#
         self.clock = pg.time.Clock()
         #------------------------------------------------------------#
-    #============================================================#
-    def update(self):
-        #------------------------------------------------------------#
-        dt = self.get_delta_time()
-        #------------------------------------------------------------#
-        ...
-        #------------------------------------------------------------#
     #=====================================#
     def get_delta_time(self) -> float:
         now = time.time()
@@ -65,10 +60,14 @@ class Game:
             #------------------------------------------------------------#
             #game code
             self.renderer.draw(self.main_surface, self.screen, delta_time)
-            self.update()
+            self.updater.update(delta_time)
             #------------------------------------------------------------#
             pg.display.flip()
-            self.clock.tick(60)
+            #------------------------------------------------------------#
+            if configs.settings.do_limit_fps:
+                self.clock.tick(configs.settings.max_fps)
+            else:
+                self.clock.tick()
 #============================================================#
 if __name__ == "__main__":
     #------------------------------------------------------------#

@@ -1,0 +1,37 @@
+{
+    "configs": "assets/configs/",
+    "paths": "assets/configs/paths.json",
+    "default_font":"assets/engine/fonts/atarismall.ttf",
+
+    "settings": "assets/configs/settings.json",
+    "default_configs": {
+        "subclass": true,
+        "folder":"assets/configs/default/"
+    },
+
+    "engine": {
+        "subclass": true,
+
+        "textures":"assets/engine/textures/",
+        "audio":"assets/engine/audio/",
+        "fonts":"assets/engine/fonts/",
+        "entities":"assets/engine/entities/",
+        "worlds":"assets/engine/worlds/",
+        "configs":"assets/configs/engine.json"
+    },
+    "game": {
+        "subclass": true,
+        
+        "textures":"assets/game/textures/",
+        "audio":"assets/game/audio/",
+        "fonts":"assets/game/fonts/",
+        "entities":"assets/game/entities/",
+        "worlds":"assets/game/worlds/",
+        "configs":"assets/configs/game.json"
+    },
+    
+    "color_map":"assets/game/important/color_map/color_map.png",
+    "color_map_json":"assets/game/important/color_map/color_map.json",
+    "audio_error":"assets/engine/important/error/error.wav",
+    "error_image":"assets/engine/important/error/error.png"
+}

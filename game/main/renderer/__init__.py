@@ -5,7 +5,7 @@ from engine.utils.sort_list import sort_objects
 from engine.utils.dict_to_class import dict_to_class
 #----------------------------------------------#
 from engine.utils.log import printlog
-# from engine.configs import configs
+from engine.configs import configs
 #----------------------------------------------#
 from game.main.renderer.images import add_image, remove_image, draw_images
 #==============================================#
@@ -28,17 +28,15 @@ class Renderer:
     #==============================================#
     def draw(self, main_surface:pg.Surface, display:pg.Surface, delta_time:float):
         #----------------------------------------------#
-        display.fill([30,30,30])
-        main_surface.fill([30,30,30])
+        main_surface.fill(configs.game.main_surface_fill_color)
+        display.fill(configs.game.screen_fill_color)
         #----------------------------------------------#
         draw_images(self.images, main_surface)
         #----------------------------------------------#
         self.blit(main_surface, display)
     #----------------------------------------------#
     def blit(self, main_surface:pg.Surface, display:pg.Surface):
-        resize_main_surface:bool = True
-        if resize_main_surface:
-        # if configs.game.resize_main_surface:
+        if configs.game.resize_main_surface:
             surface = pg.transform.scale(main_surface, [320,180])
             display.blit(surface, [0,0])
         else:

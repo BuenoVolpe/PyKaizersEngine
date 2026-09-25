@@ -5,7 +5,7 @@ from engine.utils.sort_list import sort_objects
 from engine.utils.dict_to_class import dict_to_class
 #==============================================#
 from engine.utils.log import printlog
-# from engine.configs import configs
+from engine.configs import configs
 #==============================================#
 # from engine.signal_bus import signal_bus
 # from game.enums.signals import signals

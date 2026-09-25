@@ -2,16 +2,18 @@
 import pygame as pg
 import os
 #============================================================#
+from engine.configs import configs
+#============================================================#
 class Display:
     #============================================================#
     def __init__(self):
         self._load_screen()
     #============================================================#
     def _load_screen(self):
-        window_title:str = "PyKaizersEngine"
+        window_title:str = configs.game.window_title
         #============================================================#
         RES:list[int, int] = self.get_screen_resolution()
-        MIN_RES:list[int, int] = [320,180]
+        MIN_RES:list[int, int] = configs.game.base_window_size
         #------------------------------------------------------------#
         self.screen = pg.display.set_mode(RES)
         self.main_surface = pg.Surface(MIN_RES, pg.SRCALPHA)
@@ -21,7 +23,7 @@ class Display:
     #============================================================#
     def get_screen_resolution(self) -> list[int, int]:
         #------------------------------------------------------------#
-        RES:list[int, int] = [640,360]
+        RES:list[int, int] = configs.settings.window_size
         #------------------------------------------------------------#
         use_full_screen:bool = False
         #------------------------------------------------------------#

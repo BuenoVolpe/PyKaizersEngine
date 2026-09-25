@@ -1,0 +1,5 @@
+{    
+    "default_path": "assets/configs/default/game.json",
+    
+    "base_window_size": [320,180]
+}
