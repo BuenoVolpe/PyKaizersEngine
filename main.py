@@ -4,6 +4,9 @@ import time
 #============================================================#
 from engine.configs import configs
 #============================================================#
+from engine.resources_string import ResourceStringManager
+#============================================================#
+from game.global_classes import globalclasses
 from game.main.display import Display
 # from game.main.loader import Loader
 from game.main.pyevents import PyEvents
@@ -31,8 +34,13 @@ class Game:
         # self.loader:Loader= Loader()
         self.renderer:Renderer= Renderer()
         self.updater:Updater= Updater()
+        self.resources_string_manager:ResourceStringManager = ResourceStringManager()
+        #------------------------------------------------------------#
+        self.resources_string_manager.parse("texture@pyk::characters.player$idle::white?scale=0.9&color='blue'&#enabled='false'")
         #------------------------------------------------------------#
         #loader.load()
+        globalclasses.display = self.display
+        globalclasses.resources_string_manager = self.resources_string_manager
         #------------------------------------------------------------#
         self.screen = self.display.screen
         self.main_surface = self.display.main_surface

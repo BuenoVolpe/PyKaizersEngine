@@ -3,8 +3,21 @@
     "name": "PyKaizersEngine",
     "acronym": "pyk",
 
-    "asset_marks": {
+    "resource_type_marks": {
         "subclass": true
+    },
+
+    "resource_strings_seps": {
+        "subclass": true,
+        
+        "type": "@",
+        "namespace": "::",
+        "context": "$",
+        "extra": "::",
+        "temporary_parameters": "#",
+        "parameters_setter": "=",
+        "parameters": "?",
+        "parameters_split": "&"
     },
     
     "extensions": {
