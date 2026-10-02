@@ -1,0 +1,9 @@
+{
+    "default_path":"assets/configs/default/settings.json",
+
+    "max_fps": 60,
+    "do_limit_fps": false,
+    "show_fps_in_title":true,
+    "window_size": [640,360],
+    "full_screen":false
+}

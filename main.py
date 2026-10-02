@@ -1,29 +1,39 @@
-import pygame
+import pygame as pg
 from sys import exit
 #=====================================#
-pygame.init()
+from engine.configs import configs
+#=====================================#
+pg.init()
 #=====================================#
 class Game:
     #=====================================#
     def __init__(self):
         #-------------------------------------#
-        self.screen = pygame.display.set_mode([320,180])
-        self.clock = pygame.time.Clock()
+        self.screen = pg.display.set_mode(configs.settings.window_size)
+        self.clock = pg.time.Clock()
     #=====================================#
     def run(self):
         #-------------------------------------#
         while True:
             #-------------------------------------#
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
                     exit()
             #=====================================#
             #game code
 
             #=====================================#
-            pygame.display.update()
-            self.clock.tick(60)
+            pg.display.update()
+            #-------------------------------------#
+            if configs.settings.show_fps_in_title:
+                pg.display.set_caption(f"{configs.game.window_title} | {self.clock.get_fps():.0f}")
+            #-------------------------------------#
+            if configs.settings.do_limit_fps:
+                self.clock.tick(configs.settings.max_fps)
+            #-------------------------------------#
+            else:
+                self.clock.tick()
 #=====================================#
 if __name__ == "__main__":
     #-------------------------------------#

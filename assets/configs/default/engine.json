@@ -1,0 +1,34 @@
+{
+    "version": "0.0.0.0",
+    "name": "PyKaizersEngine",
+    "acronym": "pyk",
+
+    "resource_type_marks": {
+        "subclass": true,
+
+        "signal":"signal",
+        "signallistener": "signallistener",
+        "texture": "texture"
+    },
+
+    "resource_strings_seps": {
+        "subclass": true,
+        
+        "type": "@",
+        "namespace": "::",
+        "context": "$",
+        "extra": "::",
+        "temporary_parameters": "#",
+        "parameters_setter": "=",
+        "parameters": "?",
+        "parameters_split": "&"
+    },
+    
+    "main_classes": ["events_handler", "render", "updater", "display"],
+    "extensions": {
+        "subclass": true,
+
+        "texture":"png",
+        "audio": "wav"
+    }
+}
