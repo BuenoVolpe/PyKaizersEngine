@@ -4,6 +4,8 @@ from sys import exit
 #=====================================#
 from engine.configs import configs
 #=====================================#
+from engine.resource_string import ResourceStringManager
+#=====================================#
 from game.main.display import Display
 from game.main.pyevents import PyEvents
 from game.main.renderer import Renderer
@@ -15,21 +17,24 @@ class Game:
     #=====================================#
     def __init__(self):
         self._load()
-        #------------------------------------------------------------#
+        #-------------------------------------#
     def _load(self):
-        #------------------------------------------------------------#
+        #-------------------------------------#
         self.prev_time:int = 0 
         self.time:int = 0 
-        #------------------------------------------------------------#
+        #-------------------------------------#
         self.display:Display= Display()
         self.pyevents:PyEvents= PyEvents()
         # self.loader:Loader= Loader()
         self.renderer:Renderer= Renderer()
         self.updater:Updater= Updater()
-        #------------------------------------------------------------#
+        #-------------------------------------#
+        self.resource_string_manager:ResourceStringManager = ResourceStringManager()
+        # self.resource_string_manager.parse("type@pyk::context$path!extra?par='value'&#temppar='value2'")
+        #-------------------------------------#
         self.screen = self.display.screen
         self.main_surface = self.display.main_surface
-        #------------------------------------------------------------#
+        #-------------------------------------#
         self.clock = pg.time.Clock()
     #=====================================#
     def get_delta_time(self) -> float:

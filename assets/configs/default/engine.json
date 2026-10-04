@@ -17,7 +17,7 @@
         "type": "@",
         "namespace": "::",
         "context": "$",
-        "extra": "::",
+        "extra": "!",
         "temporary_parameters": "#",
         "parameters_setter": "=",
         "parameters": "?",
