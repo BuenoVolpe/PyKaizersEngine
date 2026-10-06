@@ -5,6 +5,10 @@ from pathlib import Path
 #------------------------------------#
 def json_reader(path: str | Path, default: dict | None = None) -> dict:
     """Reads a JSON file and returns a dictionary safely."""
+    if not path:
+        log_error(f"path {path} is not valid!")
+        return default or {}
+    #------------------------------------#
     path = Path(path)
     #------------------------------------#
     if not path.exists():

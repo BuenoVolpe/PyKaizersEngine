@@ -12,10 +12,10 @@ class ResourceStringManager:
     #=====================================#
     def __init__(self):
         self.seps = configs.engine.resource_strings_seps
-        self.parser:ResourceStringParser = ResourceStringParser()
+        self._parser:ResourceStringParser = ResourceStringParser()
     #-------------------------------------#
     def parse(self, resource_string:str) -> ResourceReference:
-        return self.parser.parse(resource_string)
+        return self._parser.parse(resource_string)
 #-------------------------------------#
 
     

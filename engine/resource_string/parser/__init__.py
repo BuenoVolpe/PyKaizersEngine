@@ -34,7 +34,9 @@ class ResourceStringParser:
         )
         #------------------------------------------------------------#
         context.parameters = self.parameters.parse(parameter_string)
+        context._data["parameters"] = context.parameters
         context.overrides = self.parameters.parse(override_string)
+        context._data["overrides"] = context.overrides
         #------------------------------------------------------------#
         return ResourceReference(
             resource_string,
@@ -44,6 +46,7 @@ class ResourceStringParser:
             path=context.path,
             extra=context.extra,
             parameters=context.parameters,
+            string=context.string,
             temporary_parameters=context.overrides,
         )
     #============================================================#

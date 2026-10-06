@@ -1,3 +1,5 @@
+from unittest import result
+
 from engine.utils.log import printlog
 #============================================================#
 class ResourceStringStructureParser:
@@ -17,6 +19,7 @@ class ResourceStringStructureParser:
             "path": None,
             "extra": None,
             "parameters_string": None,
+            "string": original,
         }
         #============================================================#
         # type
@@ -70,15 +73,35 @@ class ResourceStringStructureParser:
             #------------------------------------------------------------#
             #parameters
             if self.seps.parameters in extra:
-                extra, parameters_string = resource_string.split(
+                extra, parameters_string = extra.split(
+                    self.seps.parameters, 1 
+                )
+                string, parameters_string = original.split(
                     self.seps.parameters, 1 
                 )
                 #------------------------------------------------------------#
+                result["string"] = string
                 result["parameters_string"] = parameters_string
+            else:
+                result["string"] = original
             #------------------------------------------------------------#
             result["extra"] = extra
         #------------------------------------------------------------#
         else:
+            #parameters
+            if self.seps.parameters in resource_string:
+                resource_string, parameters_string = resource_string.split(
+                    self.seps.parameters, 1 
+                )
+                #------------------------------------------------------------#
+                result["parameters_string"] = parameters_string
+                string, parameters_string = original.split(
+                    self.seps.parameters, 1 
+                )
+                #------------------------------------------------------------#
+                result["string"] = string
+            else:
+                result["string"] = original
             result["path"] = resource_string
         #------------------------------------------------------------#
         return result

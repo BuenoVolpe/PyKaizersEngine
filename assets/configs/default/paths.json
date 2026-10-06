@@ -35,5 +35,5 @@
     "engine_color_map":"assets/engine/others/color_map/color_map.png",
     "engine_color_map_json":"assets/engine/others/color_map/color_map.json",
     "audio_error":"assets/engine/important/error/error.wav",
-    "error_image":"assets/engine/important/error/error.png"
+    "error_image":"assets/engine/important/error.png"
 }

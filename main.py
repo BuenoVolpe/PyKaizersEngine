@@ -5,6 +5,11 @@ from sys import exit
 from engine.configs import configs
 #=====================================#
 from engine.resource_string import ResourceStringManager
+#-------------------------------------#
+from engine.handlers.texture import TextureHandler
+#-------------------------------------#
+from engine.utils.log import printlog
+from game.globalclasses import globalclasses
 #=====================================#
 from game.main.display import Display
 from game.main.pyevents import PyEvents
@@ -30,7 +35,15 @@ class Game:
         self.updater:Updater= Updater()
         #-------------------------------------#
         self.resource_string_manager:ResourceStringManager = ResourceStringManager()
-        # self.resource_string_manager.parse("type@pyk::context$path!extra?par='value'&#temppar='value2'")
+        self.resource_string_manager.parse("type@pyk::context$path!extra?par='value'&#temppar='value2'")
+        #-------------------------------------#
+        globalclasses.resource_string_manager = self.resource_string_manager
+        #-------------------------------------#
+        self.texture_handler:TextureHandler= TextureHandler()
+        self.texture_handler.load("texture@pyk::dave?width=30")
+        self.texture_handler.load("texture@pyk::folder.dave?width=30")
+        self.texture_handler.get("texture@pyk::folder.dave?width=50")
+        # printlog.dict(self.texture_handler._atlas)
         #-------------------------------------#
         self.screen = self.display.screen
         self.main_surface = self.display.main_surface
