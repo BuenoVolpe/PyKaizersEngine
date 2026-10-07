@@ -1,10 +1,12 @@
 import pygame as pg
-from pathlib import Path
-#=====================================#
+#-------------------------------------#
 from engine.configs import configs
 #-------------------------------------#
+from engine.handlers.texture.atlas import TextureAtlas
+from engine.handlers.texture.loader import TextureLoader
+from engine.handlers.texture.registry import TextureRegistry
 from engine.handlers.texture.texture_data import TextureData
-from engine.handlers.texture.loader import Loader
+from engine.handlers.texture.transformer import TextureTransformer
 #-------------------------------------#
 from engine.resource_string.resource_reference import ResourceReference
 #-------------------------------------#
@@ -13,87 +15,109 @@ from engine.utils.log import printlog
 #-------------------------------------#
 from game.globalclasses import globalclasses
 #=====================================#
-pg.init()
-#=====================================#
 class TextureHandler:
     #=====================================#
     def __init__(self):
         #-------------------------------------#
-        self._atlas:dict = {}
-        self._loader:Loader = Loader(self)
+        self._atlas:TextureAtlas = TextureAtlas()
+        self._registry:TextureRegistry = TextureRegistry(self._atlas, globalclasses.resource_string_manager)
+        self._loader:TextureLoader = TextureLoader()
+        self._transformer:TextureTransformer = TextureTransformer()
         #-------------------------------------#
-        self._error_texture:TextureData = TextureData(
-            resource="",
-            path=configs.paths.error_image,
-            json_path=None,
-            image=pg.image.load(configs.paths.error_image).convert(),
-            initial_image=pg.image.load(configs.paths.error_image).convert(),
-            parameters={}
-            )
-        self._atlas["texture@pyk::error"] = self._error_texture
+        self._create_error_texture()
     #=====================================#
-    def load(self, resource:str) -> pg.Surface:
-        return self._loader.load(resource)
+    def get(self, resource_string:str) -> pg.Surface:
+        #-------------------------------------#
+        resource:ResourceReference = globalclasses.resource_string_manager.parse(resource_string)
+        string:str = resource.string
+        #-------------------------------------#
+        texture_data:TextureData = self._atlas.get(string)
+        if texture_data is None:
+            printlog.error(f"cant find resource {resource_string}. Retuning error image")
+            return self.error_texture
+        #-------------------------------------#
+        if texture_data.image is None:
+            texture_data:TextureData = self.load(resource_string)
+        #-------------------------------------#
+        texture_data.image = self._transformer.transform(texture_data, resource.temporary_parameters)
+        #-------------------------------------#
+        return texture_data.image
     #=====================================#
-    def get(self, resource:str)  -> pg.Surface:
+    def get_texture_data(self, resource_string:str) -> TextureData | None:
         #-------------------------------------#
-        reference:ResourceReference = globalclasses.resource_string_manager.parse(resource)
-        string:str = reference.string
+        string:ResourceReference = globalclasses.resource_string_manager.parse(resource_string).string
         #-------------------------------------#
-        if string not in self._atlas:
-            printlog.error(f"texture: {string} is not registred or does not exist, \n returning error image")
-            return self._error_texture.image
-        #-------------------------------------#
-        texture:TextureData = self._atlas[string]
-        if texture.image is None:
-            self.load(resource)
-        #-------------------------------------#
-        image = self._apply_parameters(texture, resource)
-        #-------------------------------------#
-        return texture.image
+        return self._atlas.get(string)
     #=====================================#
-    def _apply_parameters(self, texture_data:TextureData, resource:str) -> pg.image:
-        #-------------------------------------#
-        reference:ResourceReference = globalclasses.resource_string_manager.parse(resource)
-        metadata = reference.temporary_parameters
-        #=====================================#
-        width:int = metadata.get("width") or texture_data.image.get_width()
-        height:int = metadata.get("height") or texture_data.image.get_height()
-        angle:float = metadata.get("angle", 0)
-        #-------------------------------------#
-        image = pg.transform.scale(texture_data.image, [width, height])
-        image = pg.transform.rotate(texture_data.image, angle)
-        return image
-
+    def register(self, resource_string:str) -> TextureData:
+        return self._registry.register(resource_string)
     #=====================================#
-    def register(self, resource:str) -> TextureData:
+    def add(self, texture_data:TextureData):
+        self._atlas.add(texture_data)
+    #=====================================#
+    def load(self, resource_string:TextureData) -> TextureData:
         #-------------------------------------#
-        reference:ResourceReference = globalclasses.resource_string_manager.parse(resource)
-        path:str = reference.path.replace(".", "/") + f".{configs.engine.extensions.texture}"
+        texture_data:TextureData = self.get_texture_data(resource_string)
+        if texture_data is None:
+            texture_data = self.register(resource_string)
         #-------------------------------------#
-        if reference.namespace == configs.engine.acronym:
-            path:Path = Path(configs.paths.engine.texture + path)
+        texture_data:TextureData = self._loader.load(texture_data)
         #-------------------------------------#
-        elif reference.namespace == configs.game.acronym:
-            path:Path = Path(configs.paths.game.texture + path)
+        parameters = texture_data.parameters
+        if texture_data.path:
+            #-------------------------------------#
+            for key, value in json_reader(texture_data.json_path).items():
+                parameters[key] = value
         #-------------------------------------#
-        json_path:Path = path.with_suffix(".json")
-        if not json_path.exists():
-            json_path:str = None
-        #-------------------------------------#
-        texture_data:TextureData = TextureData(
-            resource,
-            path=path,
-            json_path=json_path,
-            image=None,
-            initial_image=None,
-            parameters=reference.parameters,
-        )
-        #-------------------------------------#
-        self._atlas[reference.string] = texture_data
+        texture_data.image = self._transformer.transform(texture_data, texture_data.parameters)
         #-------------------------------------#
         return texture_data
+    #=====================================#
+    def _create_error_texture(self):
+        #-------------------------------------#
+        image = pg.image.load(
+            configs.paths.error_image
+        ).convert()
+        #-------------------------------------#
+        texture = TextureData(
+            resource=(
+                f"{configs.engine.resource_type_marks.texture}"
+                f"{configs.engine.resource_strings_seps.type}"
+                f"{configs.engine.acronym}"
+                f"{configs.engine.resource_strings_seps.namespace}"
+                "error"
+                ),
+            path=configs.paths.error_image,
+            image=image,
+            initial_image=image.copy(),
+            parameters={}
+        )
+        #-------------------------------------#
+        self._atlas.add(texture)
+        #-------------------------------------#
+        self.error_texture = texture
+    #=====================================#
 
-#=====================================#
 
+# dave_width_30 = self.texture_handler.load("texture@pyk::dave?width=30")
+# self.renderer.add_image(dict_to_class({
+#     "image": dave_width_30.image,
+#     "name": "texture@pyk::dave?width=30",
+#     "priority": 0,
+#     "position": [0, 0],
+# }))
+# dave_width_30 = self.texture_handler.load("texture@pyk::folder.dave?width=30")
+# self.renderer.add_image(dict_to_class({
+#     "image": dave_width_30.image,
+#     "name": "texture@pyk::folder.dave?width=30",
+#     "priority": 0,
+#     "position": [0, 70],
+# }))
+# dave_width_50 = self.texture_handler.get("texture@pyk::folder.dave?#width=100")
+# self.renderer.add_image(dict_to_class({
+#     "image": dave_width_50,
+#     "name": "texture@pyk::folder.dave?#width=30",
+#     "priority": 0,
+#     "position": [100, 0],
+# }))
 
