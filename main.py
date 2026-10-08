@@ -79,10 +79,10 @@ class Game:
         #-------------------------------------#
         while True:
             #-------------------------------------#
-            results:dict = self.pyevents.handle()
-            #-------------------------------------#
             delta_time:float = self.get_delta_time()
             self.pass_time(delta_time)
+            #-------------------------------------#
+            results:dict = self.pyevents.handle(delta_time=delta_time)
             #-------------------------------------#
             self.updater.update(delta_time=delta_time)
             self.renderer.draw(self.main_surface, self.screen, delta_time=delta_time)

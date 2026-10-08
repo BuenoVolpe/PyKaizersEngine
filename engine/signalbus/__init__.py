@@ -49,7 +49,7 @@ class SignalBus:
         return self._subscription.unsubscribe_listener(resource)
     #============================================================#
     def emit(self, signal:str, ctxt:object | dict):
-        self._emitter.emit()
+        return self._emitter.emit(signal, ctxt)
     def imadiate_emit(self, signal:str, ctxt:object | dict) -> list[Any]:
         return self._emitter.imadiate_emit(signal, ctxt)
     def process(self):

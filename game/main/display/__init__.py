@@ -4,6 +4,10 @@ import os
 #============================================================#
 from engine.configs import configs
 #============================================================#
+from engine.signalbus import signalbus
+from game.enums.signals import signals
+from game.enums.signals_order import signals_order
+#============================================================#
 class Display:
     #============================================================#
     def __init__(self):
@@ -36,8 +40,8 @@ class Display:
             WIDTH:int = info.current_w
             HEIGHT:int = info.current_h
             RES:list[int, int] = [WIDTH, HEIGHT]
-            # configs.settings.window_width, configs.settings.window_height = configs.settings.window_size = RES
-            # configs.settings.window_center = RES[0]//2, RES[1]//2
+            configs.settings.window_width, configs.settings.window_height = configs.settings.window_size = RES
+            configs.settings.window_center = RES[0]//2, RES[1]//2
             #------------------------------#
             p:str = configs.engine.resource_strings_seps.parameters
             signalbus.emit(f"{signals.DISPLAY_BUILDED_SCREEN}{p}once=true", ctxt={

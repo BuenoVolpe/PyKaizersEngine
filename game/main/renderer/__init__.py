@@ -9,9 +9,9 @@ from engine.configs import configs
 #----------------------------------------------#
 from game.main.renderer.images import add_image, remove_image, draw_images
 #============================================================#
-# from engine.signalbus import signalbus
-# from game.enums.signals import signals
-# from game.enums.signals_order import signals_order as sigorder
+from engine.signalbus import signalbus
+from game.enums.signals import signals
+from game.enums.signals_order import signals_order as sigorder
 #============================================================#
 class Renderer:
     #==============================================#
@@ -23,8 +23,8 @@ class Renderer:
         #----------------------------------------------#
         # self.add_image(pg.image.load("assets/engine/important/error/error.png"), name="error", position=[30,30])
         #----------------------------------------------#
-        # signalbus.subscribe(signals.RENDER_ADD_IMG, self.add_image, order=sigorder.ADDOBJ.FIRST)
-        # signalbus.subscribe(signals.RENDER_REMOVE_IMG, self.remove_image, order=sigorder.REMOVEOBJ.FIRST)
+        signalbus.subscribe(signals.RENDER_ADD_IMG, self.add_image, order=sigorder.ADDOBJ.FIRST)
+        signalbus.subscribe(signals.RENDER_REMOVE_IMG, self.remove_image, order=sigorder.REMOVEOBJ.FIRST)
     #==============================================#
     def draw(self, main_surface:pg.Surface, display:pg.Surface, delta_time:float):
         #----------------------------------------------#
