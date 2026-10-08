@@ -24,21 +24,23 @@ class Subscription:
         if origin is None:
             origin = _build_origin(function)
         #------------------------------------------------------------#
+        resource:ResourceReference = globalclasses.resource_string_manager.parse(signal)
+        #------------------------------------------------------------#
         listener: SignalListener = SignalListener(
             function=function,
             order=order,
             origin=origin,
             once=once,
             enabled=enabled,
-            brute_ctxt_data={},
+            brute_ctxt_data=resource.parameters,
         )
         #------------------------------------------------------------#
-        if signal not in self.bus.listeners:
-            self.bus.listeners[signal] = []
-        self.bus.listeners[signal].append(listener)
+        if resource.string not in self.bus.listeners:
+            self.bus.listeners[resource.string] = []
+        self.bus.listeners[resource.string].append(listener)
         #------------------------------------------------------------#
         signalfunc = self._create_signalfunc_string(
-            globalclasses.resource_string_manager.parse(signal),
+            globalclasses.resource_string_manager.parse(resource.string),
             origin
         )
         #------------------------------------------------------------#

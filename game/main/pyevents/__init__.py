@@ -43,27 +43,27 @@ class PyEvents:
             self.quit(event)
             #------------------------------------------------------------#
             if event.type == pg.KEYDOWN:
-                signalbus.emit(signals.KEYDOWN, {'pyevent':event, "delta_time":delta_time})
+                signalbus.emit(signals.PGEVENT_KEYDOWN, {'pyevent':event, "delta_time":delta_time})
                 result:Any = handle_KEYDOWN(event)
             #------------------------------------------------------------#
             elif event.type == pg.KEYUP:
-                signalbus.emit(signals.KEYUP, {'pyevent':event, "delta_time":delta_time})
+                signalbus.emit(signals.PGEVENT_KEYUP, {'pyevent':event, "delta_time":delta_time})
                 result:Any = handle_KEYUP(event)
             #------------------------------------------------------------#
             elif event.type == pg.MOUSEBUTTONDOWN:
-                signalbus.emit(signals.MOUSEBUTTONDOWN, {'pyevent':event, "delta_time":delta_time})
+                signalbus.emit(signals.PGEVENT_MOUSEBUTTONDOWN, {'pyevent':event, "delta_time":delta_time})
                 result:Any = handle_MOUSEBUTTONDOWN(event)
             #------------------------------------------------------------#
             elif event.type == pg.MOUSEBUTTONUP:
-                signalbus.emit(signals.MOUSEBUTTONUP, {'pyevent':event, "delta_time":delta_time})
+                signalbus.emit(signals.PGEVENT_MOUSEBUTTONUP, {'pyevent':event, "delta_time":delta_time})
                 result:Any = handle_MOUSEBUTTONUP(event)
             #------------------------------------------------------------#
             elif event.type == pg.MOUSEMOTION:
-                signalbus.emit(signals.MOUSEMOTION, {'pyevent':event, "delta_time":delta_time})
+                signalbus.emit(signals.PGEVENT_MOUSEMOTION, {'pyevent':event, "delta_time":delta_time})
                 result:Any = handle_MOUSEMOTION(event)
             #------------------------------------------------------------#
             elif event.type == pg.MOUSEWHEEL:
-                signalbus.emit(signals.MOUSEWHEEL, {'pyevent':event, "delta_time":delta_time})
+                signalbus.emit(signals.PGEVENT_MOUSEWHEEL, {'pyevent':event, "delta_time":delta_time})
                 result:Any = handle_MOUSEWHEEL(event)
             #------------------------------------------------------------#
             for obj in self.objects.objects:
