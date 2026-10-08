@@ -6,7 +6,7 @@ from engine.utils.dict_to_class import dict_to_class
 from engine.utils.log import printlog
 from engine.configs import configs
 # #------------------------------------------------------------#
-# from engine.signalbus import signalbus
+from engine.signalbus import signalbus
 # from game.enums.signals import signals
 # from game.enums.signals_order import signals_order as sigorder
 #==============================================#
@@ -26,7 +26,7 @@ class Updater:
         #----------------------------------------------#
         ...
         #----------------------------------------------#
-        # signalbus.process()
+        signalbus.process()
         #----------------------------------------------#
     #==============================================#
     def add_object(self, ctxt:object):

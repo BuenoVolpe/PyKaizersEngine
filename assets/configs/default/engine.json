@@ -24,7 +24,6 @@
         "parameters_split": "&"
     },
     
-    "main_classes": ["events_handler", "render", "updater", "display"],
     "extensions": {
         "subclass": true,
 

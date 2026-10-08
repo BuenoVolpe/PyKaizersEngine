@@ -2,6 +2,8 @@ import pygame as pg
 from sys import exit
 from typing import Any
 #============================================================#
+from engine.signalbus import signalbus
+#============================================================#
 from engine.utils.log import printlog
 from engine.utils.dict_to_class import dict_to_class
 from engine.utils.sort_list import sort_objects
@@ -17,6 +19,8 @@ class PyEvents:
     def __init__(self):
         #------------------------------------------------------------#
         self.objects:Objects = Objects()
+        #------------------------------------------------------------#
+        # signalbus.subscribe("signal@pyk::test.add.object", self.add_object)
     #============================================================#
     def quit(self, event:pg.event):
         if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_LALT):

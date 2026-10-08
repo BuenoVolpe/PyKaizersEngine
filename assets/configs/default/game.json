@@ -10,6 +10,8 @@
     "main_surface_background_color":[30,30,30],
     "background_color":[30,30,30],
 
+    "engine_main_classes": ["Display", "PyEvents", "Renderer", "Updater"],
+
     "constant_scale": 1,
     "resize_main_surface":true
     

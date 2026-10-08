@@ -9,6 +9,8 @@ from engine.resource_string import ResourceStringManager
 #-------------------------------------#
 from engine.handlers.texture import TextureHandler
 #-------------------------------------#
+from engine.signalbus import signalbus
+#-------------------------------------#
 from engine.utils.log import printlog
 from game.globalclasses import globalclasses
 #=====================================#
@@ -29,16 +31,17 @@ class Game:
         self.prev_time:int = 0 
         self.time:int = 0 
         #-------------------------------------#
+        self.resource_string_manager:ResourceStringManager = ResourceStringManager()
+        self.resource_string_manager.parse("type@pyk::context$path!extra?par='value'&#temppar='value2'")
+        #-------------------------------------#
+        globalclasses.resource_string_manager = self.resource_string_manager
+        globalclasses.signalbus = signalbus
+        #-------------------------------------#
         self.display:Display= Display()
         self.pyevents:PyEvents= PyEvents()
         # self.loader:Loader= Loader()
         self.renderer:Renderer= Renderer()
         self.updater:Updater= Updater()
-        #-------------------------------------#
-        self.resource_string_manager:ResourceStringManager = ResourceStringManager()
-        self.resource_string_manager.parse("type@pyk::context$path!extra?par='value'&#temppar='value2'")
-        #-------------------------------------#
-        globalclasses.resource_string_manager = self.resource_string_manager
         #-------------------------------------#
         self.texture_handler:TextureHandler= TextureHandler()
         #-------------------------------------#
@@ -46,6 +49,8 @@ class Game:
         self.main_surface = self.display.main_surface
         #-------------------------------------#
         self.clock = pg.time.Clock()
+        #-------------------------------------#
+        # signalbus.subscribe("signal@pyk::test.print", lambda : print("hello"))
     #=====================================#
     def get_delta_time(self) -> float:
         now = time.time()
